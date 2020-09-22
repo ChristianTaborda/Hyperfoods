@@ -1,6 +1,3 @@
-// ignoren esta alerta de Googlemaps ya que esa libreria 
-//será eliminada, ya que vamos a utilizar OpenStreetMap
-
 {
   "compilerOptions": {
     "baseUrl": "src",
