@@ -7,3 +7,5 @@ tenant = AppTenant(domain_url="stemen.localhost",
                 paid_until='2020-12-05',
                 on_trial=False)
 tenant.save()
+
+#python3 manage.py tenant_command createsuperuser --schema=test
