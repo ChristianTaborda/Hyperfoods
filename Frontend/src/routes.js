@@ -1,3 +1,7 @@
+// Added views
+import Users from "views/Users.js"
+
+// Template views
 import Dashboard from "views/Dashboard.js";
 import Icons from "views/Icons.js";
 import Map from "views/Map.js";
@@ -6,7 +10,17 @@ import TableList from "views/TableList.js";
 import Typography from "views/Typography.js";
 import UserProfile from "views/UserProfile.js";
 
+
 var routes = [
+  // Added views
+  {
+    path: "/users",
+    name: "Users",
+    icon: "tim-icons icon-chart-pie-36",
+    component: Users,
+    layout: "/admin"
+  },
+  // Template views
   {
     path: "/dashboard",
     name: "Dashboard",

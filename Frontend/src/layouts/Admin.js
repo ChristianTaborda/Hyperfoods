@@ -11,7 +11,8 @@ import FixedPlugin from "components/FixedPlugin.js";
 
 import routes from "routes.js";
 
-import logo from "assets/img/react-logo.png";
+import logo from "assets/img/simple-logo.png";
+import "./Admin.css";
 
 var ps;
 

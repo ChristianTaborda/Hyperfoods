@@ -1,0 +1,36 @@
+.login-form {
+  width: 100% !important;
+  max-width: 400px !important;
+  padding: 45px !important;
+  margin: auto !important;
+  height: 100% !important;
+  margin-top: 10px !important;
+  background-color: white !important;
+  float: center !important;
+}
+
+.login-background {
+  width: 100% !important;
+  height: 100% !important;
+  background-color: #f5f6fa !important;
+}
+
+.login-logo {
+  float: center !important;
+  text-align: center !important;
+  width: 50% !important;
+}
+
+html {
+  background-color: #f5f6fa !important;
+}
+
+.btn {
+  font-style: normal !important;
+  font-size: 15px !important;
+}
+
+input {
+  color: #4d4d4d !important;
+  font-size: 15px !important;
+}
