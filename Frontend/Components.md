@@ -1,20 +1,26 @@
-
-[-- Functional Components Structure --]
-
+[-- Estructura de los Componentes Funcionales --]
+.
 └── components
-    │   ├── FixedPlugin.js [X]    
-    │   ├── Footer.js [X]
-    │   ├── AdminNavbar.js  [X]
-    │   └── Sidebar.js [X]
+    │   ├── AdminNavbar.js**
+    │   ├── FixedPlugin.js**
+    │   ├── Footer.js**
+    │   └── Sidebar.js**
     ├── layouts
-    │   └── Admin.js [X]
+    │   ├── Admin.js**
+    │   └── Login.js++
     ├── variables
-    │   └── charts.js [X]
+    │   └── charts.js--
     └── views
-        ├── Dashboard.js [X]
-        ├── Icons.js [X]
-        ├── Map.js [X]
-        ├── Notifications.js [X]        
-        ├── TableList.js [X]
-        ├── Typography.js [X]
-        └── UserProfile.js [X]
+        ├── Dashboard.js--
+        ├── Icons.js--
+        ├── Map.js--
+        ├── Notifications.js--
+        ├── TableList.js--
+        ├── Typography.js--
+        ├── UserProfile.js--
+        └── Users.js++
+        
+
+**  Componentes permanentes
+--  Componentes temporales (NO editar, plantilla solo de referencia)
+++  Añadido por los desarrolladores
