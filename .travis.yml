@@ -34,9 +34,7 @@ jobs:
 
       deploy:
         provider: azure_web_apps
-        username: $AZURE_USER
-        password: $AZURE_PASS
-        site: "hyperfoods"
+        skip_cleanup: true
         on: 
           repo: esneidermanzano/hyperfoods
           branch: master
