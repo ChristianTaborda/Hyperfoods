@@ -34,9 +34,9 @@ jobs:
 
       deploy:
         provider: azure_web_apps
-        username: $hyperfoods
-        password: $AZURE_TOKEN
-        site: hyperfoods
+        username: $AZURE_USER
+        password: $AZURE_PASS
+        site: "hyperfoods"
         on: 
           repo: esneidermanzano/hyperfoods
           branch: master
