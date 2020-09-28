@@ -30,7 +30,7 @@ jobs:
         - "pip install -r requirements.txt"
 
       script: 
-        - python src/manage.py test
+        - python rest/manage.py test
 
       deploy:
         provider: azure_web_apps
@@ -39,3 +39,6 @@ jobs:
         on: 
           repo: esneidermanzano/hyperfoods
           branch: master
+
+      after_deploy:
+        - python rest/manage.py runserver
