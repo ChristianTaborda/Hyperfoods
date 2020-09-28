@@ -1,0 +1,41 @@
+dist: xenial
+os: linux
+git:
+  depth: 3 
+
+language: node_js
+node_js:
+  - 12
+
+jobs:
+  include:
+    # ======== Parte de Backend ========
+    - language: python
+      python:
+        - "3.7"
+
+      cache: pip
+
+      branches:
+        only:
+          - master
+
+      env:
+        - DJANGO=3.1
+
+      before_install:
+        - cd Backend/
+
+      install:
+        - "pip install -r requirements.txt"
+
+      script: 
+        - python src/manage.py test
+
+      deploy:
+        provider: azure_web_apps
+        username: $hyperfoods
+        password: $AZURE_TOKEN
+        on: 
+          repo: esneidermanzano/hyperfoods
+          branch: master
