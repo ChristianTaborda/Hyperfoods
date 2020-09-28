@@ -36,6 +36,7 @@ jobs:
         provider: azure_web_apps
         username: $hyperfoods
         password: $AZURE_TOKEN
+        site: hyperfoods
         on: 
           repo: esneidermanzano/hyperfoods
           branch: master
