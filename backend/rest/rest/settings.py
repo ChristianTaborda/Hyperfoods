@@ -37,7 +37,8 @@ THIRD_PARTY_APPS = (
 )
 SHARED_APPS = (
     'django_tenants',
-    'tenant'
+    'tenant',
+    'front'
 ) + DJANGO_APPS + THIRD_PARTY_APPS
 
 TENANT_APPS = DJANGO_APPS + THIRD_PARTY_APPS
@@ -78,7 +79,7 @@ WSGI_APPLICATION = 'rest.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
@@ -100,6 +101,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+"""
 DATABASE_ROUTERS = (
     'django_tenants.routers.TenantSyncRouter',
 )
@@ -140,14 +142,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+#setting static files, this is essential to work with react
+STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
-"""
+
+REACT_APP_DIR = os.path.join(BASE_DIR, 'front') 
+
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'Saas/static')
+    os.path.join(REACT_APP_DIR, 'build', 'static'),
 ]
-"""
-"""Configurate at upload files"""
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+
+#setting media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 #DEFAULT_FILE_STORAGE = 'tenant_schemas.storage.TenantFileSystemStorage'

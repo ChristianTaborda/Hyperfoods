@@ -4,15 +4,15 @@
 from tenant.models import Tenant, Domain
 
 # create your public tenant
-tenant = Tenant(schema_name='public',
-                name='HyperFoods Schemas Inc.',
+tenant = Tenant(schema_name='tenant1',
+                name='Pescaderia Inc.',
                 paid_until='2020-12-12',
-                on_trial=False)
+                on_trial=True)
 tenant.save()
 
 # Add one or more domains for the tenant
 domain = Domain()
-domain.domain = 'localhost' # don't add your port or www here! on a local server you'll want to use localhost here
+domain.domain = 'tenant1.localhost' # don't add your port or www here! on a local server you'll want to use localhost here
 domain.tenant = tenant
 domain.is_primary = True
 domain.save()
