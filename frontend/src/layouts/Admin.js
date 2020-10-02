@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
-// javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
+import { connect } from "react-redux";
+import routes from "routes.js";
+import { setSidebarOpened } from "../redux/Template/actions.js";
 
 // core components
 import AdminNavbar from "components/AdminNavbar.js";
@@ -9,19 +11,12 @@ import Footer from "components/Footer.js";
 import Sidebar from "components/Sidebar.js";
 import FixedPlugin from "components/FixedPlugin.js";
 
-import routes from "routes.js";
-
-import logo from "assets/img/simple-logo.png";
 import "./Admin.css";
 
 var ps;
 
 function Admin(props) {
-  const [backgroundColor, setBackgroundColor] = useState("blue");
-  const [sidebarOpened, setSidebarOpened] = useState(
-    document.documentElement.className.indexOf("nav-open") !== -1
-  );
-
+  const [backgroundColor, setBackgroundColor] = useState(props.bgColor);
   const mainPanel = useRef();
   let history = useHistory();
 
@@ -37,6 +32,9 @@ function Admin(props) {
           ps = new PerfectScrollbar(tables[i]);
         }
       }
+      props.setSidebarOpened(
+        document.documentElement.className.indexOf("nav-open") !== -1
+      );
 
       // callback at unmount (ComponentWillUnmount)
       return () => {
@@ -64,13 +62,8 @@ function Admin(props) {
       document.scrollingElement.scrollTop = 0;
       mainPanel.current.scrollTop = 0;
     }
-  });
-
-  // this function opens and closes the sidebar on small devices
-  const toggleSidebar = () => {
-    document.documentElement.classList.toggle("nav-open");
-    setSidebarOpened(!sidebarOpened);
-  };
+    setBackgroundColor(props.bgColor);
+  }, [history.action, props.bgColor]);
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
@@ -88,58 +81,36 @@ function Admin(props) {
     });
   };
 
-  const handleBgClick = (color) => {
-    setBackgroundColor(color);
-  };
-
-  const getBrandText = (path) => {
-    for (let i = 0; i < routes.length; i++) {
-      if (
-        props.location.pathname.indexOf(routes[i].layout + routes[i].path) !==
-        -1
-      ) {
-        return routes[i].name;
-      }
-    }
-    return "Brand";
-  };
-
   return (
     <>
       <div className="wrapper">
-        <Sidebar
-          {...props}
-          routes={routes}
-          bgColor={backgroundColor}
-          logo={{
-            outterLink: "https://github.com/esneidermanzano/hyperfoods",
-            text: "HyperFoods",
-            imgSrc: logo,
-          }}
-          toggleSidebar={toggleSidebar}
-        />
+        <Route component={Sidebar} />
         <div className="main-panel" ref={mainPanel} data={backgroundColor}>
-          <AdminNavbar
-            {...props}
-            brandText={getBrandText(props.location.pathname)}
-            toggleSidebar={toggleSidebar}
-            sidebarOpened={sidebarOpened}
-          />
+          <Route component={AdminNavbar} />
+
           <Switch>
             {getRoutes(routes)}
             <Redirect from="*" to="/admin/dashboard" />
           </Switch>
-          {
-            // we don't want the Footer to be rendered on map page
-            props.location.pathname.indexOf("maps") !== -1 ? null : (
-              <Footer fluid />
-            )
-          }
+          <Footer fluid />
         </div>
       </div>
-      <FixedPlugin bgColor={backgroundColor} handleBgClick={handleBgClick} />
+      <FixedPlugin />
     </>
   );
 }
 
-export default Admin;
+const mapStateToProps = (state) => {
+  return {
+    bgColor: state.templateReducer.templateProps.bgColor,
+    sidebarOpened: state.templateReducer.templateProps.sidebarOpened,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setSidebarOpened: (state) => dispatch(setSidebarOpened(state)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Admin);

@@ -1,4 +1,3 @@
-
 #python3 manage.py tenant_command createsuperuser --schema=test
 #./manage.py shell < myscript.py
 from tenant.models import Tenant, Domain
