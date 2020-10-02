@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-// nodejs library that concatenates classes
+import { connect } from "react-redux";
+import routes from "routes.js";
+import { setSidebarOpened } from "../redux/Template/actions.js";
 import classNames from "classnames";
 
 // reactstrap components
@@ -63,6 +65,18 @@ function AdminNavbar(props) {
     setModalSearch(!modalSearch);
   };
 
+  // this function opens and closes the sidebar on small devices
+  const toggleSidebar = () => {
+    document.documentElement.classList.toggle("nav-open");
+    props.setSidebarOpened(!props.sidebarOpened);
+  };
+
+  const getBrandText = () => {
+    return routes.filter(
+      (route) => route.layout + route.path === props.history.location.pathname
+    )[0].name;
+  };
+
   return (
     <>
       <Navbar className={classNames("navbar-absolute", color)} expand="lg">
@@ -76,7 +90,7 @@ function AdminNavbar(props) {
               <button
                 className="navbar-toggler"
                 type="button"
-                onClick={props.toggleSidebar}
+                onClick={toggleSidebar}
               >
                 <span className="navbar-toggler-bar bar1" />
                 <span className="navbar-toggler-bar bar2" />
@@ -84,7 +98,7 @@ function AdminNavbar(props) {
               </button>
             </div>
             <NavbarBrand href="#pablo" onClick={(e) => e.preventDefault()}>
-              {props.brandText}
+              {getBrandText()}
             </NavbarBrand>
           </div>
           <button
@@ -208,4 +222,16 @@ function AdminNavbar(props) {
   );
 }
 
-export default AdminNavbar;
+const mapStateToProps = (state) => {
+  return {
+    sidebarOpened: state.templateReducer.templateProps.sidebarOpened,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setSidebarOpened: (state) => dispatch(setSidebarOpened(state)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdminNavbar);

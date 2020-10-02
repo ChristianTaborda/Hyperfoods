@@ -10,6 +10,10 @@ import logo from "../assets/img/logo.png";
 import { connect } from "react-redux";
 import { setCredentials } from "../redux/Login/actions.js";
 
+
+import { setSidebarOpened } from "../redux/Template/actions.js"
+
+
 function Login(props) {
   let history = useHistory();
 
@@ -18,9 +22,13 @@ function Login(props) {
 
   const onClickLogin = (e) => {
     e.preventDefault();
-    props.setCredentials({ email: email, password: password });
+    props.setCredentials({ email: email, password: password });    
     console.log(email, password);
-    // history.push("/");
+    history.push("/");
+
+    //borrar
+    props.setSidebarOpened(false)
+    //------
   };
 
   return (
@@ -78,6 +86,10 @@ function Login(props) {
 const mapDispatchToProps = (dispatch) => {
   return {
     setCredentials: (credentials) => dispatch(setCredentials(credentials)),
+
+    //borrar
+    setSidebarOpened: (state) => dispatch(setSidebarOpened(state)),
+    //------
   };
 };
 

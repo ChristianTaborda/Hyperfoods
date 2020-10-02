@@ -1,14 +1,13 @@
 /*eslint-disable*/
 import React, { useEffect, useRef } from "react";
 import { NavLink, Link } from "react-router-dom";
-// nodejs library to set properties for components
-import { PropTypes } from "prop-types";
-
-// javascript plugin used to create scrollbars on windows
+import { connect } from "react-redux";
+import { setSidebarOpened } from "../redux/Template/actions.js";
 import PerfectScrollbar from "perfect-scrollbar";
 
 // reactstrap components
 import { Nav } from "reactstrap";
+import routes from "../routes.js";
 
 var ps;
 
@@ -40,11 +39,15 @@ function Sidebar(props) {
     []
   );
 
-  const linkOnClick = () => {
-    document.documentElement.classList.remove("nav-open");
+  // const linkOnClick = () => { document.documentElement.classList.remove("nav-open") };
+
+  // this function opens and closes the sidebar on small devices
+  const toggleSidebar = () => {
+    document.documentElement.classList.toggle("nav-open");
+    props.setSidebarOpened(!props.sidebarOpened);
   };
 
-  const { bgColor, routes, logo } = props;
+  const { bgColor, logo } = props;
   let logoImg = null;
   let logoText = null;
   if (logo !== undefined) {
@@ -54,7 +57,7 @@ function Sidebar(props) {
           href={logo.outterLink}
           className="simple-text logo-mini"
           target="_blank"
-          onClick={props.toggleSidebar}
+          onClick={toggleSidebar}
         >
           <div className="logo-img">
             <img src={logo.imgSrc} alt="react-logo" />
@@ -66,7 +69,7 @@ function Sidebar(props) {
           href={logo.outterLink}
           className="simple-text logo-normal"
           target="_blank"
-          onClick={props.toggleSidebar}
+          onClick={toggleSidebar}
         >
           {logo.text}
         </a>
@@ -76,7 +79,7 @@ function Sidebar(props) {
         <Link
           to={logo.innerLink}
           className="simple-text logo-mini"
-          onClick={props.toggleSidebar}
+          onClick={toggleSidebar}
         >
           <div className="logo-img">
             <img src={logo.imgSrc} alt="react-logo" />
@@ -87,7 +90,7 @@ function Sidebar(props) {
         <Link
           to={logo.innerLink}
           className="simple-text logo-normal"
-          onClick={props.toggleSidebar}
+          onClick={toggleSidebar}
         >
           {logo.text}
         </Link>
@@ -118,7 +121,7 @@ function Sidebar(props) {
                   to={prop.layout + prop.path}
                   className="nav-link"
                   activeClassName="active"
-                  onClick={props.toggleSidebar}
+                  onClick={toggleSidebar}
                 >
                   <i className={prop.icon} />
                   <p>{prop.name}</p>
@@ -132,26 +135,18 @@ function Sidebar(props) {
   );
 }
 
-Sidebar.defaultProps = {
-  bgColor: "primary",
-  routes: [{}],
+const mapStateToProps = (state) => {
+  return {
+    bgColor: state.templateReducer.templateProps.bgColor,
+    logo: state.templateReducer.templateProps.logo,
+    sidebarOpened: state.templateReducer.templateProps.sidebarOpened,
+  };
 };
 
-Sidebar.propTypes = {  
-  bgColor: PropTypes.oneOf(["primary", "blue", "green"]),
-  routes: PropTypes.arrayOf(PropTypes.object),
-  logo: PropTypes.shape({
-    // innerLink is for links that will direct the user within the app
-    // it will be rendered as <Link to="...">...</Link> tag
-    innerLink: PropTypes.string,
-    // outterLink is for links that will direct the user outside the app
-    // it will be rendered as simple <a href="...">...</a> tag
-    outterLink: PropTypes.string,
-    // the text of the logo
-    text: PropTypes.node,
-    // the image src of the logo
-    imgSrc: PropTypes.string,
-  }),
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setSidebarOpened: (state) => dispatch(setSidebarOpened(state)),
+  };
 };
 
-export default Sidebar;
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
