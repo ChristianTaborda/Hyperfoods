@@ -87,6 +87,7 @@ function Admin(props) {
         <Route component={Sidebar} />
         <div className="main-panel" ref={mainPanel} data={backgroundColor}>
           <Route component={AdminNavbar} />
+
           <Switch>
             {getRoutes(routes)}
             <Redirect from="*" to="/admin/dashboard" />

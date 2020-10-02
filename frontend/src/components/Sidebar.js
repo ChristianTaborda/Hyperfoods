@@ -135,6 +135,7 @@ function Sidebar(props) {
   );
 }
 
+
 const mapStateToProps = (state) => {
   return {
     bgColor: state.templateReducer.templateProps.bgColor,

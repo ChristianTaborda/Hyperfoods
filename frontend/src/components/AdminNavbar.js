@@ -222,6 +222,7 @@ function AdminNavbar(props) {
   );
 }
 
+
 const mapStateToProps = (state) => {
   return {
     sidebarOpened: state.templateReducer.templateProps.sidebarOpened,

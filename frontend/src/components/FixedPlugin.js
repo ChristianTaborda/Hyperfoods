@@ -29,6 +29,7 @@ function FixedPlugin(props) {
     activateMode(props.mode);
   }, [props.mode]);
 
+
   return (
     <div className="fixed-plugin">
       <div className={classes}>
