@@ -23,3 +23,4 @@ urlpatterns = [
     url(r'^', include('front.urls')),
 ]
 handler404 = 'front.views.handler404'
+

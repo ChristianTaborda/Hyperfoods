@@ -16,6 +16,7 @@ psycopg2-binary = "==2.8.6"
 [requires]
 python_version = "3.7"
 
+
 [scripts]
 dev = "python3 manage.py runserver"
 make = "python3 manage.py makemigrations"
