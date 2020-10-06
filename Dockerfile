@@ -1,17 +1,18 @@
 
 FROM loquendomanzano/pyarn:latest
 #ENV PYTHONUNBUFFERED 1
-RUN echo $(ls)
 
 RUN mkdir /app
 WORKDIR /app
 
-RUN yarn --cwd ./test install
-RUN yarn --cwd ./test/ run build
+#RUN yarn --cwd ./test install
+#RUN yarn --cwd ./test/ run build
 
 COPY ./backend/requirements.txt .
 COPY ./backend/rest .
-COPY ./test/build ./backend/rest/front
+RUN echo $(ls)
+
+#COPY ./test/build ./backend/rest/front
 
 RUN pip install -r requirements.txt
 RUN useradd -s /bin/bash myuser
