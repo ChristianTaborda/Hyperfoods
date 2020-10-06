@@ -2,7 +2,6 @@
 
 # dependencies
 /frontend/node_modules
-<<<<<<< HEAD
 /frontend/build
 /test/node_modules
 /test/build
