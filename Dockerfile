@@ -10,10 +10,13 @@ WORKDIR /app
 
 COPY ./backend/requirements.txt .
 COPY ./backend/rest .
+#COPY ./test ./react
+
 RUN echo $(ls)
-
-#COPY ./test/build ./backend/rest/front
-
+#RUN yarn --cwd /react install
+RUN cd ./test && yanr install && yarn run build && cd ..
+#RUN yarn --cwd /react/ run build
+COPY ./test/build ./backend/rest/front
 RUN pip install -r requirements.txt
 RUN useradd -s /bin/bash myuser
 USER myuser
