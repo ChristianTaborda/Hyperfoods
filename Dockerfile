@@ -12,9 +12,9 @@ COPY ./backend/requirements.txt .
 COPY ./backend/rest .
 COPY ./test ./react
 
-RUN echo $(ls)
 RUN cd react && yarn install && yarn run build && cd ..
-RUN mv /test/build ./backend/rest/front
+RUN echo $(ls)
+RUN mv test/build backend/rest/front
 RUN pip install -r requirements.txt
 RUN useradd -s /bin/bash myuser
 USER myuser
