@@ -1,9 +1,9 @@
 
 FROM loquendomanzano/pyarn:latest
 #ENV PYTHONUNBUFFERED 1
-
-RUN yarn --cwd test/ install
-RUN yarn --cwd test/ run build
+RUN echo $(ls)
+RUN yarn --cwd /test/ install
+RUN yarn --cwd /test/ run build
 
 RUN mkdir /app
 WORKDIR /app
