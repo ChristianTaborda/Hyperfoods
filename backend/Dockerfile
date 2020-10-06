@@ -1,11 +1,16 @@
-FROM python:3.7-stretch
-ENV PYTHONUNBUFFERED 1
+
+FROM loquendomanzano/pyarn:latest
+#ENV PYTHONUNBUFFERED 1
+
+RUN yarn --cwd test/ install
+RUN yarn --cwd test/ run build
 
 RUN mkdir /app
 WORKDIR /app
 
-COPY ./requirements.txt .
-COPY ./rest .
+COPY ./backend/requirements.txt .
+COPY ./backend/rest .
+COPY ./test/build ./backend/rest/front
 
 RUN pip install -r requirements.txt
 RUN useradd -s /bin/bash myuser
