@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'rest.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
@@ -103,7 +103,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-"""
+
 DATABASE_ROUTERS = (
     'django_tenants.routers.TenantSyncRouter',
 )
