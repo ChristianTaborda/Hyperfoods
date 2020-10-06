@@ -2,11 +2,12 @@
 FROM loquendomanzano/pyarn:latest
 #ENV PYTHONUNBUFFERED 1
 RUN echo $(ls)
-RUN yarn --cwd /test/ install
-RUN yarn --cwd /test/ run build
 
 RUN mkdir /app
 WORKDIR /app
+
+RUN yarn --cwd ./test install
+RUN yarn --cwd ./test/ run build
 
 COPY ./backend/requirements.txt .
 COPY ./backend/rest .
