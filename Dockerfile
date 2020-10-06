@@ -13,8 +13,7 @@ COPY ./backend/rest .
 COPY ./test ./react
 
 RUN echo $(ls)
-RUN yarn --cwd /react install
-RUN yarn --cwd /react/ run build
+RUN cd react && yarn install && yarn run build && cd ..
 RUN mv /test/build ./backend/rest/front
 RUN pip install -r requirements.txt
 RUN useradd -s /bin/bash myuser
