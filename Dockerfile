@@ -15,7 +15,7 @@ COPY ./test ./react
 RUN cd react && yarn install && yarn run build && cd ..
 RUN echo $(ls)
 RUN mv react/build rest/front
-RUN rmdir react
+RUN rm react
 RUN pip install -r requirements.txt
 RUN useradd -s /bin/bash myuser
 USER myuser
