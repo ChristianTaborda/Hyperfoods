@@ -37,7 +37,8 @@ THIRD_PARTY_APPS = (
 )
 SHARED_APPS = (
     'django_tenants',
-    'tenant'
+    'tenant',
+    'categories'
 ) + DJANGO_APPS + THIRD_PARTY_APPS
 
 TENANT_APPS = DJANGO_APPS + THIRD_PARTY_APPS
@@ -78,18 +79,20 @@ WSGI_APPLICATION = 'rest.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+
 """
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
         'NAME': 'hyperfoods',
         'USER': 'postgres',
-        'PASSWORD': 'stemen',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT': '5432',
     }
 }
 """
+
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
@@ -100,6 +103,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
 DATABASE_ROUTERS = (
     'django_tenants.routers.TenantSyncRouter',
 )
@@ -156,8 +160,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'
     ]
 }
 
