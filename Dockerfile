@@ -5,17 +5,13 @@ FROM loquendomanzano/pyarn:latest
 RUN mkdir /app
 WORKDIR /app
 
-#RUN yarn --cwd ./test install
-#RUN yarn --cwd ./test/ run build
-
 COPY ./backend/requirements.txt .
 COPY ./backend/rest .
-COPY ./test ./react
-
-RUN cd react && yarn install && yarn run build && cd ..
-RUN echo $(ls)
-RUN mv react/build rest/front
-RUN rm -rf react
+COPY ./frontend/build ./front/build
+#RUN cd react && yarn install && yarn run build && cd ..
+#RUN echo $(ls)
+#RUN mv react/build rest/front
+#RUN rm -rf react
 RUN pip install -r requirements.txt
 RUN useradd -s /bin/bash myuser
 USER myuser

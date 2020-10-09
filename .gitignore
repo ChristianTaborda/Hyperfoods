@@ -2,18 +2,13 @@
 
 # dependencies
 /frontend/node_modules
-/frontend/build
-/test/node_modules
-/test/build
 /backend/rest/front/build
+/backend/rest/front/build/
 
 
 frontend/node_modules
-frontend/build
-test/node_modules
-test/build
 backend/rest/front/build
-
+backend/rest/front/build/
 
 /.pnp
 .pnp.js
@@ -21,8 +16,6 @@ backend/rest/front/build
 # testing
 /coverage
 
-# production
-/frontend/build
 
 # misc
 .DS_Store
