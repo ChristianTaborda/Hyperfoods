@@ -19,8 +19,9 @@ from django.conf.urls import url
 
 urlpatterns = [
     path('api/', include('rest_framework.urls')),
+    path('api/categories/', include('categories.urls')),
     path('admin/', admin.site.urls),
-    url(r'^', include('front.urls')),
+    url(r'^', include('front.urls'))
 ]
 handler404 = 'front.views.handler404'
 
