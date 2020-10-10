@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { setBgColor } from "../redux/Template/actions.js";
 
 function FixedPlugin(props) {
-  const [classes, setClasses] = useState("dropdown show-dropdown" );
+  const [classes, setClasses] = useState("dropdown show-dropdown");
 
   const handleClick = () => {
     if (classes === "dropdown show-dropdown") {
@@ -22,10 +24,11 @@ function FixedPlugin(props) {
     }
   };
 
-// Modo light por defecto
-useEffect(() => {
-  activateMode("light");  
-},[])
+  // mode by default
+  useEffect(() => {
+    activateMode(props.mode);
+  }, [props.mode]);
+
 
   return (
     <div className="fixed-plugin">
@@ -45,7 +48,7 @@ useEffect(() => {
                 }
                 data-color="primary"
                 onClick={() => {
-                  props.handleBgClick("primary");
+                  props.setBgColor("primary");
                 }}
               />{" "}
               <span
@@ -56,7 +59,7 @@ useEffect(() => {
                 }
                 data-color="blue"
                 onClick={() => {
-                  props.handleBgClick("blue");
+                  props.setBgColor("blue");
                 }}
               />{" "}
               <span
@@ -67,7 +70,7 @@ useEffect(() => {
                 }
                 data-color="green"
                 onClick={() => {
-                  props.handleBgClick("green");
+                  props.setBgColor("green");
                 }}
               />{" "}
             </div>
@@ -90,4 +93,17 @@ useEffect(() => {
   );
 }
 
-export default FixedPlugin;
+const mapStateToProps = (state) => {
+  return {
+    bgColor: state.templateReducer.templateProps.bgColor,
+    mode: state.templateReducer.templateProps.mode,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setBgColor: (color) => dispatch(setBgColor(color)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FixedPlugin);

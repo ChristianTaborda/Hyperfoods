@@ -17,7 +17,9 @@ ALLOWED_HOSTS = [
     '0.0.0.0',
     '.localhost',
     '.127.0.0.1',
-    '.hyperfoods.azurewebsites.net'
+    '.hyperfoods.team',
+    'www.hyperfoods.team'
+
 ]
 
 # Application definition
@@ -31,6 +33,7 @@ DJANGO_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 )
+
 THIRD_PARTY_APPS = (
     'rest_framework',
     'corsheaders',
@@ -38,6 +41,7 @@ THIRD_PARTY_APPS = (
 SHARED_APPS = (
     'django_tenants',
     'tenant',
+    'categories',
     'front'
 ) + DJANGO_APPS + THIRD_PARTY_APPS
 
@@ -47,6 +51,7 @@ INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in S
 
 MIDDLEWARE = [
     'django_tenants.middleware.main.TenantMainMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -80,17 +85,19 @@ WSGI_APPLICATION = 'rest.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
         'NAME': 'hyperfoods',
         'USER': 'postgres',
-        'PASSWORD': 'stemen',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT': '5432',
     }
 }
 """
+
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
@@ -101,7 +108,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-"""
+
 DATABASE_ROUTERS = (
     'django_tenants.routers.TenantSyncRouter',
 )
@@ -141,7 +148,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
 #setting static files, this is essential to work with react
 STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
@@ -162,8 +168,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
     ]
 }
 
