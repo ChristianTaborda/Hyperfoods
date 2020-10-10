@@ -34,3 +34,12 @@ input {
   color: #4d4d4d !important;
   font-size: 15px !important;
 }
+
+/* StyledFirebaseAuth styles */
+.firebaseui-container button {
+  width: 350px !important;
+  max-width: 350px !important;
+  margin-left: -20px !important;
+  border: 1px solid #525f7f !important;
+  border-radius: 5px !important;
+}
