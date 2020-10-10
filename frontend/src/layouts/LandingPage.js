@@ -65,7 +65,7 @@ function LandingPage(){
           
           <div className="caption text-center" >
             <h1>Bienvenido a Hyperfoods</h1>
-            <h3 class=" lead px-5">Sistema de gestion de venta de comidas
+            <h3 class=" lead px-5">Sistema gestor de venta de comidas
               </h3>
             
           </div>
