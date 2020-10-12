@@ -4,14 +4,15 @@
 /frontend/node_modules
 /frontend/package-lock.json
 /frontend/db.json
+frontend/node_modules
+backend/rest/front/build
+
 /.pnp
 .pnp.js
 
 # testing
 /coverage
 
-# production
-/frontend/build
 
 # misc
 .DS_Store

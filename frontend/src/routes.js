@@ -9,6 +9,7 @@ import Notifications from "views/Notifications.js";
 import TableList from "views/TableList.js";
 import Typography from "views/Typography.js";
 import UserProfile from "views/UserProfile.js";
+import CreateTenant from "views/CreateTenat.js"
 
 
 var routes = [
@@ -18,6 +19,13 @@ var routes = [
     name: "Users",
     icon: "tim-icons icon-chart-pie-36",
     component: Users,
+    layout: "/admin"
+  },
+  {
+    path: "/create-tenant",
+    name: "Crear Tenant",
+    icon: "tim-icons icon-chart-pie-36",
+    component: CreateTenant,
     layout: "/admin"
   },
   // Template views
