@@ -1,11 +1,14 @@
 from .models import Product
 from rest_framework import serializers
+from categories.serializers import CategorySerializer
 
 # Serializers for products:
 # --------------------------------CRUD --------------------------------#
 
 # Retrieve operations serializer:
 class ProductSerializer(serializers.ModelSerializer):
+
+    categoryProduct = CategorySerializer()
 
     class Meta:
         model = Product
