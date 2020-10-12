@@ -42,7 +42,6 @@ SHARED_APPS = (
     'django_tenants',
     'tenant',
     'categories',
-    'products',
     'front'
 ) + DJANGO_APPS + THIRD_PARTY_APPS
 
