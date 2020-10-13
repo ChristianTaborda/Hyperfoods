@@ -1,6 +1,7 @@
 from .models import Product
 from rest_framework import serializers
 from categories.serializers import CategorySerializer
+#from combos.serializers import UpdateComboSerializer
 
 # Serializers for products:
 # --------------------------------CRUD --------------------------------#
