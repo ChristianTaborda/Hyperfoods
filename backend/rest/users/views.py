@@ -101,32 +101,9 @@ class Login(APIView):
             'user': UserSerializer(user).data,
             'access_token': token
         }
-        return Response(data, status=status.HTTP_201_CREATED)
+        return Response(data)
 
-"""
-        id_user = request.data.get('id_user',None)
-        password = request.data.get('password',None)
-        if id_user and password:
-            user_querysets = Worker.objects.filter(user__email__iexact= id_user ).values('id','user','user__id_user', 'user__is_active',  'user__password', 'user_type')  
-            if (user_querysets.exists() and  user_querysets[0]['user__is_active']) :
-                user= user_querysets[0]
-                if(check_password(password, user['user__password'])):
-                    user.pop('user__password')
-                    user.pop('user__is_active')
-                    userC = CustomUser.objects.filter(email__iexact=id_user)
-                    token, created  = Token.objects.get_or_create(user=userC[0])
-                    return Response({"message": "Login exitoso",  "code": 200, "token": token.key, "data":  user})
-                else:
-                    message= "Contraseña incorrecta"
-                    return Response({"message": message , "code": 204, 'data': {}} )     
 
-            else:
-                message = "El id proporcionado no existe o el usuario no está activo"
-                return Response({"message": message , "code": 204, 'data': {}} )
-        else:
-            message = "No ha proporciando datos validos"
-            return Response({"message": message , "code": 204, 'data': {}})
-"""
 
 #========== CRUD para la informacion basica del usuario ==========
 #Listar todos los usuarios basicos

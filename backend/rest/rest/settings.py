@@ -55,7 +55,6 @@ SHARED_APPS = (
 TENANT_APPS = DJANGO_APPS + THIRD_PARTY_APPS + OWN_APPS 
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
-print(INSTALLED_APPS)
 
 MIDDLEWARE = [
     'django_tenants.middleware.main.TenantMainMiddleware',
@@ -173,6 +172,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 #DEFAULT_FILE_STORAGE = 'tenant_schemas.storage.TenantFileSystemStorage'
 CORS_ORIGIN_ALLOW_ALL = True
 
+AUTHENTICATION_BACKENDS = (
+        'django.contrib.auth.backends.ModelBackend',
+    )
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -181,6 +184,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
     """
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # <-- And here
+    ],
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
         'rest_framework.parsers.FormParser',
