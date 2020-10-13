@@ -52,6 +52,7 @@ SHARED_APPS = (
     'tenant',
 )  
 
+
 TENANT_APPS = DJANGO_APPS + THIRD_PARTY_APPS + OWN_APPS 
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]

@@ -10,18 +10,13 @@ import { setCredentials } from "../redux/Login/actions.js";
 import logo from "../assets/img/logo.png";
 import "./Login.css";
 import firebase from "firebase";
-import StyledFirebaseAuth1 from "react-firebaseui/StyledFirebaseAuth";
-import StyledFirebaseAuth2 from "react-firebaseui/StyledFirebaseAuth";
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 firebase.initializeApp({
   apiKey: "AIzaSyCwDo3PWtcFx7y4lHac4p4DaRWfVEPc1JI",
   authDomain: "fire-auth-hyperfoods.firebaseapp.com",
 });
 
 function Login(props) {
-  const [, updateState] = React.useState();                         //
-  const forceUpdate = React.useCallback(() => updateState({}), []); // <--force update
-  console.log("render");                                            //
-
   const notificationAlert = useRef();
   let history = useHistory();
 
@@ -40,6 +35,7 @@ function Login(props) {
     //   })
     //   .catch((err) => console.log(err));
     // setTimeout(() => {  history.push("/"); }, 800);
+    history.push("/");
   };
 
   //Schema for input data valiation using Yup
@@ -72,17 +68,14 @@ function Login(props) {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const uiConfig = {
     signInFlow: "popup",
-    signInSuccessUrl: "/login",
+    signInSuccessUrl: "/",
     signInOptions: [
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+      firebase.auth.FacebookAuthProvider.PROVIDER_ID,
       firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-      // firebase.auth.GithubAuthProvider.PROVIDER_ID,
-      // firebase.auth.EmailAuthProvider.PROVIDER_ID,
     ],
     callbacks: {
-      // signInSuccess: () => false,
-      signInSuccessWithAuthResult: () => false,
+      signInSuccessWithAuthResult: () => true,
     },
   };
 
@@ -90,11 +83,6 @@ function Login(props) {
     () => {
       firebase.auth().onAuthStateChanged((user) => {
         setIsSignedIn(!!user);
-        // console.log("user", user);
-
-        firebase.auth().signOut(); //
-        forceUpdate();             //<-- attempts to prevent <StyledFirebaseAuth/> from hiding
-        localStorage.clear();      //
       });
     },
     // eslint-disable-next-line
@@ -163,23 +151,12 @@ function Login(props) {
           <div className="text-center pt-2">
             Or continue with your social account
           </div>
-
-          {/* cuchinni: these are the buttons that we want to prevent from being hidden */}
-          {isSignedIn ? (
-            <StyledFirebaseAuth1
-              uiConfig={uiConfig}
-              firebaseAuth={firebase.auth()}
-              // uiCallback={ui => ui.disableAutoSignIn()}
-              // uiCallback={ui => ui.reset()}
-            />
-          ) : (
-            <StyledFirebaseAuth2
+          {!isSignedIn && (
+            <StyledFirebaseAuth
               uiConfig={uiConfig}
               firebaseAuth={firebase.auth()}
             />
           )}
-          {/* -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- - */}
-
           <div className="text-center">
             <a href="/">Sign up</a>
             <span className="p-2">|</span>
