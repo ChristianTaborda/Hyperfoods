@@ -27,9 +27,9 @@ ALLOWED_HOSTS = [
 
 DJANGO_APPS = (
     'django.contrib.contenttypes',
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.sessions',
+    'django.contrib.admin',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 )
@@ -50,11 +50,12 @@ THIRD_PARTY_APPS = (
 SHARED_APPS = (
     'django_tenants',
     'tenant',
-) + DJANGO_APPS + OWN_APPS + THIRD_PARTY_APPS
+)  
 
-TENANT_APPS = DJANGO_APPS + THIRD_PARTY_APPS
+TENANT_APPS = DJANGO_APPS + THIRD_PARTY_APPS + OWN_APPS 
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
+print(INSTALLED_APPS)
 
 MIDDLEWARE = [
     'django_tenants.middleware.main.TenantMainMiddleware',

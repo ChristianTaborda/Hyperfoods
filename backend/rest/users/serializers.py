@@ -5,6 +5,8 @@ from users.models import (
     Worker
     )
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth import password_validation, authenticate
+from rest_framework.authtoken.models import Token
 
 #========== Serializador completo para el usuario basico ========== 
 class UserSerializer(serializers.ModelSerializer):
@@ -110,6 +112,32 @@ class WorkerSerializer(serializers.ModelSerializer):
         worker = super().update(instance, validated_data)
         return worker
 
+
+class UserLoginSerializer(serializers.Serializer):
+
+    # Campos que vamos a requerir
+    email = serializers.EmailField()
+    password = serializers.CharField(max_length=12)
+
+    # Primero validamos los datos
+    def validate(self, data):
+        # authenticate recibe las credenciales, si son válidas devuelve el objeto del usuario
+        print("==================================0")
+        print(data.items())
+        for key, value in data.items(): 
+            print(key, value) 
+        user = authenticate(email=data['email'], password=data['password'])
+        if not user:
+            raise serializers.ValidationError('Las credenciales no son válidas')
+
+        # Guardamos el usuario en el contexto para posteriormente en create recuperar el token
+        self.context['user'] = user
+        return data
+
+    def create(self, data):
+        """Generar o recuperar token."""
+        token, created = Token.objects.get_or_create(user=self.context['user'])
+        return self.context['user'], token.key
 """
 #========== Serializador para crear cliente con usuario ========== 
 class CreateNewClientSerializer(serializers.ModelSerializer):

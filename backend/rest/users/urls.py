@@ -2,7 +2,8 @@ from django.urls import path
 
 from .views import (
 
-    #Login,
+    Login,
+    
     UserList, 
     UserCreate, 
     UserDetail,
@@ -68,6 +69,6 @@ urlpatterns = [
     path('worker-single/get/<pk>/', CreateSingleWorker.as_view()),
     path('worker-single/update/<pk>/', WorkerSingleUpdate.as_view()),
 
-    #path('login/', Login.as_view()),
+    path('login/', Login.as_view()),
 
 ]
