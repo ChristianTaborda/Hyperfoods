@@ -23,6 +23,7 @@ function LandingPage(){
     const toggle = () => setIsOpen(!isOpen);
     let history = useHistory();
     
+
   
     return (
    
@@ -64,8 +65,8 @@ function LandingPage(){
           </div>
           
           <div className="caption text-center" >
-            <h1>Bienvenido a Hyperfoods</h1>
-            <h3 class=" lead px-5">Sistema gestor de venta de comidas
+            <h1>Welcome to Hyperfoods</h1>
+            <h3 class=" lead px-5">Foods sales management system
               </h3>
             
           </div>
@@ -79,7 +80,7 @@ function LandingPage(){
         
 
         <section id="pricing" className="pricing offsset py-3 ">
-          <h1 className="tex-center"> Nuestros planes</h1>
+          <h1 className="tex-center">Our planes</h1>
           <Container>
 
              <Row>
@@ -91,11 +92,11 @@ function LandingPage(){
                         <CardTitle className="price display-2 mb-0 price1" data-annual="199" data-monthly="99">
                           100</CardTitle>
                         
-                        <CardSubtitle className="h6 font-weight-normal align-self-end">/mes</CardSubtitle>
+                        <CardSubtitle className="h6 font-weight-normal align-self-end">/month</CardSubtitle>
                       </div>
-                      <h4 className="mb-3 text-black">Paquete Basico</h4>
-                      <CardSubtitle>
-                            Ofrece las funcionalidades más básicas y cero nivel de personalización.
+                      <h4 className="mb-3 text-black">Plan Basic</h4>
+                      <CardSubtitle>                          
+                         more basic functionalities and zero level of customization
                         </CardSubtitle> 
                    </CardBody>
                  
@@ -104,34 +105,34 @@ function LandingPage(){
                         <div className="features">
                           <tbody>
                             <tr>
-                              <td ><span className="check"><i className=" far fa-check-circle"></i></span> Gestion de usuarios</td>
+                              <td ><span className="check"><i className=" far fa-check-circle"></i></span> User management</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Gestion de clientes</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> Client management</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Gestion de productos</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> Products management</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Gestion de ventas</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> Sales management</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Reportes(formato texto)</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> Reports(text)</td>
                             </tr>
                             <tr>
-                            <td><span className="cancel"><i className="fas fa-times"></i></span> Reportes graficos</td>
+                            <td><span className="cancel"><i className="fas fa-times"></i></span> Graphic reports</td>
                             </tr>
                             <tr>
-                            <td><span className="cancel"><i className="fas fa-times"></i></span> Personalización</td>
+                            <td><span className="cancel"><i className="fas fa-times"></i></span> Customization</td>
                             </tr>
                             <tr>
-                            <td><span className="cancel"><i className="fas fa-times"></i></span> Actualización de menú(Excel)</td>
+                            <td><span className="cancel"><i className="fas fa-times"></i></span> Menu update(Excel)</td>
                             </tr>
                             <tr>
-                            <td><span className="cancel"><i className="fas fa-times"></i></span> Ubicación de clientes</td>
+                            <td><span className="cancel"><i className="fas fa-times"></i></span> Client location</td>
                             </tr>
                             <tr>
-                            <td><span className="cancel"><i className="fas fa-times"></i></span> Monitoreo del sistema</td>
+                            <td><span className="cancel"><i className="fas fa-times"></i></span> System monitoring</td>
                             </tr>
                             <tr>
                             <td><span className="cancel"><i className="fas fa-times"></i></span> PWA</td>
@@ -139,10 +140,10 @@ function LandingPage(){
                           </tbody>
                         </div>
                       </Table>
-                      <CardFooter>
+                      <CardFooter className="text-center">
          
                          <Button className="btn-fill "  onClick={() => history.push("/request/basic")} color="success" type="submit">
-                          Adquirir <i className="p-2 fas fa-arrow-right"></i>
+                          Get <i className="p-2 fas fa-arrow-right"></i>
                          </Button>
                      
                       </CardFooter>
@@ -157,12 +158,12 @@ function LandingPage(){
                         <CardTitle className="price display-2 mb-0 price1" data-annual="199" data-monthly="99">
                           150</CardTitle>
                         
-                        <CardSubtitle className="h6 font-weight-normal align-self-end">/mes</CardSubtitle>
+                        <CardSubtitle className="h6 font-weight-normal align-self-end">/month</CardSubtitle>
                       </div>
-                      <h4 className="mb-3 text-black">Paquete Normal</h4>
+                      <h4 className="mb-3 text-black">Plan Medium</h4>
                       <CardSubtitle>
-                       Funcionalidades adicionales(reportes y nivel intermedio de personalización).
-                        </CardSubtitle> 
+                          Additional functionalities (reports and intermediate level of Customization).
+                      </CardSubtitle> 
                    </CardBody>
                  
                    <CardBody>
@@ -170,34 +171,34 @@ function LandingPage(){
                         <div className="features">
                           <tbody>
                             <tr>
-                              <td ><span className="check"><i className=" far fa-check-circle"></i></span> Gestion de usuarios</td>
+                              <td ><span className="check"><i className=" far fa-check-circle"></i></span> User management</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Gestion de clientes</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> Client management</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Gestion de productos</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> Products management</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Gestion de ventas</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> Sales management</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Reportes(formato texto)</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> Reports(text)</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Reportes graficos</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> Graphic reports</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Personalización</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> Customization</td>
                             </tr>
                             <tr>
-                            <td><span className="cancel"><i className="fas fa-times"></i></span> Actualización de menú(Excel)</td>
+                            <td><span className="cancel"><i className="fas fa-times"></i></span> Menu update(Excel)</td>
                             </tr>
                             <tr>
-                            <td><span className="cancel"><i className="fas fa-times"></i></span> Ubicación de clientes</td>
+                            <td><span className="cancel"><i className="fas fa-times"></i></span> Client location</td>
                             </tr>
                             <tr>
-                            <td><span className="cancel"><i className="fas fa-times"></i></span> Monitoreo del sistema</td>
+                            <td><span className="cancel"><i className="fas fa-times"></i></span> System monitoring</td>
                             </tr>
                             <tr>
                             <td><span className="cancel"><i className="fas fa-times"></i></span> PWA</td>
@@ -205,9 +206,9 @@ function LandingPage(){
                           </tbody>
                         </div>
                       </Table>
-                      <CardFooter>
+                      <CardFooter  className="text-center">
                          <Button className="btn-fill" onClick={() => history.push("/request/medium")} color="success" type="submit">
-                          Adquirir <i className="p-2 fas fa-arrow-right"></i>
+                          Get <i className="p-2 fas fa-arrow-right"></i>
                          </Button>
                       </CardFooter>
                    </CardBody>
@@ -221,11 +222,11 @@ function LandingPage(){
                         <CardTitle className="price display-2 mb-0 price1" data-annual="199" data-monthly="99">
                           200</CardTitle>
                         
-                        <CardSubtitle className="h6 font-weight-normal align-self-end">/mes</CardSubtitle>
+                        <CardSubtitle className="h6 font-weight-normal align-self-end">/month</CardSubtitle>
                       </div>
-                      <h4 className="mb-3 text-black">Paquete Full</h4>
-                      <CardSubtitle>
-                        Características adicionales además de las funcionalidades básicas e intermedias
+                      <h4 className="mb-3 text-black">Plan Full</h4>
+                      <CardSubtitle>   
+                          Additional features plus basic and intermediate functionalities
                         </CardSubtitle> 
                    </CardBody>
                  
@@ -234,34 +235,34 @@ function LandingPage(){
                         <div className="features">
                           <tbody>
                             <tr>
-                              <td ><span className="check"><i className=" far fa-check-circle"></i></span> Gestion de usuarios</td>
+                              <td ><span className="check"><i className=" far fa-check-circle"></i></span> User management</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Gestion de clientes</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> Client management</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Gestion de productos</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> Products management</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Gestion de ventas</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> Sales management</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Reportes(formato texto)</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> Reports(text)</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Reportes graficos</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> Graphic reports</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Personalización</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> Customization</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Actualización de menú(Excel)</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> Menu update(Excel)</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Ubicación de clientes</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> Client location</td>
                             </tr>
                             <tr>
-                            <td><span className="check"><i className="far fa-check-circle"></i></span> Monitoreo del sistema</td>
+                            <td><span className="check"><i className="far fa-check-circle"></i></span> System monitoring</td>
                             </tr>
                             <tr>
                             <td><span className="check"><i className="far fa-check-circle"></i></span> PWA</td>
@@ -269,9 +270,9 @@ function LandingPage(){
                           </tbody>
                         </div>
                       </Table>
-                      <CardFooter>
+                      <CardFooter  className="text-center">
                          <Button className="btn-fill" onClick={() => history.push("/request/full")} color="success" type="submit">
-                          Adquirir <i className="p-2 fas fa-arrow-right"></i>
+                          Get <i className="p-2 fas fa-arrow-right"></i>
                          </Button>
                       </CardFooter>
                    </CardBody>
@@ -405,7 +406,7 @@ function LandingPage(){
           <div className="container">
              <div className="row justify-content-center"> 
                  <div className="col-12">
-                    <h3 className="mb-4 text-center">Aceptamos los siguientes metodos de pago.</h3>
+                    <h3 className="mb-4 text-center">We accept the following payment methods</h3>
                   </div>
                   <div className="d-flex flex-row justify-content-center">
                     <div className="p-2">
