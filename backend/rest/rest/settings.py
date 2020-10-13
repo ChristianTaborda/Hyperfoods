@@ -38,6 +38,7 @@ OWN_APPS = (
     'users',
     'categories',
     'products',
+    'combos',
     'front',
 )
 
