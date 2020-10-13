@@ -55,8 +55,8 @@ function Suscription(props){
           return (
             <UncontrolledAlert color="success">
             <span>
-              <b>Enviado exitosamente-</b>
-              nos pondremos en contacto contigo en el menor tiempo posible
+              <b>Sent successfully-</b>
+              We will get in touch with you in the shortest time possible
             </span>
           </UncontrolledAlert>
           )
@@ -105,8 +105,8 @@ function Suscription(props){
        </div>
        
        <div className="caption text-center" >
-         <h1>Suscripcion a Hyperfoods</h1>
-         <h3 className=" lead px-5">Sistema gestor de venta de comidas
+         <h1>Suscription to Hyperfoods</h1>
+         <h3 className=" lead px-5">Foods sales management system
            </h3>
          
        </div>
@@ -129,9 +129,9 @@ function Suscription(props){
               <Row>
                 <Col className="pr-md-1" md="6">
                
-                   <label>Empresa</label>
+                   <label>Company</label>
                      <Input
-                       placeholder="Nombre empresa"
+                       placeholder="Type your company name "
                        type="text"
                        onChange={(e) => setEmpresa(e.target.value)}
                        required
@@ -140,7 +140,7 @@ function Suscription(props){
                    <Col className="pl-md-1" md="6">
                    
                        <label htmlFor="exampleInputEmail1">
-                        Correo electronico
+                        Email
                        </label>
                        <Input 
                         placeholder="mike@email.com" 
@@ -151,9 +151,9 @@ function Suscription(props){
                   </Row>
                   <Row>
                     <Col className="pr-md-1" md="6">
-                        <label>Nombre</label>
+                        <label>Name</label>
                         <Input
-                          placeholder="Nombre completo"
+                          placeholder="Type your full name "
                           type="text"
                           onChange={(e) => setNombre(e.target.value)}
                           required
@@ -161,9 +161,9 @@ function Suscription(props){
                     </Col>
                     
                       <Col className="pr-md-1" md="4">
-                          <label>Ciudad</label>
+                          <label>City</label>
                           <Input
-                            placeholder="Ciudad"
+                            placeholder="Type your company city"
                             type="text"
                             onChange={(e) => setCiudad(e.target.value)}
                             required
@@ -172,9 +172,9 @@ function Suscription(props){
                   </Row>
                   <Row>
                     <Col md="12">
-                        <label>Dirección</label>
+                        <label>Address</label>
                         <Input
-                          placeholder="Calle ..."
+                          placeholder="Type your company address" 
                           type="text"
                           onChange={(e) => setDireccion(e.target.value)}
                           required
@@ -190,7 +190,7 @@ function Suscription(props){
                   color="success" 
                   type="submit"
                 >
-                  Enviar
+                  Send
                 </Button>
               </CardFooter>
                 </Form>
@@ -212,7 +212,7 @@ function Suscription(props){
           <div className="container">
              <div className="row justify-content-center"> 
                  <div className="col-12">
-                    <h3 className="mb-4 text-center">Aceptamos los siguientes metodos de pago.</h3>
+                    <h3 className="mb-4 text-center">We accept the following payment methods</h3>
                   </div>
                   <div className="d-flex flex-row justify-content-center">
                     <div className="p-2">
