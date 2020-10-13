@@ -21,6 +21,7 @@ urlpatterns = [
     path('api/', include('rest_framework.urls')),
     path('api/categories/', include('categories.urls')),
     path('api/products/', include('products.urls')),
+    path('api/combos/', include('combos.urls')),
     path('admin/', admin.site.urls),
     url(r'^', include('front.urls'))
 ]

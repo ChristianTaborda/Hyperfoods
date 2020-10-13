@@ -43,6 +43,7 @@ SHARED_APPS = (
     'tenant',
     'categories',
     'products',
+    'combos',
     'front'
 ) + DJANGO_APPS + THIRD_PARTY_APPS
 
