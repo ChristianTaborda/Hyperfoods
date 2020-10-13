@@ -99,12 +99,13 @@ DATABASES = {
         'ENGINE': 'django_tenants.postgresql_backend',
         'NAME': 'hyperfoods',
         'USER': 'postgres',
-        'PASSWORD': 'stemen',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT': '5432',
     }
 }
 """
+
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
@@ -208,3 +209,9 @@ TENANT_MODEL = "tenant.Tenant"
 TENANT_DOMAIN_MODEL = "tenant.Domain"  # app.Model
 
 #DEFAULT_FILE_STORAGE = 'tenant_schemas.storage.TenantFileSystemStorage'
+
+EMAIL_HOST = "smtp.googlemail.com"
+EMAIL_port = 587
+EMAIL_HOST_USER = 'roothyperfoods@gmail.com'
+EMAIL_HOST_PASSWORD = 'hyperfoods9-'
+EMAIL_USE_TLS = True
