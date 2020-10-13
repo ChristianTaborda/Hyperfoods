@@ -38,8 +38,7 @@ import {
             return (
               <UncontrolledAlert color="success">
               <span>
-                <b>Creado exitosamente-</b>
-               
+                <b>Successfully created-</b>
               </span>
             </UncontrolledAlert>
             )
@@ -56,25 +55,25 @@ import {
             
            <FormGroup>
              <Col >
-               <label>Nombre Tenant</label>
+               <label>Tenant name</label>
                <Input
-                 placeholder="Nombre tenant"
+                 placeholder="Type the tenant name"
                  type="text"
                  onChange={(e) => setNTenant(e.target.value)}
                  required
                 />
              </Col>
              <Col >
-              <label> Nombre empresa
+              <label> Company name
               </label>
               <Input 
-                 placeholder="Nombre empresa" 
+                 placeholder="Type the company name" 
                  type="text"
                  onChange={(e) => setNEmpresa(e.target.value)}
                  required />
              </Col>
              <Col >
-              <label>Caducidad</label>
+              <label>Expiration</label>
                 <Input
                   placeholder="fecha limite"
                   type="date"
