@@ -1,18 +1,20 @@
 import React , { useState }from 'react'
+import { useHistory } from "react-router-dom";
+import Footer from "components/Footer.js";
+import * as Yup from "yup";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+
 import {
     Collapse,
     Navbar,
     NavbarToggler,
     Nav,
     NavItem,
-    NavLink, Container
-  } from 'reactstrap';
-  import {
+    NavLink, Container,
     Card,Row,Col,  CardBody,
-    CardFooter, Form,FormGroup, Input, Button,UncontrolledAlert,Alert
+    CardFooter,FormGroup,  Button,UncontrolledAlert,Alert, Input
   } from 'reactstrap';
-  import { useHistory } from "react-router-dom";
-  import Footer from "components/Footer.js";
+  
 import logo from "assets/img/simple-logo.png";
 import "./Suscription.css"
 
@@ -22,34 +24,80 @@ function Suscription(props){
 
     const toggle = () => setIsOpen(!isOpen);
     let history = useHistory();
+    /*
     const [empresa, setEmpresa] = useState("");
     const [correo, setCorreo] = useState("")
     const [nombre, setNombre]= useState("")
     const [ciudad, setCiudad]= useState("")
-    const [direccion, setDireccion]= useState("")
+    const [direccion, setDireccion]= useState("")*/
+    const [initialValues, setInitialValues] = useState({
+      Company: "",
+      Name: "",
+      City:"",
+      Email: "",
+      Address: "",
+    });
 
-    const cleanForm = () => {
-      document.getElementById("form").reset();
-    }
-  
-  
-    const onClick = (e) => {
-      e.preventDefault();
-      const mensaje ={
-        tipo: props.match.params.id,
-        empresa: empresa,
-        correo: correo,
-        nombre: nombre,
-        ciudad: ciudad,
-        direccion: direccion
-      } 
-      console.log(JSON.stringify(mensaje));
+    const onSubmit = (values, { resetForm }) => {
+      let res = values;
+      res.Plan=props.match.params.id
+      console.log(JSON.stringify(res));
       setSend(true)
-      cleanForm()
+      setTimeout(() => {
+        resetForm(initialValues);
+      }, 600);
     
       //history.push("/");
   
     };
+      //Schema for Field data valiation using Yup
+  const formSchema = Yup.object().shape({
+   
+    Company: Yup.string()
+      .trim()
+      .required("Required field")
+      .min(2, "Minimum of 2 characters")
+      .matches(
+        /^[a-z ,.'-]+$/i,
+        "Must contain only letters and these symbols , . '   - "
+      ),
+    Name: Yup.string()
+      .trim()
+      .required("Required field")
+      .min(2, "Minimum of 2 characters")
+      .matches(
+        /^[a-z ,.'-]+$/i,
+        "Must contain only letters and these symbols , . '   - "
+      ),
+  
+    Email: Yup.string()
+      .trim()
+      .required("Required field")
+      .matches(
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        "Must be a valid e-mail address"
+      ),
+    City: Yup.string()
+      .trim()
+      .required("Required field")
+      .min(2, "Minimum of 2 characters")
+      .matches(
+        /^[a-z ,.'-]+$/i,
+        "Must contain only letters and these symbols , . '   - "
+      ),
+       
+
+    Address: Yup.string()
+      .trim()
+      .required("Required field")
+      .min(7, "Minimum of 7 characters")
+      .matches(
+        /[\w\[\]`#\^(),.'-]/g,
+        "Must contain only letters, numbers and these symbols #  ^ ( ) , . ' -"
+      ),
+   
+   
+  });
     const mostrarAlerta = () => {
       if (isSend) {
           return (
@@ -121,69 +169,102 @@ function Suscription(props){
      <h2 className="title">Plan {props.match.params.id}</h2>
 
        <Container className="d-flex justify-content-center align-items-center"  >
-       
-         <Card className="card-campos">
-           <CardBody>
-            <Form id="form" onSubmit={onClick }>
-            <FormGroup>
-              <Row>
-                <Col className="pr-md-1" md="6">
-               
-                   <label>Company</label>
-                     <Input
-                       placeholder="Type your company name "
-                       type="text"
-                       onChange={(e) => setEmpresa(e.target.value)}
-                       required
+       <Formik
+          initialValues={initialValues}
+          validationSchema={formSchema}
+          onSubmit={(values, { resetForm }) => onSubmit(values, { resetForm })}
+        >
+          <Form>
+            <Card className="card-campos">
+              <CardBody >
+                <Row >
+                  <Col className="pr-md-1" md="6">
+                    <FormGroup>
+                      <label htmlFor="Company">Company</label>
+                      <Field
+                        className="form-control"
+                        name="Company"
+                        placeholder="type your company name"
                       />
-                 </Col>
-                   <Col className="pl-md-1" md="6">
-                   
-                       <label htmlFor="exampleInputEmail1">
-                        Email
-                       </label>
-                       <Input 
-                        placeholder="mike@email.com" 
-                        type="email"
-                        onChange={(e) => setCorreo(e.target.value)}
-                        required />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col className="pr-md-1" md="6">
-                        <label>Name</label>
-                        <Input
-                          placeholder="Type your full name "
-                          type="text"
-                          onChange={(e) => setNombre(e.target.value)}
-                          required
-                        />
-                    </Col>
-                    
-                      <Col className="pr-md-1" md="4">
-                          <label>City</label>
-                          <Input
-                            placeholder="Type your company city"
-                            type="text"
-                            onChange={(e) => setCiudad(e.target.value)}
-                            required
-                          />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md="12">
-                        <label>Address</label>
-                        <Input
-                          placeholder="Type your company address" 
-                          type="text"
-                          onChange={(e) => setDireccion(e.target.value)}
-                          required
-                        />
-                    
-                    </Col>
-                  </Row>
-                  </FormGroup>
-                  <CardFooter className="text-center">
+                      <ErrorMessage
+                        name="Company"
+                        component="div"
+                        className="field-error text-danger"
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col className="pl-md-1" md="6">
+                    <FormGroup>
+                      <label htmlFor="Name">Name</label>
+                      <Field
+                        className="form-control"
+                        name="Name"
+                        placeholder="type your full name"
+                      />
+                      <ErrorMessage
+                        name="Name"
+                        component="div"
+                        className="field-error text-danger"
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row > 
+                <Col className="pr-md-1" md="6">
+                    <FormGroup>
+                      <label htmlFor="Email">Email address</label>
+
+                      <Field
+                        className="form-control"
+                        name="Email"
+                        placeholder="type your email address"
+                      />
+                      <ErrorMessage
+                        name="Email"
+                        component="div"
+                        className="field-error text-danger"
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col className="pl-md-1" md="6">
+                    <FormGroup>
+                      <label htmlFor="City">City</label>
+                      <Field
+                        className="form-control"
+                        name="City"
+                        placeholder="type your company city"
+                      />
+                      <ErrorMessage
+                        name="City"
+                        component="div"
+                        className="field-error text-danger"
+                      />
+                    </FormGroup>
+                  </Col>
+                 
+                </Row>
+                
+                <Row>
+                  <Col md="12">
+                    <FormGroup>
+                      <label htmlFor="Email">Address</label>
+                      <Field
+                        className="form-control"
+                        name="Address"
+                        placeholder="type your address"
+                      />
+                      <ErrorMessage
+                        name="Address"
+                        component="div"
+                        className="field-error text-danger"
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                
+           
+              </CardBody>
+              <CardFooter className="text-center">
                 <Button 
                   className="btn-fill" 
                   color="primary" 
@@ -193,10 +274,9 @@ function Suscription(props){
                   Send
                 </Button>
               </CardFooter>
-                </Form>
-              </CardBody>
-            
-         </Card>
+            </Card>
+          </Form>
+        </Formik>
        </Container>
        {mostrarAlerta()}
     
