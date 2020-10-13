@@ -21,33 +21,44 @@ function Login(props) {
   let history = useHistory();
 
   //Function to handle Login submit
-  const onSubmit = (values) => {
-    console.log("%c Login request ", "background: #222; color: #bada55");
-    console.table(values);
-    // notify("br", "danger", "Incorrect user Id or password");
-    // notify("br", "success", "Login successful");
-    // axios
-    //   .get("http://localhost:8000/res_login_ok")
-    //   .then((res) => {
-    //     console.log("%c response ", "background: #222; color: #bada55");
-    //     console.table(res.data);
-    //     props.setCredentials(res.data); //<------------
-    //   })
-    //   .catch((err) => console.log(err));
-    // setTimeout(() => {  history.push("/"); }, 800);
-    history.push("/");
+  const onSubmit = (values, { resetForm }) => {
+    console.log(values);
+    axios
+      .post("http://tenant1.hyperfoods.team/api/users/login/", values)
+      .then((res) => {
+        if (res.status === 200) {
+          if (res.data.user.is_active) {
+            notify("br", "success", "Login successful");
+            props.setCredentials(res.data);
+            setTimeout(() => {
+              history.push("/");
+            }, 800);
+          } else notify("br", "danger", "Inactive user");
+        }
+      })
+      .catch((err) => {
+        notify("br", "danger", "Incorrect user Id or password");
+        setTimeout(() => {
+          resetForm({
+            email: "",
+            password: "",
+          });
+        }, 600);
+      });
   };
 
   //Schema for input data valiation using Yup
   const formSchema = Yup.object().shape({
-    Id: Yup.string()
+    email: Yup.string()
       .trim()
       .required("Required field")
-      .min(8, "Minimum of 8 characters")
-      .matches(/^[1-9][0-9]*$/, "Must be an integer and positive number"),
-    Password: Yup.string()
+      .matches(
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        "Must be a valid e-mail address"
+      ),
+    password: Yup.string()
       .required("Required field")
-      .min(5, "Minimum of 5 characters"),
+      .min(4, "Minimum of 4 characters"),
   });
 
   //Function for notification settings
@@ -98,11 +109,11 @@ function Login(props) {
 
       <Formik
         initialValues={{
-          Id: "",
-          Password: "",
+          email: "",
+          password: "",
         }}
         validationSchema={formSchema}
-        onSubmit={(values) => onSubmit(values)}
+        onSubmit={(values, { resetForm }) => onSubmit(values, { resetForm })}
       >
         <Form className="login-form shadow p-4 mb-0 rounded">
           <div className="text-center">
@@ -111,14 +122,14 @@ function Login(props) {
           <br />
 
           <FormGroup>
-            <label htmlFor="Id">Id</label>
+            <label htmlFor="Id">Email</label>
             <Field
               className="form-control"
-              name="Id"
-              placeholder="type your id"
+              name="email"
+              placeholder="type your email"
             />
             <ErrorMessage
-              name="Id"
+              name="email"
               component="div"
               className="field-error text-danger"
             />
@@ -127,12 +138,12 @@ function Login(props) {
             <label htmlFor="Password">Password</label>
             <Field
               className="form-control"
-              name="Password"
+              name="password"
               placeholder="type your password"
               type="password"
             />
             <ErrorMessage
-              name="Password"
+              name="password"
               component="div"
               className="field-error text-danger"
             />

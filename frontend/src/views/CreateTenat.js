@@ -1,33 +1,35 @@
 import React , { useState }from 'react'
 import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import axios from "axios";
 import {
     Card,Row,Col,  CardBody,
     CardFooter, FormGroup,  Button,UncontrolledAlert,Alert,Container
   } from 'reactstrap';
   import "../layouts/Suscription.css"
+import { isReturnStatement } from 'typescript';
 
   function CreateTenant(){
 
     const [isSend, setSend]= useState(false)
     /*
-    const [nombre_tenant, setNTenant] = useState("");
-    const [nombre_empresa, setNEmpresa] = useState("")
-    const [caducidad, setCaducidad]= useState("")*/
+    const [schema_name, setNTenant] = useState("");
+    const [name, setNEmpresa] = useState("")
+    const [paid_until, setpaid_until]= useState("")*/
 
     const [initialValues, setInitialValues] = useState({
-      Nombre_tenant: "",
-      Nombre_empresa: "",
-      Caducidad:""
+      schema_name: "",
+      name: "",
+      paid_until:""
     });
     /*const onClick = (e) => {
         e.preventDefault();
 
        
         const mensaje ={
-          nombre_tenant: nombre_tenant,
-          nombre_empresa: nombre_empresa,
-          caducidad: caducidad,
+          schema_name: schema_name,
+          name: name,
+          paid_until: paid_until,
        
         } 
         console.log(JSON.stringify(mensaje));
@@ -38,16 +40,34 @@ import {
     
       };*/
       const onSubmit = (values, { resetForm }) => {
-        let res = values;
-        console.log(JSON.stringify(res));
+        const domain= values['schema_name'] +".hyperfoods.team" 
+        const mensaje={
+          "is_primary": true,
+        }
+        values.on_trial= true
+        mensaje.domain= domain
+        mensaje.tenant= values
+        
+        console.log(JSON.stringify(mensaje));
         setSend(true)
         setTimeout(() => {
           resetForm(initialValues);
-        }, 600);  }
+        }, 600);
+        axios
+        .post("http://hyperfoods.team/tenants/create/",mensaje)
+        .then((res) => {
+          console.log("%c response ", "background: #222; color: #bada55");
+          console.table(res.data);
+        })
+       .catch((err) => console.log(err)) 
+      
+      
+      }
+
 
       const formSchema = Yup.object().shape({
    
-          Nombre_tenant: Yup.string()
+          schema_name: Yup.string()
             .trim()
             .required("Required field")
             .min(2, "Minimum of 2 characters")
@@ -55,7 +75,7 @@ import {
               /^([a-z,.'-])+/g,
               "Must contain only lowercase letters and these symbols , . '   - "
             ),
-          Nombre_empresa: Yup.string()
+          name: Yup.string()
             .trim()
             .required("Required field")
             .min(2, "Minimum of 2 characters")
@@ -63,7 +83,7 @@ import {
               /^[a-z ,.'-]+$/i,
               "Must contain only letters and these symbols , . '   - "
             ),
-          Caducidad: Yup.string()
+          paid_until: Yup.string()
             .trim()
             .required("Required field")        
       });
@@ -78,6 +98,7 @@ import {
             </UncontrolledAlert>
             )
         }
+        
     }
     return(
         <>
@@ -99,10 +120,10 @@ import {
                className="form-control"
                  placeholder="Type the tenant name"
                  type="text"
-                 name="Nombre_tenant"
+                 name="schema_name"
                 />
                 <ErrorMessage
-                        name="Nombre_tenant"
+                        name="schema_name"
                         component="div"
                         className="field-error text-danger"
                       />
@@ -116,9 +137,9 @@ import {
               className="form-control"
                  placeholder="Type the company name" 
                  type="text"
-                 name="Nombre_empresa" />
+                 name="name" />
                  <ErrorMessage
-                        name="Nombre_empresa"
+                        name="name"
                         component="div"
                         className="field-error text-danger"
                       />
@@ -131,10 +152,10 @@ import {
                 className="form-control"
                   placeholder="fecha limite"
                   type="date"
-                  name="Caducidad"
+                  name="paid_until"
                 />
                  <ErrorMessage
-                        name="Caducidad"
+                        name="paid_until"
                         component="div"
                         className="field-error text-danger"
                       />
@@ -147,7 +168,7 @@ import {
                    color="success" 
                    type="submit"
                  >
-                 Crear
+                 Create
                  </Button>
               </CardFooter>
         

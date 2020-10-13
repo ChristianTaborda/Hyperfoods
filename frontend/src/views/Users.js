@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 // reactstrap components
 import {
@@ -12,9 +13,34 @@ import {
 } from "reactstrap";
 
 function Users() {
+  const [userList, setUserList] = useState([
+    {
+      id_user: "-",
+      is_active: "-",
+      type_document: "-",
+      document: "-",
+      name: "-",
+      surname: "-",
+      phone: "-",
+      address: "-",
+      email: "-",
+    },
+  ]);
+
+  useEffect(() => {
+    axios
+      .get("http://tenant1.hyperfoods.team/api/users")
+      .then(
+        (res) => setUserList(res.data)  
+      )
+      .catch((err) => console.log(err));
+  }, []);
+
+
   return (
     <>
       <div className="content">
+        {console.log(userList)}
         <Row>
           <Col md="12">
             <Card>
@@ -25,8 +51,8 @@ function Users() {
                 <Table className="tablesorter" responsive>
                   <thead className="text-primary">
                     <tr>
-                      <th>Role</th>
                       <th>Status</th>
+                      <th>Document</th>
                       <th>Id Type</th>
                       <th>Id Number</th>
                       <th>Name</th>
@@ -37,53 +63,21 @@ function Users() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Admin</td>
-                      <td>Active</td>
-                      <td>Code</td>
-                      <td>1628373</td>
-                      <td>Esneider</td>
-                      <td>Manzano</td>
-                      <td>+1 (201) 555 5455</td>
-                      <td>301 2nd Avenue South</td>
-                      <td>e.manzano@email.com</td>
-                    </tr>
-
-                    <tr>
-                      <td>Admin</td>
-                      <td>Active</td>
-                      <td>Code</td>
-                      <td>1630536</td>
-                      <td>Jem Pool</td>
-                      <td>Suárez</td>
-                      <td>+1 (201) 552 6459</td>
-                      <td>2320 4th Avenue</td>
-                      <td>j.suarez@email.com</td>
-                    </tr>
-
-                    <tr>
-                      <td>Admin</td>
-                      <td>Active</td>
-                      <td>Code</td>
-                      <td>1628790</td>
-                      <td>Cristian</td>
-                      <td>Vallecilla</td>
-                      <td>+1 (201) 555 6478</td>
-                      <td>110 Lee Street</td>
-                      <td>c.vallecilla@email.com</td>
-                    </tr>
-
-                    <tr>
-                      <td>Admin</td>
-                      <td>Active</td>
-                      <td>Code</td>
-                      <td>1632081</td>
-                      <td>Christian</td>
-                      <td>Taborda</td>
-                      <td>+1 (201) 575 5419</td>
-                      <td>3601 Beacon Avenue South</td>
-                      <td>c.taborda@email.com</td>
-                    </tr>
+                    {userList.map((user, i) => {
+                      return (
+                        <tr key={i}>
+                          <td>{user.is_active ? "true" : "false"}</td>
+                          <td>{user.document}</td>
+                          <td>{user.type_document}</td>
+                          <td>{user.id_user}</td>
+                          <td>{user.name}</td>
+                          <td>{user.surname}</td>
+                          <td>{user.phone}</td>
+                          <td>{user.address}</td>
+                          <td>{user.email}</td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </Table>
               </CardBody>
