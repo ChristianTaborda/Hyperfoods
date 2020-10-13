@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React , { useState }from 'react'
 import { useHistory } from "react-router-dom";
 import Footer from "components/Footer.js";
 import * as Yup from "yup";
@@ -23,7 +23,6 @@ import {
   Alert,
   Input,
 } from "reactstrap";
-
 import logo from "assets/img/simple-logo.png";
 import "./Suscription.css";
 
@@ -39,6 +38,7 @@ function Suscription(props) {
     const [nombre, setNombre]= useState("")
     const [ciudad, setCiudad]= useState("")
     const [direccion, setDireccion]= useState("")*/
+
   const [initialValues, setInitialValues] = useState({
     Company: "",
     Name: "",
@@ -185,7 +185,6 @@ function Suscription(props) {
       </section>
       <section className="campos py-5">
         <h2 className="title">Plan {props.match.params.id}</h2>
-
         <Container className="d-flex justify-content-center align-items-center">
           <Formik
             initialValues={initialValues}
@@ -297,7 +296,6 @@ function Suscription(props) {
         </Container>
         {mostrarAlerta()}
       </section>
-
       <div className="onda-footer-s">
         <svg
           viewBox="0 0 500 150"

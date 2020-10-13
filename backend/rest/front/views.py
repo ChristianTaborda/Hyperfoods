@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.views.generic import View
 from django.conf import settings
 import os
+
 # Create your views here. 
 def GetHome(request): 
     return render(request, "front/base.html")

@@ -27,27 +27,33 @@ ALLOWED_HOSTS = [
 
 DJANGO_APPS = (
     'django.contrib.contenttypes',
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.sessions',
+    'django.contrib.admin',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 )
 
-THIRD_PARTY_APPS = (
-    'rest_framework',
-    'corsheaders',
-)
-SHARED_APPS = (
-    'django_tenants',
-    'tenant',
+OWN_APPS = (
+    'users',
     'categories',
     'products',
     'combos',
-    'front'
-) + DJANGO_APPS + THIRD_PARTY_APPS
+    'front',
+)
 
-TENANT_APPS = DJANGO_APPS + THIRD_PARTY_APPS
+THIRD_PARTY_APPS = (
+    'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
+)
+
+SHARED_APPS = (
+    'django_tenants',
+    'tenant',
+)  
+
+TENANT_APPS = DJANGO_APPS + THIRD_PARTY_APPS + OWN_APPS 
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
 
@@ -167,15 +173,45 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 #DEFAULT_FILE_STORAGE = 'tenant_schemas.storage.TenantFileSystemStorage'
 CORS_ORIGIN_ALLOW_ALL = True
 
+AUTHENTICATION_BACKENDS = (
+        'django.contrib.auth.backends.ModelBackend',
+    )
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
+    """ USE THIS TO AUTHENTICATE USERS
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    """
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # <-- And here
+    ],
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'
     ]
 }
+
+AUTH_USER_MODEL = 'users.CustomUser'
+
+REST_AUTH_SERIALIZERS = {
+    "USER_DETAILS_SERIALIZER": "users.serializers.UserSerializer",
+}
+REST_AUTH_REGISTER_SERIALIZERS = {
+    "REGISTER_SERIALIZER": "users.serializers.UserSerializer",
+}
+
 
 TENANT_MODEL = "tenant.Tenant"
 TENANT_DOMAIN_MODEL = "tenant.Domain"  # app.Model
 
 #DEFAULT_FILE_STORAGE = 'tenant_schemas.storage.TenantFileSystemStorage'
+
+EMAIL_HOST = "smtp.googlemail.com"
+EMAIL_port = 587
+EMAIL_HOST_USER = 'roothyperfoods@gmail.com'
+EMAIL_HOST_PASSWORD = 'hyperfoods9-'
+EMAIL_USE_TLS = True
