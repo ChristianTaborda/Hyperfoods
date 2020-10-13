@@ -15,14 +15,15 @@ from users.models import CustomUser, Client, Worker
 
 from users.serializers import (
     UserSerializer, 
-    UpdateUserSerializer,
-    CreateUserSerializer, 
-    CreateNewClientSerializer,
+     
+    #CreateNewClientSerializer,
     ClientSerializer, 
-    CreateClientSerializer,
-    UpdateClientSerializer,
+    ClientAllSerializer,
+    #CreateClientSerializer,
+    #UpdateClientSerializer,
     WorkerSerializer,
-    CreateNewWorkerSerializer,
+    WorkerSingleSerializer,
+    #CreateNewWorkerSerializer,
 )
 from rest_framework.views import APIView 
 from rest_framework.response import Response
@@ -33,6 +34,7 @@ from rest_framework.authtoken.models import Token
 """ ===================================================
 Las siguientes clases verifican si quien consulta una ruta
 tiene el cargo para poder hacer dicha consulta.
+"""
 """
 class AllowAdmin(BasePermission):
     def has_permission(self, request, view):
@@ -57,8 +59,9 @@ class AllowOperator(BasePermission):
             return bool(quey[0]['user_type']==3)            
         else:
             return False
-
+"""
 # ============== Metodo del login =================
+"""
 class Login(APIView):
   def post(self,request):
     id_user = request.data.get('id_user',None)
@@ -84,14 +87,19 @@ class Login(APIView):
         message = "No ha proporciando datos validos"
         return Response({"message": message , "code": 204, 'data': {}})
 
-
+"""
 
 #========== CRUD para la informacion basica del usuario ==========
-#Listar todos los usuarios
+#Listar todos los usuarios basicos
 class UserList(ListAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
     #spermission_classes = (AllowOperator,)
+
+#Crear un usuario
+class UserCreate(ListCreateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = UserSerializer
 
 
 #Listar un usuario por id
@@ -99,38 +107,100 @@ class UserDetail(RetrieveAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
 
-
-#Crear un usuario
-class UserCreate(ListCreateAPIView):
-    queryset = CustomUser.objects.all()
-    serializer_class = CreateUserSerializer
-   
-
 #Actualizar datos de un usuario por id
 class UserUpdate(UpdateAPIView):
     queryset = CustomUser.objects.all()
-    serializer_class = UpdateUserSerializer
+    serializer_class = UserSerializer
 
-
+"""
 #Eliminar usuario
 class DeleteUser(DestroyAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
+"""
 
-
-#========== CRUD para la informacion del cliente ==========
-#Listar todos los clientes (anida info basica de usuario)
+#========== CRUD para la informacion del cliente completo ==========
 class ClientList(ListAPIView):
     queryset = Client.objects.all()
-    serializer_class = ClientSerializer
+    serializer_class = ClientAllSerializer
 
+#Crear un cliente plano, (requiere id_user Basic de antemano)
+class ClientCreate(ListCreateAPIView):
+    queryset = Client.objects.all()
+    serializer_class = ClientAllSerializer
 
 #Listar un cliente por id
 class ClientDetail(RetrieveAPIView):
     queryset = Client.objects.all()
+    serializer_class = ClientAllSerializer
+
+class ClientUpdate(UpdateAPIView):
+    queryset = Client.objects.all()
+    serializer_class = ClientAllSerializer
+
+
+#========== CRUD para la informacion del cliente simple ==========
+#Listar todos los clientes planos
+class ClientSingleList(ListAPIView):
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+
+#Crear un cliente plano, (requiere id_user Basic de antemano)
+class ClientSingleCreate(ListCreateAPIView):
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+
+#Listar un cliente por id
+class ClientSingleDetail(RetrieveAPIView):
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+
+class ClientSingleUpdate(UpdateAPIView):
+    queryset = Client.objects.all()
     serializer_class = ClientSerializer
 
 
+#========== CRUD para la informacion del trabajador completo ==========
+#Listar todos los trabajadores
+class WorkerList(ListAPIView):
+    queryset = Worker.objects.all()
+    serializer_class = WorkerSerializer
+
+#Listar un cliente por id
+class WorkerDetail(RetrieveAPIView):
+    queryset = Worker.objects.all()
+    serializer_class = WorkerSerializer
+
+#Crear un trabajador para asignar a usuario existente
+class WorkerCreate(ListCreateAPIView):
+    queryset = Worker.objects.all()
+    serializer_class = WorkerSerializer
+
+class WorkerUpdate(UpdateAPIView):
+    queryset = Worker.objects.all()
+    serializer_class = WorkerSerializer
+
+
+#========== CRUD para la informacion del trabajador single ==========
+#Listar todos los trabajadores
+class WorkerSingleList(ListAPIView):
+    queryset = Worker.objects.all()
+    serializer_class = WorkerSingleSerializer
+
+#Listar un cliente por id
+class WorkerSingleDetail(RetrieveAPIView):
+    queryset = Worker.objects.all()
+    serializer_class = WorkerSingleSerializer
+
+#Crear un trabajador para asignar a usuario existente
+class CreateSingleWorker(ListCreateAPIView):
+    queryset = Worker.objects.all()
+    serializer_class = WorkerSingleSerializer
+
+class WorkerSingleUpdate(UpdateAPIView):
+    queryset = Worker.objects.all()
+    serializer_class = WorkerSingleSerializer
+"""
 #Crear cliente asignando un usuario ya existente
 class ClientCreate(ListCreateAPIView):
     queryset = Client.objects.all()
@@ -143,6 +213,13 @@ class NewClientCreate(ListCreateAPIView):
     queryset = Client.objects.all()
     serializer_class = CreateNewClientSerializer
 
+"""
+#Crear cliente incluyendo usuario al mismo tiempo
+class NewClientCreate(ListCreateAPIView):
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+
+"""
 #Crear un grupo de clientes completos
 class CreateMultipleClient(APIView):
     queryset = Client.objects.all()
@@ -156,19 +233,25 @@ class CreateMultipleClient(APIView):
             client = Client.objects.create(user=custom, **user)
 
         return Response({"message": "Creacion exitoso",  "code": 200})
+"""
 
 #Actualizar datos de Cliente por id
+"""
 class ClientUpdate(UpdateAPIView):
     queryset = Client.objects.all()
     serializer_class = UpdateClientSerializer
 
+"""
 
+
+"""
 #Eliminar Un cliente sin afectar usuario
 class DeleteClient(DestroyAPIView):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
 
-
+"""
+"""
 #========== CRUD para la informacion del trabajador ==========
 #Listar todos los trabajadores
 class WorkerList(ListAPIView):
@@ -218,12 +301,4 @@ class DeleteWorker(DestroyAPIView):
     queryset = Worker.objects.all()
     serializer_class = WorkerSerializer
 
-
-"""
-class ClientList(ListAPIView):
-    queryset = Cliente.objects.all()
-    serializer_class = ClientSerializers
-class ClientCreate(ListCreateAPIView):
-    queryset = Cliente.objects.all()
-    serializer_class = RegisterClientSerializer
 """

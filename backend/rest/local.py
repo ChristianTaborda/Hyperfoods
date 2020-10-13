@@ -2,7 +2,7 @@
 #./manage.py shell < myscript.py
 from tenant.models import Tenant, Domain
 
-URL_SERVER = "hyperfoods.team"
+URL_SERVER = "localhost"
 # create your public tenant
 tenant = Tenant(schema_name='public',
                 name='Hyperfoods Inc.',

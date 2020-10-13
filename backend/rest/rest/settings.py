@@ -34,17 +34,23 @@ DJANGO_APPS = (
     'django.contrib.staticfiles',
 )
 
+OWN_APPS = (
+    'users',
+    'categories',
+    'products',
+    'front',
+)
+
 THIRD_PARTY_APPS = (
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
 )
+
 SHARED_APPS = (
     'django_tenants',
     'tenant',
-    'categories',
-    'products',
-    'front'
-) + DJANGO_APPS + THIRD_PARTY_APPS
+) + DJANGO_APPS + OWN_APPS + THIRD_PARTY_APPS
 
 TENANT_APPS = DJANGO_APPS + THIRD_PARTY_APPS
 
@@ -86,13 +92,13 @@ WSGI_APPLICATION = 'rest.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
         'NAME': 'hyperfoods',
         'USER': 'postgres',
-        'PASSWORD': '1234',
+        'PASSWORD': 'stemen',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -109,7 +115,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
+"""
 DATABASE_ROUTERS = (
     'django_tenants.routers.TenantSyncRouter',
 )
@@ -169,10 +175,27 @@ CORS_ORIGIN_ALLOW_ALL = True
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
+    """ USE THIS TO AUTHENTICATE USERS
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    """
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'
     ]
 }
+
+AUTH_USER_MODEL = 'users.CustomUser'
+
+REST_AUTH_SERIALIZERS = {
+    "USER_DETAILS_SERIALIZER": "users.serializers.UserSerializer",
+}
+REST_AUTH_REGISTER_SERIALIZERS = {
+    "REGISTER_SERIALIZER": "users.serializers.UserSerializer",
+}
+
 
 TENANT_MODEL = "tenant.Tenant"
 TENANT_DOMAIN_MODEL = "tenant.Domain"  # app.Model

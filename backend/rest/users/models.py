@@ -8,7 +8,7 @@ from django.contrib.auth.models import (
 import datetime
 from django.conf import settings
 
-
+#Extendemos la creacion del usuario abstracto de django
 class UserManager(BaseUserManager):
 
     def create_user(self, email, password, **extra_fields):
@@ -20,13 +20,6 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-"""
-    def create_staffuser(self, email, password, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', False)
-        user = self.create_user(email, password, **extra_fields)
-        return user
-"""
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
@@ -34,36 +27,31 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-
+#Creamos nuestro modelo custom en base al abstracto
 class CustomUser(AbstractUser):
-
     username = None
     first_name = None
     last_name = None
-    phone_validate = RegexValidator(
-        regex=r'^\+?1?\d{7,10}$', message="Numero incorrecto")
+    phone_validate = RegexValidator(regex=r'^\+?1?\d{7,10}$', message="Numero incorrecto")
 
-    id_user = models.CharField(
-        validators=[phone_validate], max_length=10, unique=True)
-    name = models.CharField(max_length=100)
-    email = models.EmailField(
-        max_length=70, blank=True, null=True, unique=True)
-    phone = models.CharField(
-        validators=[phone_validate], max_length=10, unique=True)
-    address = models.CharField(max_length=50)
-    neighborhood = models.CharField(max_length=20)
+    id_user = models.AutoField(primary_key=True)
     is_active = models.BooleanField(default=True)
-    date_of_birth = models.DateField(default=datetime.date.today)
-    is_staff = models.BooleanField(default=True)
+    DOCUMENT_TYPE_CHOICES = ((1, 'CC'),(2, 'TI')    )
+    type_document = models.CharField(choices=DOCUMENT_TYPE_CHOICES, max_length=1)
+    document = models.CharField(unique=True, max_length=12)
+    name = models.CharField(max_length=50)
+    surname = models.CharField(max_length=50)
+    phone = models.CharField(validators=[phone_validate], max_length=10, unique=True)
+    address = models.CharField(max_length=50)
+    email = models.EmailField(max_length=70, blank=True, null=True, unique=True)
+    #is_staff = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['id_user', 'name', 'phone']
-
+    USERNAME_FIELD = 'document'
+    REQUIRED_FIELDS = [ 'name', 'surname']
     objects = UserManager()
 
-"""Class meta to define atributes tables"""
-     class Meta:
+    class Meta:
         db_table = 'customusers'
         verbose_name = 'user'
         verbose_name_plural = 'users'
@@ -71,37 +59,19 @@ class CustomUser(AbstractUser):
     def get_full_name(self):
         return self.name
 
-    def get_short_name(self):
-        return self.name
-
     def __str__(self):
         return str(self.id_user)
 
 # ========== Modelo del cliente que contiene un usuario ==========
-
-
 class Client(models.Model):
-    USER_TYPE_CHOICES = (
-        (1, 'natural'),
-        (2, 'juridica'),
-    )
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    type_client = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES)    
+    id_user = models.AutoField(primary_key=True)
+    credit_card = models.CharField(max_length=16)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     
-    #def __str__(self):
-        #return 'The Client: {}'.format(
-            #self.user)
 
 # ==========  Modelo del trabajador que extiende de usuario basico ==========
-
-
 class Worker(models.Model):
-    USER_TYPE_CHOICES = (
-        (1, 'admin'),
-        (2, 'manager'),
-        (3, 'operator'),
-    )
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    id_user = models.AutoField(primary_key=True)
+    USER_TYPE_CHOICES = ((1, 'manager'), (2, 'digitizer'))
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     user_type = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES)
