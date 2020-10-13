@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import NotificationAlert from "react-notification-alert";
+import axios from "axios";
 
 // reactstrap components
 import {
@@ -18,7 +19,17 @@ import {
 
 function CreateUser() {
   const notificationAlert = useRef();
-  const [initialValues, setInitialValues] = useState({
+  const initialValues = {
+    // Id: "3",
+    // DocumentType: "",
+    // DocumentNumber: "977653910",
+    // Name: "Cristian",
+    // LastName: "Vallecilla",
+    // PhoneNumber: "2234231507",
+    // Email: "c.vallecilla@email.com",
+    // Address: "110 Lee Street",
+    // password: "1234",
+    // changepassword: "1234",        
     Id: "",
     DocumentType: "",
     DocumentNumber: "",
@@ -28,20 +39,44 @@ function CreateUser() {
     Email: "",
     Address: "",
     password: "",
-    changepassword: "",
-  });
+    changepassword: "", 
+  };
   const [documentType, setDocumentType] = useState("CC");
 
   const onSubmit = (values, { resetForm }) => {
-    let res = values;
-    res.DocumentType = documentType;
-    console.table(res);
-    notify("br", "success", "User Created Successfully");
-    // notify("br", "danger", "Error establishing a database connection");
-    // if error do not reset the form
-    setTimeout(() => {
-      resetForm(initialValues);
-    }, 600);
+    let user = values;
+    user.DocumentType = documentType;
+    // console.table(user);
+
+    let payload = {
+      id_user:  parseInt(user.Id),
+      is_active: true,
+      type_document: 1,
+      document: user.DocumentNumber,
+      name: user.Name,
+      surname: user.LastName,
+      phone: user.PhoneNumber,
+      address: user.Address,
+      email: user.Email,
+      password: user.password
+    };
+
+    console.log(payload);
+    axios
+      .post("http://tenant1.hyperfoods.team/api/users/create/", 
+      payload)
+      .then((res) => {
+        if (res.status === 201) {
+          notify("br", "success", "User Created Successfully");
+          setTimeout(() => {
+            resetForm(initialValues);
+          }, 600);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        notify("br", "danger", "Error establishing a database connection");
+      });
   };
 
   //Schema for input data valiation using Yup
@@ -49,7 +84,7 @@ function CreateUser() {
     Id: Yup.string()
       .trim()
       .required("Required field")
-      .min(8, "Minimum of 8 characters")
+      .min(1, "Minimum of 1 characters")
       .matches(/^[1-9][0-9]*$/, "Must be an integer and positive number"),
     DocumentNumber: Yup.string()
       .trim()
@@ -94,10 +129,10 @@ function CreateUser() {
       ),
     password: Yup.string()
       .required("This field is required")
-      .min(5, "Minimum of 5 characters"),
+      .min(4, "Minimum of 4 characters"),
     changepassword: Yup.string()
       .required("This field is required")
-      .min(5, "Minimum of 5 characters")
+      .min(4, "Minimum of 4 characters")
       .when("password", {
         is: (val) => (val && val.length > 0 ? true : false),
         then: Yup.string().oneOf(
@@ -163,7 +198,7 @@ function CreateUser() {
                         onChange={(e) => setDocumentType(e.target.value)}
                       >
                         <option>CC</option>
-                        <option>Passport</option>
+                        <option>TI</option>
                       </Input>
                     </FormGroup>
                   </Col>

@@ -1,24 +1,35 @@
 import React , { useState }from 'react'
+import * as Yup from "yup";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import axios from "axios";
 import {
     Card,Row,Col,  CardBody,
-    CardFooter, Form,FormGroup, Input, Button,UncontrolledAlert,Alert,Container
+    CardFooter, FormGroup,  Button,UncontrolledAlert,Alert,Container
   } from 'reactstrap';
   import "../layouts/Suscription.css"
+import { isReturnStatement } from 'typescript';
 
   function CreateTenant(){
 
     const [isSend, setSend]= useState(false)
-    const [nombre_tenant, setNTenant] = useState("");
-    const [nombre_empresa, setNEmpresa] = useState("")
-    const [caducidad, setCaducidad]= useState("")
-    const onClick = (e) => {
+    /*
+    const [schema_name, setNTenant] = useState("");
+    const [name, setNEmpresa] = useState("")
+    const [paid_until, setpaid_until]= useState("")*/
+
+    const [initialValues, setInitialValues] = useState({
+      schema_name: "",
+      name: "",
+      paid_until:""
+    });
+    /*const onClick = (e) => {
         e.preventDefault();
 
        
         const mensaje ={
-          nombre_tenant: nombre_tenant,
-          nombre_empresa: nombre_empresa,
-          caducidad: caducidad,
+          schema_name: schema_name,
+          name: name,
+          paid_until: paid_until,
        
         } 
         console.log(JSON.stringify(mensaje));
@@ -27,61 +38,129 @@ import {
       
         //history.push("/");
     
-      };
-
-    const cleanForm = () => {
-        document.getElementById("form").reset();
+      };*/
+      const onSubmit = (values, { resetForm }) => {
+        const domain= values['schema_name'] +".hyperfoods.team" 
+        const mensaje={
+          "is_primary": true,
+        }
+        values.on_trial= true
+        mensaje.domain= domain
+        mensaje.tenant= values
+        
+        console.log(JSON.stringify(mensaje));
+        setSend(true)
+        setTimeout(() => {
+          resetForm(initialValues);
+        }, 600);
+        axios
+        .post("http://hyperfoods.team/tenants/create/",mensaje)
+        .then((res) => {
+          console.log("%c response ", "background: #222; color: #bada55");
+          console.table(res.data);
+        })
+       .catch((err) => console.log(err)) 
+      
+      
       }
 
+
+      const formSchema = Yup.object().shape({
+   
+          schema_name: Yup.string()
+            .trim()
+            .required("Required field")
+            .min(2, "Minimum of 2 characters")
+            .matches(
+              /^([a-z,.'-])+/g,
+              "Must contain only lowercase letters and these symbols , . '   - "
+            ),
+          name: Yup.string()
+            .trim()
+            .required("Required field")
+            .min(2, "Minimum of 2 characters")
+            .matches(
+              /^[a-z ,.'-]+$/i,
+              "Must contain only letters and these symbols , . '   - "
+            ),
+          paid_until: Yup.string()
+            .trim()
+            .required("Required field")        
+      });
+    
     const mostrarAlerta = () => {
         if (isSend) {
             return (
               <UncontrolledAlert color="success">
               <span>
-                <b>Successfully created-</b>
+                <b>Successfully created</b>
               </span>
             </UncontrolledAlert>
             )
         }
+        
     }
     return(
         <>
         <div className="content">
-               
+        <Formik
+          initialValues={initialValues}
+          validationSchema={formSchema}
+          onSubmit={(values, { resetForm }) => onSubmit(values, { resetForm })}
+        > 
+           <Form  >  
         <Card >
-          <CardBody className="text-center">
-          <Container>
-           <Form id="form" onSubmit={onClick }>
-            
-           <FormGroup>
+           <h3 className="title pl-md-4 py-2">Create Tenant</h3>
+          <CardBody >
+          <Container className="d-flex justify-content-center align-items-center">
              <Col >
+             <FormGroup>
                <label>Tenant name</label>
-               <Input
+               <Field
+               className="form-control"
                  placeholder="Type the tenant name"
                  type="text"
-                 onChange={(e) => setNTenant(e.target.value)}
-                 required
+                 name="schema_name"
                 />
+                <ErrorMessage
+                        name="schema_name"
+                        component="div"
+                        className="field-error text-danger"
+                      />
+               </FormGroup>
              </Col>
              <Col >
+             <FormGroup>
               <label> Company name
               </label>
-              <Input 
+              <Field 
+              className="form-control"
                  placeholder="Type the company name" 
                  type="text"
-                 onChange={(e) => setNEmpresa(e.target.value)}
-                 required />
+                 name="name" />
+                 <ErrorMessage
+                        name="name"
+                        component="div"
+                        className="field-error text-danger"
+                      />
+                </FormGroup>
              </Col>
              <Col >
+             <FormGroup>
               <label>Expiration</label>
-                <Input
+                <Field
+                className="form-control"
                   placeholder="fecha limite"
                   type="date"
-                  onChange={(e) => setCaducidad(e.target.value)}
-                  required
+                  name="paid_until"
                 />
+                 <ErrorMessage
+                        name="paid_until"
+                        component="div"
+                        className="field-error text-danger"
+                      />
+                </FormGroup>
              </Col>
-             </FormGroup>
               <CardFooter className="text-center">
                  <Button 
                    className="btn-fill" 
@@ -89,15 +168,16 @@ import {
                    color="success" 
                    type="submit"
                  >
-                 Enviar
+                 Create
                  </Button>
               </CardFooter>
-          </Form>
+        
           </Container>   
         </CardBody>
            
      </Card>
-     
+     </Form>
+     </Formik>
       {mostrarAlerta()}
       </div>
       </>
