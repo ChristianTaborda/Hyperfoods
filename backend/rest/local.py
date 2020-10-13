@@ -25,7 +25,7 @@ tenant.save()
 
 # Add one or more domains for the tenant
 domain = Domain()
-domain.domain = 'tenant1.'+URL_SERVER # don't add your port or www here! on a local server you'll want to use localhost here
+domain.domain = 'tenant1.' + URL_SERVER # don't add your port or www here! on a local server you'll want to use localhost here
 domain.tenant = tenant
 domain.is_primary = True
 domain.save()

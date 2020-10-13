@@ -18,7 +18,7 @@ domain.is_primary = True
 domain.save()
 
 tenant = Tenant(schema_name='tenant1',
-                name='Tenant2 Inc.',
+                name='Tenant1 Inc.',
                 paid_until='2020-12-12',
                 on_trial=True)
 tenant.save()

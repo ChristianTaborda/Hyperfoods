@@ -18,6 +18,7 @@ from django.urls import path, include
 from django.conf.urls import url
 
 urlpatterns = [
+    path('tenants/', include('tenant.urls')),
     path('api/', include('rest_framework.urls')),
     path('api/users/', include('users.urls')),
     path('api/categories/', include('categories.urls')),
