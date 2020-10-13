@@ -1,5 +1,6 @@
 // Added views
 import Users from "views/Users.js"
+import CreateUser from "views/CreateUser.js"
 
 // Template views
 import Dashboard from "views/Dashboard.js";
@@ -16,9 +17,16 @@ var routes = [
   // Added views
   {
     path: "/users",
-    name: "Users",
-    icon: "tim-icons icon-chart-pie-36",
+    name: "List Users",
+    icon: "tim-icons icon-bullet-list-67",
     component: Users,
+    layout: "/admin"
+  },
+  {
+    path: "/create-user",
+    name: "Create User",
+    icon: "tim-icons icon-single-copy-04",
+    component: CreateUser,
     layout: "/admin"
   },
   {

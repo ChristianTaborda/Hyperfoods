@@ -9,7 +9,7 @@ from .views import (
     DeleteProduct
 )
 
-# URLS for categories:
+# URLS for products:
 urlpatterns = [
     path('', ListProduct.as_view()),
     path('create/', CreateProduct.as_view()),

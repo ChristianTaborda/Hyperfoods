@@ -17,7 +17,7 @@ from .models import Product
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-# Views for categories:
+# Views for products:
 # --------------------------------CRUD --------------------------------#
 
 # Retrieve operations view

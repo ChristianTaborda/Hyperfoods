@@ -10,9 +10,8 @@
 }
 .card-campos {
     background:  rgb(252, 252, 252) !important;
-    max-width: 70%;
-
 }
+
 
 .campos input:focus  {
     border-color:rgb(3, 184, 130)!important;
