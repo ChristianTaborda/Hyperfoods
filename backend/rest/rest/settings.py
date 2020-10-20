@@ -11,7 +11,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'b(5y)15ik$=e9eld1%^a0f*-q!(#=8r@tk4=%u$l4fkqvqf!tb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '0.0.0.0',
@@ -93,18 +93,6 @@ WSGI_APPLICATION = 'rest.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django_tenants.postgresql_backend',
-        'NAME': 'hyperfoods',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
-"""
 
 DATABASES = {
     'default': {
@@ -112,7 +100,8 @@ DATABASES = {
         'NAME': 'hyperfoods',
         'USER': 'postgres',
         'PASSWORD': 'stemen',
-        'HOST': 'hyperfoodsdb.eastus.azurecontainer.io',
+        #'HOST': 'hyperfoodsdb.eastus.azurecontainer.io',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
