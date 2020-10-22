@@ -1,3 +1,4 @@
+/* eslint-disable */
 // Added views
 import Users from "views/Users.js"
 import CreateUser from "views/CreateUser.js"

@@ -11,10 +11,13 @@ import logo from "../assets/img/logo.png";
 import "./Login.css";
 import firebase from "firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-firebase.initializeApp({
+
+// Configure Firebase.
+const config = {
   apiKey: "AIzaSyCwDo3PWtcFx7y4lHac4p4DaRWfVEPc1JI",
   authDomain: "fire-auth-hyperfoods.firebaseapp.com",
-});
+};
+firebase.initializeApp(config);
 
 function Login(props) {
   const notificationAlert = useRef();
@@ -36,7 +39,7 @@ function Login(props) {
           } else notify("br", "danger", "Inactive user");
         }
       })
-      .catch((err) => {
+      .catch(() => {
         notify("br", "danger", "Incorrect user Id or password");
         setTimeout(() => {
           resetForm({
@@ -53,7 +56,7 @@ function Login(props) {
       .trim()
       .required("Required field")
       .matches(
-        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
         "Must be a valid e-mail address"
       ),
     password: Yup.string()
@@ -77,22 +80,31 @@ function Login(props) {
 
   // -- -- Social networks login with Firebase -- -- //
   const [isSignedIn, setIsSignedIn] = useState(false);
+  // Configure FirebaseUI.
   const uiConfig = {
     signInFlow: "popup",
-    signInSuccessUrl: "/",
     signInOptions: [
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       firebase.auth.FacebookAuthProvider.PROVIDER_ID,
       firebase.auth.TwitterAuthProvider.PROVIDER_ID,
     ],
     callbacks: {
-      signInSuccessWithAuthResult: () => true,
+      signInSuccessWithAuthResult: () => false,
     },
   };
 
   useEffect(
     () => {
       firebase.auth().onAuthStateChanged((user) => {
+        if (!!user) {                                  
+          console.table({
+            name: firebase.auth().currentUser.displayName,
+            emailVerified: firebase.auth().currentUser.emailVerified,
+            email: firebase.auth().currentUser.providerData[0].email,
+          });
+          firebase.auth().signOut();
+        }
+
         setIsSignedIn(!!user);
       });
     },
@@ -101,94 +113,85 @@ function Login(props) {
   );
   // -- -- -- -- -- -- -- -- -- -- -- -- -- --  -- -- //
 
-  return (
-    <div className="login-background">
-      <div className="react-notification-alert-container">
-        <NotificationAlert ref={notificationAlert} />
+  if (!isSignedIn) {
+    return (
+      <div className="login-background">
+        <div className="react-notification-alert-container">
+          <NotificationAlert ref={notificationAlert} />
+        </div>
+
+        <Formik
+          initialValues={{
+            email: "",
+            password: "",
+          }}
+          validationSchema={formSchema}
+          onSubmit={(values, { resetForm }) => onSubmit(values, { resetForm })}
+        >
+          <Form className="login-form shadow p-4 mb-0 rounded">
+            <div className="text-center">
+              <img className="login-logo" alt="logo" src={logo} />
+            </div>
+            <br />
+
+            <FormGroup>
+              <label htmlFor="Id">Email</label>
+              <Field
+                className="form-control"
+                name="email"
+                placeholder="type your email"
+              />
+              <ErrorMessage
+                name="email"
+                component="div"
+                className="field-error text-danger"
+              />
+            </FormGroup>
+            <FormGroup>
+              <label htmlFor="Password">Password</label>
+              <Field
+                className="form-control"
+                name="password"
+                placeholder="type your password"
+                type="password"
+              />
+              <ErrorMessage
+                name="password"
+                component="div"
+                className="field-error text-danger"
+              />
+            </FormGroup>
+
+            <div className="text-center pt-2">
+              <Button
+                type="submit"
+                className="btn btn-dark btn-block"
+                // onClick={onClickLogin}
+                onSubmit={() => {}}
+              >
+                Log in
+              </Button>
+            </div>
+            <div className="text-center pt-2">
+              Or continue with your social account
+            </div>
+            {!isSignedIn && (
+              <StyledFirebaseAuth
+                uiConfig={uiConfig}
+                firebaseAuth={firebase.auth()}
+              />
+            )}
+            <div className="text-center">
+              <a href="/">Sign up</a>
+              <span className="p-2">|</span>
+              <a href="/">Forgot Password</a>
+            </div>
+          </Form>
+        </Formik>
       </div>
-
-      <Formik
-        initialValues={{
-          email: "",
-          password: "",
-        }}
-        validationSchema={formSchema}
-        onSubmit={(values, { resetForm }) => onSubmit(values, { resetForm })}
-      >
-        <Form className="login-form shadow p-4 mb-0 rounded">
-          <div className="text-center">
-            <img className="login-logo" alt="logo" src={logo} />
-          </div>
-          <br />
-
-          <FormGroup>
-            <label htmlFor="Id">Email</label>
-            <Field
-              className="form-control"
-              name="email"
-              placeholder="type your email"
-            />
-            <ErrorMessage
-              name="email"
-              component="div"
-              className="field-error text-danger"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label htmlFor="Password">Password</label>
-            <Field
-              className="form-control"
-              name="password"
-              placeholder="type your password"
-              type="password"
-            />
-            <ErrorMessage
-              name="password"
-              component="div"
-              className="field-error text-danger"
-            />
-          </FormGroup>
-
-          <div className="text-center pt-2">
-            <Button
-              type="submit"
-              className="btn btn-dark btn-block"
-              // onClick={onClickLogin}
-              onSubmit={() => {}}
-            >
-              Log in
-            </Button>
-          </div>
-          <div className="text-center pt-2">
-            Or continue with your social account
-          </div>
-          {!isSignedIn && (
-            <StyledFirebaseAuth
-              uiConfig={uiConfig}
-              firebaseAuth={firebase.auth()}
-            />
-          )}
-          <div className="text-center">
-            <a href="/">Sign up</a>
-            <span className="p-2">|</span>
-            <a href="/">Forgot Password</a>
-          </div>
-        </Form>
-      </Formik>
-
-      {isSignedIn && (
-        <span>
-          {console.table({
-            status: "Signed in",
-            name: firebase.auth().currentUser.displayName,
-            emailVerified: firebase.auth().currentUser.emailVerified,
-            email: firebase.auth().currentUser.email,
-          })}
-          <button onClick={() => firebase.auth().signOut()}>Sign out!</button>
-        </span>
-      )}
-    </div>
-  );
+    );
+  }
+  return <></>;
 }
 
 const mapDispatchToProps = (dispatch) => {
