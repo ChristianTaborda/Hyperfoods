@@ -19,7 +19,6 @@ ALLOWED_HOSTS = [
     '.127.0.0.1',
     '.hyperfoods.team',
     'www.hyperfoods.team'
-
 ]
 
 # Application definition
@@ -100,8 +99,8 @@ DATABASES = {
         'NAME': 'hyperfoods',
         'USER': 'postgres',
         'PASSWORD': 'stemen',
-        #'HOST': 'hyperfoodsdb.eastus.azurecontainer.io',
-        'HOST': 'localhost',
+        'HOST': 'hyperfoods.eastus2.azurecontainer.io',
+        #'HOST': 'localhost',
         'PORT': '5432',
     }
 }
