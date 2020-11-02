@@ -1,4 +1,6 @@
 import os
+import mimetypes
+mimetypes.add_type("text/html", ".css", True)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -11,7 +13,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'b(5y)15ik$=e9eld1%^a0f*-q!(#=8r@tk4=%u$l4fkqvqf!tb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
+
 
 ALLOWED_HOSTS = [
     '0.0.0.0',
@@ -95,11 +98,11 @@ WSGI_APPLICATION = 'rest.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
-        'NAME': 'hyperfoods',
+        #'NAME': 'hyperfoods',
+        'NAME': 'localhost',
         'USER': 'postgres',
         'PASSWORD': 'stemen',
         'HOST': 'hyperfoods.eastus2.azurecontainer.io',
-        #'HOST': 'localhost',
         'PORT': '5432',
     }
 }
