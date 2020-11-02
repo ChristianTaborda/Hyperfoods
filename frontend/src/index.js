@@ -4,6 +4,7 @@ import { createBrowserHistory } from "history";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./redux/store.js";
+import * as serviceWorker from "./serviceWorker";
 
 import Admin from "layouts/Admin.js";
 import Login from "layouts/Login.js";
@@ -29,3 +30,5 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("root")
 );
+
+serviceWorker.register();
