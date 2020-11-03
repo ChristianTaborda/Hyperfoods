@@ -36,6 +36,7 @@ DJANGO_APPS = (
 OWN_APPS = (
     'users',
     'categories',
+    'ingredients',
     'products',
     'combos',
     'front',
