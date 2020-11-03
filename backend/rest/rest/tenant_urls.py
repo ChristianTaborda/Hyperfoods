@@ -18,13 +18,11 @@ from django.urls import path, include
 from django.conf.urls import url
 
 urlpatterns = [
-    path('tenants/', include('tenant.urls')),
     path('api/', include('rest_framework.urls')),
     path('api/users/', include('users.urls')),
     path('api/categories/', include('categories.urls')),
     path('api/products/', include('products.urls')),
     path('api/combos/', include('combos.urls')),
-    path('admin/', admin.site.urls),
     url(r'^', include('front.urls'))
 ]
 handler404 = 'front.views.handler404'

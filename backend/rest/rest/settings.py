@@ -68,8 +68,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'rest.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -86,6 +84,10 @@ TEMPLATES = [
     },
 ]
 
+ROOT_URLCONF = 'rest.tenant_urls'
+# Con esta línea se tiene una separación de las urls del tenant public  y de las urls para los tenants
+PUBLIC_SCHEMA_URLCONF = 'rest.public_urls'
+
 WSGI_APPLICATION = 'rest.wsgi.application'
 
 
@@ -95,8 +97,8 @@ WSGI_APPLICATION = 'rest.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
-        'NAME': 'hyperfoods',
-        #'NAME': 'localhost',
+        #'NAME': 'hyperfoods',
+        'NAME': 'localhost',
         'USER': 'postgres',
         'PASSWORD': 'stemen',
         'HOST': 'hyperfoods.eastus2.azurecontainer.io',
@@ -157,6 +159,7 @@ STATICFILES_DIRS = [
 #setting media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 #DEFAULT_FILE_STORAGE = 'tenant_schemas.storage.TenantFileSystemStorage'
 CORS_ORIGIN_ALLOW_ALL = True
 
