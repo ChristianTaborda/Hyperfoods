@@ -6,18 +6,17 @@ import ListClients from "views/ListClients.js"
 import CreateClient from "views/CreateClient.js"
 
 // Template views
-import Dashboard from "views/Dashboard.js";
-import Icons from "views/Icons.js";
-import Map from "views/Map.js";
-import Notifications from "views/Notifications.js";
-import TableList from "views/TableList.js";
-import Typography from "views/Typography.js";
-import UserProfile from "views/UserProfile.js";
+// import Dashboard from "views/Dashboard.js";
+// import Icons from "views/Icons.js";
+// import Map from "views/Map.js";
+// import Notifications from "views/Notifications.js";
+// import TableList from "views/TableList.js";
+// import Typography from "views/Typography.js";
+// import UserProfile from "views/UserProfile.js";
 import CreateTenant from "views/CreateTenat.js"
 
 
-var routes = [
-  // Added views
+var routes = [  
   {
     path: "/list-workers",
     name: "List Workers",
@@ -53,6 +52,8 @@ var routes = [
     component: CreateTenant,
     layout: "/admin"
   },
+
+
   // Template views
   // {
   //   path: "/dashboard",
@@ -104,4 +105,5 @@ var routes = [
   //   layout: "/admin"
   // },  
 ];
+
 export default routes;
