@@ -1,33 +1,48 @@
 /* eslint-disable */
 // Added views
-import Users from "views/Users.js"
-import CreateUser from "views/CreateUser.js"
+import ListWorkers from "views/ListWorkers.js"
+import CreateWorker from "views/CreateWorker.js"
+import ListClients from "views/ListClients.js"
+import CreateClient from "views/CreateClient.js"
 
 // Template views
-import Dashboard from "views/Dashboard.js";
-import Icons from "views/Icons.js";
-import Map from "views/Map.js";
-import Notifications from "views/Notifications.js";
-import TableList from "views/TableList.js";
-import Typography from "views/Typography.js";
-import UserProfile from "views/UserProfile.js";
+// import Dashboard from "views/Dashboard.js";
+// import Icons from "views/Icons.js";
+// import Map from "views/Map.js";
+// import Notifications from "views/Notifications.js";
+// import TableList from "views/TableList.js";
+// import Typography from "views/Typography.js";
+// import UserProfile from "views/UserProfile.js";
 import CreateTenant from "views/CreateTenat.js"
 
 
-var routes = [
-  // Added views
+var routes = [  
   {
-    path: "/users",
-    name: "List Users",
-    icon: "tim-icons icon-bullet-list-67",
-    component: Users,
+    path: "/list-workers",
+    name: "List Workers",
+    icon: "tim-icons icon-badge",
+    component: ListWorkers,
     layout: "/admin"
   },
   {
-    path: "/create-user",
-    name: "Create User",
+    path: "/create-worker",
+    name: "Create Worker",
     icon: "tim-icons icon-single-copy-04",
-    component: CreateUser,
+    component: CreateWorker,
+    layout: "/admin"
+  },
+  {
+    path: "/list-clients",
+    name: "List Clients",
+    icon: "tim-icons icon-bullet-list-67",
+    component: ListClients,
+    layout: "/admin"
+  },
+  {
+    path: "/create-client",
+    name: "Create Client",
+    icon: "tim-icons icon-single-02",
+    component: CreateClient,
     layout: "/admin"
   },
   {
@@ -37,6 +52,8 @@ var routes = [
     component: CreateTenant,
     layout: "/admin"
   },
+
+
   // Template views
   // {
   //   path: "/dashboard",
@@ -88,4 +105,5 @@ var routes = [
   //   layout: "/admin"
   // },  
 ];
+
 export default routes;

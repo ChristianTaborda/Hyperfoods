@@ -24,7 +24,7 @@ ReactDOM.render(
         <Route  path="/request/:id" component={Suscription}/>
         <Route path="/landing" component={LandingPage}/>
         <Route path="/admin" component={Admin} />
-        <Redirect from="/" to="/admin/users" />
+        <Redirect from="/" to="/admin/list-workers" />
       </Switch>
     </Router>
   </Provider>,

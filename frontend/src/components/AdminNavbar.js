@@ -75,6 +75,9 @@ function AdminNavbar(props) {
     return routes.filter(
       (route) => route.layout + route.path === props.history.location.pathname
     )[0].name;
+    // console.log(routes.map(route=>route.layout + route.path))
+    // console.log(props.history.location.pathname)
+    // return "Brand";
   };
 
   return (
