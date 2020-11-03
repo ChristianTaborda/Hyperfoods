@@ -12,35 +12,35 @@ import {
   Col,
 } from "reactstrap";
 
-function Users() {
-  const [userList, setUserList] = useState([
+function Clients() {
+  const [clientList, setClientList] = useState([
     {
+      credit_card: "-",
       id_user: "-",
-      is_active: "-",
-      type_document: "-",
-      document: "-",
-      name: "-",
-      surname: "-",
-      phone: "-",
-      address: "-",
-      email: "-",
+      user: {
+        is_active: "-",
+        type_document: "-",
+        document: "-",
+        name: "-",
+        surname: "-",
+        phone: "-",
+        address: "-",
+        email: "-",
+      },
     },
   ]);
 
   useEffect(() => {
     axios
-      .get("http://tenant1.hyperfoods.team/api/users")
-      .then(
-        (res) => setUserList(res.data)  
-      )
+      .get("http://tenant1.hyperfoods.team/api/users/client/")
+      .then((res) => setClientList(res.data))
       .catch((err) => console.log(err));
   }, []);
-
 
   return (
     <>
       <div className="content">
-        {console.log(userList)}
+        {console.log(clientList)}
         <Row>
           <Col md="12">
             <Card>
@@ -54,27 +54,29 @@ function Users() {
                       <th>Status</th>
                       <th>Document</th>
                       <th>Id Type</th>
-                      <th>Id Number</th>
+                      <th>Id User</th>
                       <th>Name</th>
                       <th>Last Name</th>
                       <th>Phone Number</th>
                       <th>Address</th>
                       <th>Email</th>
+                      <th>Credit Card</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {userList.map((user, i) => {
+                    {clientList.map((client, i) => {                      
                       return (
                         <tr key={i}>
-                          <td>{user.is_active ? "true" : "false"}</td>
-                          <td>{user.document}</td>
-                          <td>{user.type_document === 1 ? "CC" : "TI"}</td>
-                          <td>{user.id_user}</td>
-                          <td>{user.name}</td>
-                          <td>{user.surname}</td>
-                          <td>{user.phone}</td>
-                          <td>{user.address}</td>
-                          <td>{user.email}</td>
+                          <td>{client.user.is_active ? "true" : "false"}</td>
+                          <td>{client.user.document}</td>
+                          <td>{client.user.type_document === 1 ? "CC" : "TI"}</td>
+                          <td>{client.id_user}</td>
+                          <td>{client.user.name}</td>
+                          <td>{client.user.surname}</td>
+                          <td>{client.user.phone}</td>
+                          <td>{client.user.address}</td>
+                          <td>{client.user.email}</td>
+                          <td>{client.credit_card}</td>
                         </tr>
                       );
                     })}
@@ -89,4 +91,4 @@ function Users() {
   );
 }
 
-export default Users;
+export default Clients;

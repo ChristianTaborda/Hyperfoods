@@ -17,30 +17,32 @@ import {
   Col,
 } from "reactstrap";
 
-function CreateUser() {
+function CreateClient() {
   const notificationAlert = useRef();
   const initialValues = {
-    // Id: "1",
-    // DocumentType: "1",
-    // DocumentNumber: "977653910",
-    // Name: "Jem Pool",
-    // LastName: "Suarez",
-    // PhoneNumber: "2234231507",
-    // Email: "j.suarez@email.com",
-    // Address: "110 Lee Street",
-    // password: "1234",
-    // changepassword: "1234",
+    Id: "2",
+    DocumentType: "1",
+    DocumentNumber: "577653910",
+    Name: "Alexandra",
+    LastName: "Usma",
+    PhoneNumber: "5234201007",
+    Email: "a.usma@gmail.com",
+    CreditCard: "908883883",
+    Address: "4460 Green Street",
+    password: "1234",
+    changepassword: "1234",
 
-    Id: "",
-    DocumentType: "",
-    DocumentNumber: "",
-    Name: "",
-    LastName: "",
-    PhoneNumber: "",
-    Email: "",
-    Address: "",
-    password: "",
-    changepassword: "",
+    // Id: "",
+    // DocumentType: "",
+    // DocumentNumber: "",
+    // Name: "",
+    // LastName: "",
+    // PhoneNumber: "",
+    // Email: "",
+    // CreditCard: "",
+    // Address: "",
+    // password: "",
+    // changepassword: "",
   };
   const [documentType, setDocumentType] = useState("CC");
 
@@ -48,21 +50,24 @@ function CreateUser() {
     let user = values;
 
     let payload = {
-      id_user: parseInt(user.Id),
-      is_active: true,
-      type_document: documentType === "CC" ? 1 : 2,
-      document: user.DocumentNumber,
-      name: user.Name,
-      surname: user.LastName,
-      phone: user.PhoneNumber,
-      address: user.Address,
-      email: user.Email,
-      password: user.password,
+      credit_card: user.CreditCard,
+      user: {
+        id_user: parseInt(user.Id),
+        is_active: true,
+        type_document: documentType === "CC" ? 1 : 2,
+        document: user.DocumentNumber,
+        name: user.Name,
+        surname: user.LastName,
+        phone: user.PhoneNumber,
+        email: user.Email,
+        address: user.Address,
+        password: user.password,
+      },
     };
 
     console.log(payload);
     axios
-      .post("http://tenant1.hyperfoods.team/api/users/create/", payload)
+      .post("http://tenant1.hyperfoods.team/api/users/client/create/", payload)
       .then((res) => {
         if (res.status === 201) {
           notify("br", "success", "User Created Successfully");
@@ -117,6 +122,11 @@ function CreateUser() {
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
         "Must be a valid e-mail address"
       ),
+    CreditCard: Yup.string()
+      .trim()
+      .required("Required field")
+      .min(7, "Minimum of 7 characters")
+      .matches(/^[1-9][0-9]*$/, "Must be an integer and positive number"),
     Address: Yup.string()
       .trim()
       .required("Required field")
@@ -282,7 +292,22 @@ function CreateUser() {
                   </Col>
                 </Row>
                 <Row>
-                  <Col md="12">
+                  <Col className="pr-md-1" md="6">
+                    <FormGroup>
+                      <label htmlFor="CreditCard">Credit Card Number</label>
+                      <Field
+                        className="form-control"
+                        name="CreditCard"
+                        placeholder="type your credit card number"
+                      />
+                      <ErrorMessage
+                        name="CreditCard"
+                        component="div"
+                        className="field-error text-danger"
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col className="pl-md-1" md="6">
                     <FormGroup>
                       <label htmlFor="Email">Address</label>
                       <Field
@@ -355,4 +380,4 @@ function CreateUser() {
   );
 }
 
-export default CreateUser;
+export default CreateClient;

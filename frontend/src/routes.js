@@ -2,6 +2,8 @@
 // Added views
 import Users from "views/Users.js"
 import CreateUser from "views/CreateUser.js"
+import Clients from "views/Clients.js"
+import CreateClient from "views/CreateClient.js"
 
 // Template views
 import Dashboard from "views/Dashboard.js";
@@ -19,7 +21,7 @@ var routes = [
   {
     path: "/users",
     name: "List Users",
-    icon: "tim-icons icon-bullet-list-67",
+    icon: "tim-icons icon-badge",
     component: Users,
     layout: "/admin"
   },
@@ -28,6 +30,20 @@ var routes = [
     name: "Create User",
     icon: "tim-icons icon-single-copy-04",
     component: CreateUser,
+    layout: "/admin"
+  },
+  {
+    path: "/clients",
+    name: "List Clients",
+    icon: "tim-icons icon-bullet-list-67",
+    component: Clients,
+    layout: "/admin"
+  },
+  {
+    path: "/create-client",
+    name: "Create Client",
+    icon: "tim-icons icon-single-02",
+    component: CreateClient,
     layout: "/admin"
   },
   {
