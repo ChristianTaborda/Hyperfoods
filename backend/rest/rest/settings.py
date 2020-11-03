@@ -97,8 +97,8 @@ WSGI_APPLICATION = 'rest.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
-        #'NAME': 'hyperfoods',
-        'NAME': 'localhost',
+        'NAME': 'hyperfoods',
+        #'NAME': 'localhost',
         'USER': 'postgres',
         'PASSWORD': 'stemen',
         'HOST': 'hyperfoods.eastus2.azurecontainer.io',
