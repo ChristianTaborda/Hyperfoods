@@ -178,7 +178,7 @@ function CreateClient() {
           <Form>
             <Card>
               <CardHeader>
-                <h5 className="title">Create Users</h5>
+                <h5 className="title">Create Client</h5>
               </CardHeader>
               <CardBody>
                 <Row>

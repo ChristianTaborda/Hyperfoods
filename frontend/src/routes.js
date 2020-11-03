@@ -1,8 +1,8 @@
 /* eslint-disable */
 // Added views
-import Users from "views/Users.js"
-import CreateUser from "views/CreateUser.js"
-import Clients from "views/Clients.js"
+import ListWorkers from "views/ListWorkers.js"
+import CreateWorker from "views/CreateWorker.js"
+import ListClients from "views/ListClients.js"
 import CreateClient from "views/CreateClient.js"
 
 // Template views
@@ -19,24 +19,24 @@ import CreateTenant from "views/CreateTenat.js"
 var routes = [
   // Added views
   {
-    path: "/users",
-    name: "List Users",
+    path: "/list-workers",
+    name: "List Workers",
     icon: "tim-icons icon-badge",
-    component: Users,
+    component: ListWorkers,
     layout: "/admin"
   },
   {
-    path: "/create-user",
-    name: "Create User",
+    path: "/create-worker",
+    name: "Create Worker",
     icon: "tim-icons icon-single-copy-04",
-    component: CreateUser,
+    component: CreateWorker,
     layout: "/admin"
   },
   {
-    path: "/clients",
+    path: "/list-clients",
     name: "List Clients",
     icon: "tim-icons icon-bullet-list-67",
-    component: Clients,
+    component: ListClients,
     layout: "/admin"
   },
   {
