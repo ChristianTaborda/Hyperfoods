@@ -1,7 +1,7 @@
 from .models import Product
 from rest_framework import serializers
 from categories.serializers import CategorySerializer
-#from combos.serializers import UpdateComboSerializer
+from ingredients.serializers import IngredientSerializer
 
 # Serializers for products:
 # --------------------------------CRUD --------------------------------#
@@ -10,6 +10,7 @@ from categories.serializers import CategorySerializer
 class ProductSerializer(serializers.ModelSerializer):
 
     categoryProduct = CategorySerializer()
+    ingredientProduct = IngredientSerializer(many = True)
 
     class Meta:
         model = Product
@@ -24,7 +25,8 @@ class CreateProductSerializer(serializers.ModelSerializer):
             'nameProduct',
             'descriptionProduct',
             'priceProduct',
-            'categoryProduct'
+            'categoryProduct',
+            'ingredientProduct'
         ]
     
     def create(self, validated_data):
@@ -34,6 +36,11 @@ class CreateProductSerializer(serializers.ModelSerializer):
             priceProduct = validated_data['priceProduct'],
             categoryProduct = validated_data['categoryProduct']
         )
+
+        # Add ingredients to product:
+        for i in validated_data['ingredientProduct']:
+            product.ingredientProduct.add(i)
+
         product.save()
         return product
 
