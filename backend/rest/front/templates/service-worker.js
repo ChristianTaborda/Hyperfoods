@@ -2,6 +2,9 @@ const cacheName = "v1";
 let cacheUrls = [];
 
 self.addEventListener("install", function (e) {
+
+  /*
+
   const installPromise = new Promise(function (resolve, reject) {
     // console.log('Service Worker: Installed')
     e.waitUntil(
@@ -9,8 +12,8 @@ self.addEventListener("install", function (e) {
         .open(cacheName)
         .then((cache) => {
           console.log("Service Worker: Caching Files");
-          /* slice(1) skip the fetch request to http://tenant1.localhost:8000/admin/list-workers
-               try again when Django can serve all routes */
+          // slice(1) skip the fetch request to http://tenant1.localhost:8000/admin/list-workers
+          // try again when Django can serve all routes
           cache.addAll(cacheUrls.slice(1));
         })
         .then(() => self.skipWaiting())
@@ -24,6 +27,9 @@ self.addEventListener("install", function (e) {
   });
 
   e.waitUntil(installPromise);
+
+  */
+
 });
 
 // Call Activate Event
