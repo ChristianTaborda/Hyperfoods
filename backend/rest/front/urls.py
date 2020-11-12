@@ -8,6 +8,6 @@ from .views import (
 
 urlpatterns = [
 path("", Frontend.as_view()),
-path('sw.js', TemplateView.as_view(template_name="sw.js", 
-    content_type='application/javascript'), name='sw.js'),
+path('service-worker.js', TemplateView.as_view(template_name="service-worker.js", 
+    content_type='application/javascript'), name='service-worker.js'),
 ]

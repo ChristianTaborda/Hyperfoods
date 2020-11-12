@@ -66,12 +66,28 @@ function ListWorkers() {
                     {userList.map((user, i) => {
                       return (
                         <tr key={i}>
-                          <td>{user.user.is_active ? "true" : "false"}</td>
                           <td>
-                            {user.user_type === 1 ? "Manager" : "Digitalizer"}
+                            {user.user.is_active === "-"
+                              ? "-"
+                              : user.user.is_active
+                              ? "true"
+                              : "false"}
+                          </td>
+                          <td>
+                            {user.user.is_active === "-"
+                              ? "-"
+                              : user.user_type === 1
+                              ? "Manager"
+                              : "Digitalizer"}
                           </td>
                           <td>{user.user.document}</td>
-                          <td>{user.user.type_document === 1 ? "CC" : "TI"}</td>
+                          <td>
+                            {user.user.is_active === "-"
+                              ? "-"
+                              : user.user.type_document === 1
+                              ? "CC"
+                              : "TI"}
+                          </td>
                           <td>{user.user.id_user}</td>
                           <td>{user.user.name}</td>
                           <td>{user.user.surname}</td>
