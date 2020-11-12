@@ -2,9 +2,6 @@ const cacheName = "v1";
 let cacheUrls = [];
 
 self.addEventListener("install", function (e) {
-
-  /*
-
   const installPromise = new Promise(function (resolve, reject) {
     // console.log('Service Worker: Installed')
     e.waitUntil(
@@ -27,9 +24,6 @@ self.addEventListener("install", function (e) {
   });
 
   e.waitUntil(installPromise);
-
-  */
-
 });
 
 // Call Activate Event
