@@ -63,13 +63,23 @@ function ListClients() {
                     </tr>
                   </thead>
                   <tbody>
-                    {clientList.map((client, i) => {
+                    {clientList.map((client, i) => {                      
                       return (
                         <tr key={i}>
-                          <td>{client.user.is_active ? "true" : "false"}</td>
+                          <td>
+                            {client.user.is_active === "-"
+                              ? "-"
+                              : client.user.is_active
+                              ? "true"
+                              : "false"}
+                          </td>
                           <td>{client.user.document}</td>
                           <td>
-                            {client.user.type_document === 1 ? "CC" : "TI"}
+                            {client.user.is_active === "-"
+                              ? "-"
+                              : client.user.type_document === 1
+                              ? "CC"
+                              : "TI"}
                           </td>
                           <td>{client.id_user}</td>
                           <td>{client.user.name}</td>
