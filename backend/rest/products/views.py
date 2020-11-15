@@ -10,10 +10,11 @@ from .serializers import (
     ProductSerializer,
     CreateProductSerializer,
     UpdateProductSerializer,
-    DeleteProductSerializer
+    DeleteProductSerializer,
+    ImageProductSerializer
 )
 
-from .models import Product
+from .models import Product, Image
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -55,3 +56,10 @@ class UpdateProduct(UpdateAPIView):
 class DeleteProduct(DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = DeleteProductSerializer
+
+
+class ImageProduct(ListAPIView):
+    queryset = Image.objects.all()
+    serializer_class = ImageProductSerializer
+
+    

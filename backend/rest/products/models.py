@@ -19,3 +19,9 @@ class Product(models.Model):
 
     categoryProduct = models.ForeignKey(Category, on_delete = models.CASCADE)
     ingredientProduct = models.ManyToManyField(Ingredient, blank = True)
+
+
+class Image(models.Model):
+    id_img = models.AutoField(primary_key=True)
+    url = models.CharField(max_length=255)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)

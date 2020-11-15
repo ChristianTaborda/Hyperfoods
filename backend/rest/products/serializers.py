@@ -1,4 +1,4 @@
-from .models import Product
+from .models import Product, Image
 from rest_framework import serializers
 from categories.serializers import CategorySerializer
 from ingredients.serializers import IngredientSerializer
@@ -69,3 +69,13 @@ class DeleteProductSerializer(serializers.ModelSerializer):
 
     def perform_destroy(self, instance):
         instance.delete()
+
+
+class ImageProductSerializer(serializers.ModelSerializer):
+    image = serializers.FileField()
+    class Meta:
+        model = Image
+        fields = [
+            'image',
+            'product'
+        ]

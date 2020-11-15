@@ -12,10 +12,10 @@ django-tenants = "==3.2.1"
 djangorestframework = "==3.11.1"
 pillow = "==7.2.0"
 psycopg2-binary = "==2.8.6"
+pyrebase = "*"
 
 [requires]
 python_version = "3.7"
-
 
 [scripts]
 dev = "python3 manage.py runserver"
