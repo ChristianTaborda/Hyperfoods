@@ -1,8 +1,8 @@
-from .models import Product, Image
+from .models import Product
 from rest_framework import serializers
 from categories.serializers import CategorySerializer
 from ingredients.serializers import IngredientSerializer
-
+from firebase import *
 # Serializers for products:
 # --------------------------------CRUD --------------------------------#
 
@@ -18,7 +18,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
 # Create operations serializer:
 class CreateProductSerializer(serializers.ModelSerializer):
-
+    image = serializers.FileField()
     class Meta:
         model = Product
         fields = [
@@ -26,14 +26,22 @@ class CreateProductSerializer(serializers.ModelSerializer):
             'descriptionProduct',
             'priceProduct',
             'categoryProduct',
+            'image',
             'ingredientProduct'
         ]
     
     def create(self, validated_data):
+        import pyrebase
+        firebase = pyrebase.initialize_app(config)
+        storage = firebase.storage()
+        storage.child("tenant1/images/2.png").put(validated_data['image'])
+        url = storage.child("tenant1/images/2.png").get_url(None)
+
         product = Product.objects.create(
             nameProduct = validated_data['nameProduct'],
             descriptionProduct = validated_data['descriptionProduct'],
             priceProduct = validated_data['priceProduct'],
+            imageProduct = url,
             categoryProduct = validated_data['categoryProduct']
         )
 
@@ -70,8 +78,9 @@ class DeleteProductSerializer(serializers.ModelSerializer):
     def perform_destroy(self, instance):
         instance.delete()
 
-
+"""
 class ImageProductSerializer(serializers.ModelSerializer):
+    
     image = serializers.FileField()
     class Meta:
         model = Image
@@ -79,3 +88,13 @@ class ImageProductSerializer(serializers.ModelSerializer):
             'image',
             'product'
         ]
+    def create(self, validated_data):
+        import pyrebase
+        firebase = pyrebase.initialize_app(config)
+        storage = firebase.storage()
+        storage.child("tenant1/images/2.png").put(validated_data['image'])
+        url = storage.child("tenant1/images/2.png").get_url(None)
+
+        print(url)
+       
+"""

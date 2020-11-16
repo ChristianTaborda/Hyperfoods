@@ -11,12 +11,12 @@ from .serializers import (
     CreateProductSerializer,
     UpdateProductSerializer,
     DeleteProductSerializer,
-    ImageProductSerializer
 )
 
-from .models import Product, Image
+from .models import Product
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
 
 # Views for products:
 # --------------------------------CRUD --------------------------------#
@@ -57,9 +57,10 @@ class DeleteProduct(DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = DeleteProductSerializer
 
-
-class ImageProduct(ListAPIView):
+"""
+class ImageProduct(ListCreateAPIView):
     queryset = Image.objects.all()
+    parser_classes = (MultiPartParser, FormParser,)
     serializer_class = ImageProductSerializer
-
+"""
     
