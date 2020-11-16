@@ -3,6 +3,8 @@ from rest_framework import serializers
 from categories.serializers import CategorySerializer
 from ingredients.serializers import IngredientSerializer
 from firebase import *
+import pyrebase
+
 # Serializers for products:
 # --------------------------------CRUD --------------------------------#
 
@@ -18,33 +20,34 @@ class ProductSerializer(serializers.ModelSerializer):
 
 # Create operations serializer:
 class CreateProductSerializer(serializers.ModelSerializer):
-    image = serializers.FileField()
+    imageProduct = serializers.FileField()
+    
     class Meta:
         model = Product
         fields = [
+            'imageProduct',
             'nameProduct',
             'descriptionProduct',
             'priceProduct',
             'categoryProduct',
-            'image',
             'ingredientProduct'
         ]
     
     def create(self, validated_data):
-        import pyrebase
         firebase = pyrebase.initialize_app(config)
         storage = firebase.storage()
-        storage.child("tenant1/images/2.png").put(validated_data['image'])
-        url = storage.child("tenant1/images/2.png").get_url(None)
-
+        storage.child("tenant1/images/thismen.png").put(validated_data['imageProduct'])
+        url = storage.child("tenant1/images/thismen.png").get_url(None)
+        print("========================================0")
+        print(url)
         product = Product.objects.create(
             nameProduct = validated_data['nameProduct'],
             descriptionProduct = validated_data['descriptionProduct'],
             priceProduct = validated_data['priceProduct'],
-            imageProduct = url,
-            categoryProduct = validated_data['categoryProduct']
+            categoryProduct = validated_data['categoryProduct'],
+            imageProduct = url
         )
-
+        #product.imageProduct = url
         # Add ingredients to product:
         for i in validated_data['ingredientProduct']:
             product.ingredientProduct.add(i)
