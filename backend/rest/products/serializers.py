@@ -58,8 +58,8 @@ class CreateProductSerializer(serializers.ModelSerializer):
         for i in validated_data['ingredientProduct']:
             product.ingredientProduct.add(i)
 
-        #product.save()
-        #return product
+        product.save()
+        return product
 
 # Update operations serializer:
 class UpdateProductSerializer(serializers.ModelSerializer):
