@@ -6,13 +6,14 @@ from .views import (
     ListProduct_Category,
     CreateProduct,
     UpdateProduct,
-    DeleteProduct
+    DeleteProduct,
 )
 
 # URLS for products:
 urlpatterns = [
     path('', ListProduct.as_view()),
     path('create/', CreateProduct.as_view()),
+    #path('image/', ImageProduct.as_view()),
     path('<pk>/', DetailProduct.as_view()),
     path('update/<pk>/', UpdateProduct.as_view()),
     path('delete/<pk>/', DeleteProduct.as_view()),

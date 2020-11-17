@@ -16,5 +16,5 @@ class Combo(models.Model):
     descriptionCombo = models.CharField(max_length=255)
     discountCombo = models.PositiveIntegerField()
     priceCombo = models.PositiveIntegerField()
-
+    imageCombo = models.CharField(max_length=255)
     productCombo = models.ManyToManyField(Product)

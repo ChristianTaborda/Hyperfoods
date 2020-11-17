@@ -16,6 +16,8 @@ class Product(models.Model):
     nameProduct = models.CharField(max_length=255)
     descriptionProduct = models.CharField(max_length=255)
     priceProduct = models.PositiveIntegerField()
-
     categoryProduct = models.ForeignKey(Category, on_delete = models.CASCADE)
     ingredientProduct = models.ManyToManyField(Ingredient, blank = True)
+    imageProduct = models.CharField(max_length=255)
+
+
