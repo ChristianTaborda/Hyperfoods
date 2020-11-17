@@ -125,15 +125,26 @@ class UserLoginSerializer(serializers.Serializer):
         user = queryset.values()[0]
         if(not check_password(data['password'], user['password'])):
             raise serializers.ValidationError('Contraseña incorrecta')
-       
+
+        if self.initial_data['type']=='worker':
+            queryset2 = Worker.objects.filter(user=user['id_user'])
+            if not queryset2.exists():
+                raise serializers.ValidationError('El trabajador no existe')
+            self.context['type'] = queryset2[0]
+        else:
+            queryset2 = Client.objects.filter(user=user['id_user'])
+            if not queryset2.exists():
+                raise serializers.ValidationError('El cliente no existe')
+            self.context['type'] = queryset2[0]
+            
         self.context['user'] = queryset[0]
         return data
 
     def create(self, data):
+        print(self.context['type'])
         """Generar o recuperar token."""
-        print("stamos en el selfff", self.context['user'])
         token, created = Token.objects.get_or_create(user=self.context['user'])
-        return self.context['user'], token.key
+        return self.context['type'], token.key
 """
 #========== Serializador para crear cliente con usuario ========== 
 class CreateNewClientSerializer(serializers.ModelSerializer):

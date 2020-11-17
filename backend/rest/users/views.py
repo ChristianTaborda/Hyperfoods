@@ -90,15 +90,15 @@ class Login(APIView):
 
 """
 class Login(APIView):
-    queryset = CustomUser.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UserLoginSerializer
     def post(self,request):
-
-        serializer = UserLoginSerializer(data=request.data)
+        copy_data = request.data.copy()
+        copy_data['type'] = request.path.split("/")[-3]
+        serializer = UserLoginSerializer(data=copy_data)
         serializer.is_valid(raise_exception=True)
         user, token = serializer.save()
         data = {
-            'user': UserSerializer(user).data,
+            'user': ClientAllSerializer(user).data if copy_data['type']=='client' else WorkerSerializer(user).data ,
             'access_token': token
         }
         return Response(data)
