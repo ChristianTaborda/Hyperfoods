@@ -20,6 +20,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
 # Create operations serializer:
 class CreateProductSerializer(serializers.ModelSerializer):
+
     imageProduct = serializers.FileField()
     
     class Meta:
@@ -36,10 +37,9 @@ class CreateProductSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         firebase = pyrebase.initialize_app(config)
         storage = firebase.storage()
-        storage.child("tenant1/images/thismen.png").put(validated_data['imageProduct'])
-        url = storage.child("tenant1/images/thismen.png").get_url(None)
-        print("========================================0")
-        print(url)
+        storage.child("nombreTenant/images/nombreImagen.png").put(validated_data['imageProduct'])
+        url = storage.child("nombreTenant/images/nombreImagen.png").get_url(None)
+       
         product = Product.objects.create(
             nameProduct = validated_data['nameProduct'],
             descriptionProduct = validated_data['descriptionProduct'],
@@ -47,7 +47,7 @@ class CreateProductSerializer(serializers.ModelSerializer):
             categoryProduct = validated_data['categoryProduct'],
             imageProduct = url
         )
-        #product.imageProduct = url
+        
         # Add ingredients to product:
         for i in validated_data['ingredientProduct']:
             product.ingredientProduct.add(i)
@@ -57,18 +57,34 @@ class CreateProductSerializer(serializers.ModelSerializer):
 
 # Update operations serializer:
 class UpdateProductSerializer(serializers.ModelSerializer):
+
+    imageProduct = serializers.FileField()
     
     class Meta:
         model = Product
         fields = [
+            'imageProduct',
             'nameProduct',
             'descriptionProduct',
             'priceProduct',
-            'categoryProduct'
+            'categoryProduct',
+            'ingredientProduct'
         ]
 
     def update(self, instance, validated_data):
+        firebase = pyrebase.initialize_app(config)
+        storage = firebase.storage()
+        storage.child("nombreTenant/images/nombreImagen.png").put(validated_data['imageProduct'])
+        url = storage.child("nombreTenant/images/nombreImagen.png").get_url(None)
+
+        validated_data['imageProduct'] = url
+
         product = super().update(instance, validated_data)
+        
+        # Add ingredients to product:
+        for i in validated_data['ingredientProduct']:
+            product.ingredientProduct.add(i)
+
         return product
 
 # Delete operations serializer:

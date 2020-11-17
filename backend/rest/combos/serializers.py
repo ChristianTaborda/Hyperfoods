@@ -2,6 +2,8 @@ from .models import Combo
 from products.models import Product
 from rest_framework import serializers
 from products.serializers import ProductSerializer
+from firebase import *
+import pyrebase
 
 # Serializers for combos:
 # --------------------------------CRUD --------------------------------#
@@ -18,9 +20,12 @@ class ComboSerializer(serializers.ModelSerializer):
 # Create operations serializer:
 class CreateComboSerializer(serializers.ModelSerializer):
 
+    imageCombo = serializers.FileField()
+
     class Meta:
         model = Combo
         fields = [
+            'imageCombo',
             'nameCombo',
             'descriptionCombo',
             'discountCombo',
@@ -28,11 +33,17 @@ class CreateComboSerializer(serializers.ModelSerializer):
         ]
     
     def create(self, validated_data):
+        firebase = pyrebase.initialize_app(config)
+        storage = firebase.storage()
+        storage.child("nombreTenant/images/nombreImagen.png").put(validated_data['imageCombo'])
+        url = storage.child("nombreTenant/images/nombreImagen.png").get_url(None)
+
         combo = Combo.objects.create(
             nameCombo = validated_data['nameCombo'],
             descriptionCombo = validated_data['descriptionCombo'],
             discountCombo = validated_data['discountCombo'],
-            priceCombo = 0
+            priceCombo = 0,
+            imageCombo = url
         )
 
         # Add Products to Combo:
@@ -51,10 +62,13 @@ class CreateComboSerializer(serializers.ModelSerializer):
 
 # Update operations serializer:
 class UpdateComboSerializer(serializers.ModelSerializer):
+
+    imageCombo = serializers.FileField()
     
     class Meta:
         model = Combo
         fields = [
+            'imageCombo',
             'nameCombo',
             'descriptionCombo',
             'discountCombo',
@@ -62,6 +76,13 @@ class UpdateComboSerializer(serializers.ModelSerializer):
         ]
 
     def update(self, instance, validated_data):
+        firebase = pyrebase.initialize_app(config)
+        storage = firebase.storage()
+        storage.child("nombreTenant/images/nombreImagen.png").put(validated_data['imageCombo'])
+        url = storage.child("nombreTenant/images/nombreImagen.png").get_url(None)
+
+        validated_data['imageCombo'] = url
+
         combo = super().update(instance, validated_data)
 
         # Calculate Price for Combo:
