@@ -4,6 +4,16 @@ from rest_framework import serializers
 from products.serializers import ProductSerializer
 from firebase import *
 import pyrebase
+import time
+
+def saveImageFirebase(host, image):
+    hora = time.strftime("%Y%m%d-%H%M%S")
+    tenant = host.partition('.')[0]
+    firebase = pyrebase.initialize_app(config)
+    storage = firebase.storage()
+    storage.child(tenant+"/images/"+hora).put(image)
+    url = storage.child(tenant+"/images/"+hora).get_url(None)
+    return url
 
 # Serializers for combos:
 # --------------------------------CRUD --------------------------------#
@@ -33,11 +43,7 @@ class CreateComboSerializer(serializers.ModelSerializer):
         ]
     
     def create(self, validated_data):
-        firebase = pyrebase.initialize_app(config)
-        storage = firebase.storage()
-        storage.child("nombreTenant/images/nombreImagen.png").put(validated_data['imageCombo'])
-        url = storage.child("nombreTenant/images/nombreImagen.png").get_url(None)
-
+        url = saveImageFirebase(self.context['request'].get_host(), validated_data['imageCombo'])
         combo = Combo.objects.create(
             nameCombo = validated_data['nameCombo'],
             descriptionCombo = validated_data['descriptionCombo'],
@@ -76,10 +82,7 @@ class UpdateComboSerializer(serializers.ModelSerializer):
         ]
 
     def update(self, instance, validated_data):
-        firebase = pyrebase.initialize_app(config)
-        storage = firebase.storage()
-        storage.child("nombreTenant/images/nombreImagen.png").put(validated_data['imageCombo'])
-        url = storage.child("nombreTenant/images/nombreImagen.png").get_url(None)
+        url = saveImageFirebase(self.context['request'].get_host(), validated_data['imageCombo'])
 
         validated_data['imageCombo'] = url
 
