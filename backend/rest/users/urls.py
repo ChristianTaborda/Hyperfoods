@@ -58,6 +58,8 @@ urlpatterns = [
     path('client-single/create/', ClientSingleCreate.as_view()),
     path('client-single/get/<pk>/', ClientSingleDetail.as_view()),
     path('client-single/update/<pk>/', ClientSingleUpdate.as_view()),
+    path('client/login/', Login.as_view()),
+
 
     path('worker/', WorkerList.as_view()),
     path('worker/create/', WorkerCreate.as_view()),
@@ -67,7 +69,8 @@ urlpatterns = [
     path('worker-single/create/', CreateSingleWorker.as_view()),
     path('worker-single/get/<pk>/', WorkerSingleDetail.as_view()),
     path('worker-single/update/<pk>/', WorkerSingleUpdate.as_view()),
+    path('worker/login/', Login.as_view()),
 
-    path('login/', Login.as_view()),
+
 
 ]
