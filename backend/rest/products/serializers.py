@@ -1,4 +1,5 @@
 from .models import Product
+from combos.models import Combo
 from rest_framework import serializers
 from categories.serializers import CategorySerializer
 from ingredients.serializers import IngredientSerializer
@@ -82,10 +83,19 @@ class UpdateProductSerializer(serializers.ModelSerializer):
         validated_data['imageProduct'] = url
 
         product = super().update(instance, validated_data)
-        
-        # Add ingredients to product:
-        for i in validated_data['ingredientProduct']:
-            product.ingredientProduct.add(i)
+
+        # Update Combos with this product:
+        combos = Combo.objects.all()
+        for i in combos:
+            for j in i.productCombo.all():
+                if (j.codeProduct == product.codeProduct):
+                    # Calculate Price for Combo:
+                    priceCombo = 0
+                    for k in i.productCombo.all():
+                        priceCombo = priceCombo + k.priceProduct
+                    priceCombo = priceCombo - (priceCombo * (i.discountCombo/100)) 
+                    i.priceCombo = priceCombo
+                    i.save()
 
         return product
 
@@ -99,23 +109,3 @@ class DeleteProductSerializer(serializers.ModelSerializer):
     def perform_destroy(self, instance):
         instance.delete()
 
-"""
-class ImageProductSerializer(serializers.ModelSerializer):
-    
-    image = serializers.FileField()
-    class Meta:
-        model = Image
-        fields = [
-            'image',
-            'product'
-        ]
-    def create(self, validated_data):
-        import pyrebase
-        firebase = pyrebase.initialize_app(config)
-        storage = firebase.storage()
-        storage.child("tenant1/images/2.png").put(validated_data['image'])
-        url = storage.child("tenant1/images/2.png").get_url(None)
-
-        print(url)
-       
-"""

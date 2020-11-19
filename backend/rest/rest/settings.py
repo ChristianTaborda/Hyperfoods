@@ -40,6 +40,8 @@ OWN_APPS = (
     'ingredients',
     'products',
     'combos',
+    'invoices',
+    'invoiceDetails',
     'front',
 )
 
