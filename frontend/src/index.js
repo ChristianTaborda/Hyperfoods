@@ -11,6 +11,8 @@ import Login from "layouts/Login.js";
 import LandingPage from "layouts/LandingPage.js"
 import Suscription from "layouts/Suscription.js"
 
+import Sale from "layouts/Sale.js"
+
 import "assets/scss/black-dashboard-react.scss";
 import "assets/css/nucleo-icons.css";
 
@@ -24,6 +26,7 @@ ReactDOM.render(
         <Route  path="/request/:id" component={Suscription}/>
         <Route path="/landing" component={LandingPage}/>
         <Route path="/admin" component={Admin} />
+        <Route path="/Sale" component={Sale} />
         <Redirect from="/" to="/admin/list-workers" />
       </Switch>
     </Router>

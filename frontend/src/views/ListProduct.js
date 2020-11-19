@@ -63,7 +63,7 @@ function Clients() {
                   </thead>
                   <tbody>
                     {productList.map((product, i) => {
-                          console.log(product)
+                         
                       return (
                     
                         <tr key={i}>
