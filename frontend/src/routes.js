@@ -19,6 +19,7 @@ import CreateIngredient from "views/CreateIngredient.js"
 import CreateCategory from "views/CreateCategory.js"
 import Product from "views/ListProduct.js"
 import ProductCreate from "views/CreateProduct1.js"
+import CreateCombo from "views/CreateCombo.js"
 
 
 
@@ -84,6 +85,13 @@ var routes = [
     name: "Create product",
     icon: "tim-icons icon-single-copy-04",
     component: ProductCreate,
+    layout: "/admin"
+  },
+  {
+    path: "/combo",
+    name: "Create Combo",
+    icon: "tim-icons icon-single-copy-04",
+    component: CreateCombo,
     layout: "/admin"
   },
 
