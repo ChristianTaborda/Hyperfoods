@@ -20,5 +20,6 @@ python_version = "3.7"
 [scripts]
 dev = "python3 manage.py runserver"
 make = "python3 manage.py makemigrations"
+migra = "./manage.py migrate_schemas"
 migrate = "python3 manage.py migrate_schemas --shared"
 super = "python3 manage.py createsuperuser"
