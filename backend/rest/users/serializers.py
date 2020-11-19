@@ -122,10 +122,12 @@ class UserLoginSerializer(serializers.Serializer):
     def validate(self, data):
         queryset = CustomUser.objects.filter(email=data['email'])
         if not queryset.exists():
-            raise serializers.ValidationError('Las credenciales no son válidas')
+            raise serializers.ValidationError('Este correo no esta registrado')
         user = queryset.values()[0]
-        if(not check_password(data['password'], user['password'])):
-            raise serializers.ValidationError('Contraseña incorrecta')
+
+        if (data.get('social')==None):
+            if(not check_password(data['password'], user['password'])):
+                raise serializers.ValidationError('Contraseña incorrecta')
 
         if self.initial_data['type']=='worker':
             queryset2 = Worker.objects.filter(user=user['id_user'])
@@ -142,7 +144,6 @@ class UserLoginSerializer(serializers.Serializer):
         return data
 
     def create(self, data):
-        print(self.context['type'])
         """Generar o recuperar token."""
         token, created = Token.objects.get_or_create(user=self.context['user'])
         return self.context['type'], token.key

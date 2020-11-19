@@ -1,0 +1,198 @@
+[
+{
+  "model": "categories.category",
+  "pk": 1,
+  "fields": {
+    "nameCategory": "Bebidas"
+  }
+},
+{
+  "model": "categories.category",
+  "pk": 2,
+  "fields": {
+    "nameCategory": "Hamburguesas"
+  }
+},
+{
+  "model": "categories.category",
+  "pk": 3,
+  "fields": {
+    "nameCategory": "Helados"
+  }
+},
+{
+  "model": "ingredients.ingredient",
+  "pk": 1,
+  "fields": {
+    "nameIngredient": "Queso",
+    "priceIngredient": 1000,
+    "additionalIngredient": true
+  }
+},
+{
+  "model": "ingredients.ingredient",
+  "pk": 2,
+  "fields": {
+    "nameIngredient": "Tocino",
+    "priceIngredient": 1000,
+    "additionalIngredient": true
+  }
+},
+{
+  "model": "ingredients.ingredient",
+  "pk": 3,
+  "fields": {
+    "nameIngredient": "Tomate",
+    "priceIngredient": 1000,
+    "additionalIngredient": true
+  }
+},
+{
+  "model": "products.product",
+  "pk": 1,
+  "fields": {
+    "nameProduct": "Cocacola",
+    "descriptionProduct": "Sabor natural",
+    "priceProduct": 2000,
+    "categoryProduct": 1,
+    "imageProduct": "https://firebasestorage.googleapis.com/v0/b/hyperfoods-images.appspot.com/o/tenant1%2Fimages%2F20201119-195703?alt=media",
+    "ingredientProduct": [
+      3
+    ]
+  }
+},
+{
+  "model": "products.product",
+  "pk": 2,
+  "fields": {
+    "nameProduct": "Hamburguesa Americana",
+    "descriptionProduct": "Deliciosa hamburguesa 1/4 de libra con extra queso para los paladares mas exigentes",
+    "priceProduct": 10000,
+    "categoryProduct": 2,
+    "imageProduct": "https://firebasestorage.googleapis.com/v0/b/hyperfoods-images.appspot.com/o/tenant1%2Fimages%2F20201119-204524?alt=media",
+    "ingredientProduct": [
+      2
+    ]
+  }
+},
+{
+  "model": "users.customuser",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$216000$jbiDFkxnlSlB$Q4ptyDklagMoIb9SMXhhHgnDDuQnVNs49FixAafXF4M=",
+    "last_login": null,
+    "is_staff": false,
+    "date_joined": "2020-11-19T20:39:38.710Z",
+    "is_active": true,
+    "type_document": "1",
+    "document": "1144189912",
+    "name": "Esneider",
+    "surname": "Manzano",
+    "phone": "4455971",
+    "address": "Cra 28C # 54-123",
+    "email": "esneider@gmail.com",
+    "color": null,
+    "is_superuser": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.customuser",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$216000$hNFOpGBqP7ji$HWqqAUSHFP1scIoYRvr53AkUGVMnpwhNb26Q265q5iw=",
+    "last_login": null,
+    "is_staff": false,
+    "date_joined": "2020-11-19T20:40:30.559Z",
+    "is_active": true,
+    "type_document": "1",
+    "document": "1144189189",
+    "name": "Estemen",
+    "surname": "Lafrego",
+    "phone": "4455474",
+    "address": "Car 28# A51-1234",
+    "email": "stemen@gmail.com",
+    "color": null,
+    "is_superuser": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.customuser",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$216000$58xMO2VCYETK$NsEGrL2D/iuz3Jb1t4LB8kHEEL4wT29DYTTjy39tBN4=",
+    "last_login": null,
+    "is_staff": false,
+    "date_joined": "2020-11-19T20:41:24.377Z",
+    "is_active": true,
+    "type_document": "1",
+    "document": "1236547896",
+    "name": "Jesus",
+    "surname": "Maria",
+    "phone": "7889658",
+    "address": "Car 21# A51-12",
+    "email": "jesus@gmail.com",
+    "color": null,
+    "is_superuser": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.customuser",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$216000$gBne3R77XHyW$hQrg1S+qNPnMN5CTxziXwAIZzPtGjThHA/HpKuY3IxU=",
+    "last_login": null,
+    "is_staff": false,
+    "date_joined": "2020-11-19T20:45:16.175Z",
+    "is_active": true,
+    "type_document": "1",
+    "document": "777653910",
+    "name": "Cristian",
+    "surname": "Vallecilla",
+    "phone": "6234231507",
+    "address": "6510 Bay Street",
+    "email": "c.vallecilla@email.com",
+    "color": null,
+    "is_superuser": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.client",
+  "pk": 1,
+  "fields": {
+    "credit_card": "123654789",
+    "user": 1
+  }
+},
+{
+  "model": "users.worker",
+  "pk": 1,
+  "fields": {
+    "user": 2,
+    "user_type": 1
+  }
+},
+{
+  "model": "users.worker",
+  "pk": 2,
+  "fields": {
+    "user": 3,
+    "user_type": 2
+  }
+},
+{
+  "model": "users.worker",
+  "pk": 3,
+  "fields": {
+    "user": 4,
+    "user_type": 1
+  }
+}
+]
