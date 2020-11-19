@@ -4,6 +4,7 @@ import ListWorkers from "views/ListWorkers.js"
 import CreateWorker from "views/CreateWorker.js"
 import ListClients from "views/ListClients.js"
 import CreateClient from "views/CreateClient.js"
+import CreateCategory from "views/CreateCategory.js"
 
 // Template views
 // import Dashboard from "views/Dashboard.js";
@@ -50,6 +51,13 @@ var routes = [
     name: "Create Tenant",
     icon: "tim-icons icon-chart-pie-36",
     component: CreateTenant,
+    layout: "/admin"
+  },
+  {
+    path: "/category",
+    name: "Create category",
+    icon: "tim-icons icon-single-copy-04",
+    component: CreateCategory,
     layout: "/admin"
   },
 

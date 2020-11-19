@@ -8,6 +8,7 @@ import {
   } from 'reactstrap';
 import './spinner.css'
 function CreateCategory(){
+    const ruta="http://localhost:8000/"
 
     const [isSend, setSend]= useState(false)
     const [categorys, setCategorys]= useState([])
