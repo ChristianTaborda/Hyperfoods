@@ -23,6 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
             'address', 
             'email',
             'password', 
+            'color'
         ]
 
     def create(self, validated_data):
