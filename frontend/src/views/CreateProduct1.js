@@ -7,12 +7,15 @@ import {
     CardFooter, Input,FormGroup, Label,FormText, Button,UncontrolledAlert,Alert,Container
   } from 'reactstrap';
 import { Multiselect } from 'multiselect-react-dropdown';
+import ruta from "./url.js"
 
 import "./createProduct.css";
+import './spinner.css'
 function CreateProduct1(){
 
     const [isSend, setSend]= useState(false)
     const [isSelected, setSelected]= useState(false)
+    const [loading, setLoading]=useState(false)
     const [initialValues, setInitialValues] = useState({
         nameProduct: "",
         priceProduct: "",
@@ -28,11 +31,11 @@ function CreateProduct1(){
     })   
 
     useEffect(() => {
-      axios.get('http://tenant1.hyperfoods.team/api/categories/')
+      axios.get('http://'+ruta+'/api/categories/')
       .then((response) => {
         setCategorys(response.data)
       });
-      axios.get('http://tenant1.hyperfoods.team/api/ingredients/')
+      axios.get('http://'+ruta+'/api/ingredients/')
       .then((response) => {
         setIngredients(response.data)
       });
@@ -68,29 +71,34 @@ function CreateProduct1(){
     
     const onSubmit = async(values, { resetForm }) => {
    
-        let ingrendients=ingredientChoosed.map((ingredient, i) => {
-          return ingredient.codeIngredient
+        let ingrendients1=ingredientChoosed.map((ingredient, i) => {
+          return parseInt(ingredient.codeIngredient)
         });
+        console.log(ingrendients1)
         values.categoryProduct=categoryChoosed
-        values.ingredientProduct=ingrendients
         let data= new FormData();
         for ( var key in values ) {
           data.append(key, values[key]);
           console.log(key)
           console.log(data.getAll(key))
         }
+        
+        data.append("ingredientProduct",ingrendients1)
+        console.log(data.getAll("ingredientProduct"))
       
         data.append("imageProduct",image.image)
        /*
         setTimeout(() => {
           resetForm(initialValues);
         }, 600);*/
+        setLoading(true)
         await axios
-             .post("http://tenant1.hyperfoods.team/api/products/create",data)
+             .post('http://'+ruta+'/api/products/create',data)
             .then((res) => {
              setSend(true)
+             setLoading(false)
              console.log("%c response ", "background: #222; color: #bada55");
-             console.table(res.data); 
+              console.table(res.data); 
              })
        .catch((err) => console.log(err)) 
        
@@ -267,6 +275,9 @@ function CreateProduct1(){
               </CardFooter> 
             </Form>
             </Formik>
+            {loading ? 
+                 <div className="spinner"></div>:null
+            }
           </Card>
          
         {mostrarAlerta()}

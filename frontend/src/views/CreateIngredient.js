@@ -8,6 +8,8 @@ import {
   } from 'reactstrap';
 import './spinner.css'
 
+import ruta from "./url.js"
+
 function CreateIngredient(){
 
     const [isSend, setSend]= useState(false) 
@@ -22,7 +24,7 @@ function CreateIngredient(){
     const [aditional, setAditional]=useState(true)
     useEffect(() => {
       setLoading(true)
-        axios.get('http://tenant1.hyperfoods.team/api/ingredients/')
+        axios.get('http://'+ruta+'/api/ingredients/')
         .then((response) => {
           setLoading(false)
             console.log(response.data)
@@ -43,13 +45,13 @@ function CreateIngredient(){
          resetForm(initialValues);
       }, 600);
       await axios
-      .post("http://tenant1.hyperfoods.team/api/ingredients/create/",values)
+      .post("http://'+ruta+'/api/ingredients/create/",values)
       .then((res) => {
          setSend(true)
          setLoading(false)
          console.log("%c response ", "background: #222; color: #bada55");
          console.table(res.data);
-         axios.get('http://tenant1.hyperfoods.team/api/ingredients/')
+         axios.get('http://'+ruta+'/api/ingredients/')
           .then((response) => {
             setIngredients(response.data)
          });
