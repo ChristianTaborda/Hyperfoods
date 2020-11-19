@@ -7,8 +7,8 @@ import {
     CardFooter, FormGroup,  Button,UncontrolledAlert,Spinner,Container, Label
   } from 'reactstrap';
 import './spinner.css'
+import ruta from "./url.js"
 function CreateCategory(){
-    const ruta="http://localhost:8000/"
 
     const [isSend, setSend]= useState(false)
     const [categorys, setCategorys]= useState([])
@@ -19,7 +19,7 @@ function CreateCategory(){
     });
     useEffect(() => {
       setLoading(true)
-      axios.get('http://tenant1.hyperfoods.team/api/categories/')
+      axios.get('http://'+ruta+'/api/categories/')
       .then((response) => {
         setLoading(false)
         setCategorys(response.data)
@@ -36,13 +36,13 @@ function CreateCategory(){
           resetForm(initialValues);
         }, 600);
         await axios
-        .post("http://tenant1.hyperfoods.team/api/categories/create/",values)
+        .post("http://'+ruta+'/api/categories/create/",values)
         .then((res) => {
           setSend(true)
           setLoading(false)
           console.log("%c response ", "background: #222; color: #bada55");
           console.table(res.data);
-          axios.get('http://tenant1.hyperfoods.team/api/categories/')
+          axios.get('http://'+ruta+'/api/categories/')
           .then((response) => {
             setCategorys(response.data)
           });

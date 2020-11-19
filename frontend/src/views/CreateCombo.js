@@ -7,6 +7,7 @@ import {
     CardFooter, Input,FormGroup, Label,FormText, Button,UncontrolledAlert,Alert,Container
   } from 'reactstrap';
 import { Multiselect } from 'multiselect-react-dropdown';
+import ruta from "./url.js"
 
 import "./createProduct.css";
 function CreateCombo(){
@@ -29,7 +30,7 @@ function CreateCombo(){
 
     useEffect(() => {
    
-      axios.get('http://tenant1.hyperfoods.team/api/products/')
+      axios.get('http://'+ruta+'/api/products/')
       .then((response) => {
         setproducts(response.data)
       });
@@ -76,7 +77,7 @@ function CreateCombo(){
           console.log(data.getAll(key))
         }
       
-        data.append("imageProduct",image.image)
+        data.append("imageCombo",image.image)
        /*
         setTimeout(() => {
           resetForm(initialValues);
@@ -140,7 +141,7 @@ function CreateCombo(){
                  onSubmit={(values, { resetForm }) => onSubmit(values, { resetForm })}
               > 
               <Form  >  
-              <h3 className="title pl-md-4 py-2">Product</h3>
+              <h3 className="title pl-md-4 py-2">Combo</h3>
               <CardBody >
                 <Container className="d-flex justify-content-center align-items-center">
                   <Row> 
@@ -184,7 +185,7 @@ function CreateCombo(){
                       <label>Combo name</label>
                       <Field
                           className="form-control"
-                          placeholder="Type the product name"
+                          placeholder="Type the combo name"
                           type="text"
                           name="nameCombo"
                         />
@@ -199,7 +200,7 @@ function CreateCombo(){
                         options={products} 
                         onSelect={onSelect}
                         onRemove={onRemove}
-                        displayValue='nameIngredient'
+                        displayValue='nameProduct'
                       />
                       </FormGroup>
                   
@@ -207,7 +208,7 @@ function CreateCombo(){
                       <label>Discount</label>
                       <Field
                           className="form-control"
-                          placeholder="Type the product price"
+                          placeholder="Type the discount"
                           type="text"
                           name="discountCombo"
                       />
@@ -221,7 +222,7 @@ function CreateCombo(){
                       <FormGroup>
                        < Field 
                           component="textarea"  
-                          placeholder="Type the product description"  
+                          placeholder="Type the combo description"  
                           name="descriptionCombo" 
                         />
                         <ErrorMessage
