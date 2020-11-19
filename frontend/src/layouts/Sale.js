@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import axios from "axios";
 import "./Sale.css"
+import "views/spinner.css"
 import {
   Collapse,
   Navbar,
@@ -27,16 +28,19 @@ import {
   
 } from "reactstrap";
 import logo from "assets/img/simple-logo.png";
-import { Multiselect } from 'multiselect-react-dropdown';
+
 import "./Suscription.css";
 import ruta from "views/url.js" 
+import CardProduct from "views/CardProduct.js"
 
 function Suscription(props) {
   const brokenImage = "http://karinlifoods.com/wp-content/uploads/2017/09/imagen-no-disponible.jpg"
   const [isOpen, setIsOpen] = useState(false);
   const [isSend, setSend] = useState(false);
-  const [ingredients, setIngredients]= useState([])
+  const [productChoosed, setproductChoosed]= useState([])
+  const [loading, setLoading]=useState(false)
 
+ 
   const toggle = () => setIsOpen(!isOpen);
   let history = useHistory();
 
@@ -55,11 +59,13 @@ function Suscription(props) {
   ]);
 
   useEffect(() => {
+    setLoading(true)
     axios
       .get('http://'+ruta+'/api/products/')
       .then(
         (res) => {setProdcutList(res.data)  
-        console.log(res.data)}
+        console.log(res.data)
+        setLoading(false)}
       )
       .catch((err) => console.log(err));
   }, []);
@@ -108,10 +114,7 @@ function Suscription(props) {
 
   return (
     <body data-spy="scroll" data-target="#navbar-l" data-offset="20">
-      {
-        //Barra de navegación
-        console.log(props.match.params.id)
-      }
+      
       <section id="home">
         <Navbar
           id="navbar-l"
@@ -151,7 +154,7 @@ function Suscription(props) {
 
         <div className="caption text-center">
           <h1>Sale</h1>
-          <h3 className=" lead px-5">Foods sales management system</h3>
+       
         </div>
         <div className="onda-s">
           <svg
@@ -169,40 +172,15 @@ function Suscription(props) {
       <section className="campos py-5">
       <h2 className="title">Productos</h2>
       <Container className="text-center">
-      {productList.map((product, i) => {
+      { loading ? 
+        <div className="spinner"></div>:
+         productList.map((product, i) => {
                          
-       return (
-        <div  key={i} className="product">
-              <div className="product-img">
-                  <img src={product.imageProduct} className="App-logo" alt="Producto" />
-              </div>
-              <div className="product-body">
-                  <p className="product-category">
-                      Category
-                  </p>
-                  <h3 className="product-name">{product.nameProduct}</h3>
-                  <h4 className="product-price">{product.priceProduct}</h4>  
-                  <p className="product-name">Ingredients</p>
-                  
-                  <Multiselect 
-                    options={product.ingredientProduct}
-                    selectedValues={product.ingredientProduct} 
-                    onSelect={onSelect}
-                    displayValue='nameIngredient'/>   
-                    <br></br>
-                  <p className="product-name">Additional ingredients</p>
-                  <Multiselect 
-                    options={ingredients} 
-                    onSelect={onSelect}
-                    displayValue='nameIngredient'/>
-              </div>
-                  
-              <div className="add-to-cart">                
-                  <button className="add-to-cart-btn"><i className="fa fa-shopping-cart"></i> Elegir</button>
-              </div> 
-          </div>
-         );
-        })}
+          return (
+            
+            <CardProduct key={i} product1={product} setSale={setproductChoosed}/>
+          );
+          })}
           
           </Container>
         {mostrarAlerta()}
