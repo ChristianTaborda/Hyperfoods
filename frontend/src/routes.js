@@ -17,6 +17,8 @@ import CreateClient from "views/CreateClient.js"
 import CreateTenant from "views/CreateTenat.js"
 import CreateIngredient from "views/CreateIngredient.js"
 import CreateCategory from "views/CreateCategory.js"
+import Product from "views/ListProduct.js"
+import ProductCreate from "views/CreateProduct1.js"
 
 
 
@@ -68,6 +70,20 @@ var routes = [
     name: "Create Ingredient",
     icon: "tim-icons icon-single-copy-04",
     component: CreateIngredient,
+    layout: "/admin"
+  },
+  {
+    path: "/productl",
+    name: "Product list",
+    icon: "tim-icons icon-bullet-list-67",
+    component: Product,
+    layout: "/admin"
+  },
+  {
+    path: "/product",
+    name: "Create product",
+    icon: "tim-icons icon-single-copy-04",
+    component: ProductCreate,
     layout: "/admin"
   },
 
