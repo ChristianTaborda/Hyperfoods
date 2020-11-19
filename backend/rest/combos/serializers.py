@@ -43,23 +43,24 @@ class CreateComboSerializer(serializers.ModelSerializer):
         ]
     
     def create(self, validated_data):
+
+        priceCombo = 0
+
         url = saveImageFirebase(self.context['request'].get_host(), validated_data['imageCombo'])
         combo = Combo.objects.create(
             nameCombo = validated_data['nameCombo'],
             descriptionCombo = validated_data['descriptionCombo'],
             discountCombo = validated_data['discountCombo'],
-            priceCombo = 0,
+            priceCombo = priceCombo,
             imageCombo = url
         )
 
-        # Add Products to Combo:
+        # - Add Products to Combo
+        # - Calculate Price for Combo
         for i in validated_data['productCombo']:
             combo.productCombo.add(i)
-
-        # Calculate Price for Combo:
-        priceCombo = 0
-        for i in validated_data['productCombo']:
             priceCombo = priceCombo + i.priceProduct
+            
         priceCombo = priceCombo - (priceCombo * (combo.discountCombo/100)) 
         combo.priceCombo = priceCombo
 

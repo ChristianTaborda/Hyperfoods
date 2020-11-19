@@ -11,7 +11,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'b(5y)15ik$=e9eld1%^a0f*-q!(#=8r@tk4=%u$l4fkqvqf!tb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = [
@@ -40,6 +40,8 @@ OWN_APPS = (
     'ingredients',
     'products',
     'combos',
+    'invoices',
+    'invoiceDetails',
     'front',
 )
 

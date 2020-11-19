@@ -24,6 +24,7 @@ urlpatterns = [
     path('api/ingredients/', include('ingredients.urls')),
     path('api/products/', include('products.urls')),
     path('api/combos/', include('combos.urls')),
+    path('api/invoices/', include('invoices.urls')),
     url(r'^', include('front.urls'))
 ]
 handler404 = 'front.views.handler404'
