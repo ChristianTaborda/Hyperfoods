@@ -44,6 +44,7 @@ class CustomUser(AbstractUser):
     phone = models.CharField(validators=[phone_validate], max_length=10, unique=True)
     address = models.CharField(max_length=50)
     email = models.EmailField(max_length=70, blank=True, null=True, unique=True)
+    color = models. CharField(max_length=70, null=True)
     #is_staff = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
 

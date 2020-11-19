@@ -71,7 +71,7 @@ function CreateProduct1(){
     
     const onSubmit = async(values, { resetForm }) => {
    
-        /*let ingrendients1=ingredientChoosed.map((ingredient, i) => {
+        let ingrendients1=ingredientChoosed.map((ingredient, i) => {
           return parseInt(ingredient.codeIngredient)
         });
         console.log(ingrendients1)
@@ -85,26 +85,21 @@ function CreateProduct1(){
           console.log(data.getAll(key))
         }
         
-        data.append("ingredientProduct",1)*/
-        var form = new FormData();
-        form.append("nameProduct", "Cocacola");
-        form.append("descriptionProduct", "Sabor original");
-        form.append("priceProduct", "2000");
-        form.append("categoryProduct", "1");
-        form.append("ingredientProduct", "1");
+        data.append("ingredientProduct",ingrendients1)
+       
 
         const config = {
           headers: {
               'content-type': "multipart/form-data; boundary=---011000010111000001101001"
           }
         };
-        form.append("imageProduct",image.image)
+        data.append("imageProduct",image.image)
        /*
         setTimeout(() => {
           resetForm(initialValues);
         }, 600);*/
         setLoading(true)
-        await axios.post('http://'+ruta+'/api/products/create',form, config)
+        await axios.post('http://'+ruta+'/api/products/create/',data, config)
                .then((res) => {
                  setSend(true)
                  setLoading(false)

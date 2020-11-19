@@ -92,6 +92,8 @@ class Login(APIView):
 class Login(APIView):
     serializer_class = UserLoginSerializer
     def post(self,request):
+        #print("================================")
+        #print(request.data['type'].exists())
         copy_data = request.data.copy()
         copy_data['type'] = request.path.split("/")[-3]
         serializer = UserLoginSerializer(data=copy_data)
