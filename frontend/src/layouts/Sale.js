@@ -1,10 +1,9 @@
-import React , { useState, useEffect, initialValues }from 'react'
+import React , { useState, useEffect }from 'react'
 import { useHistory } from "react-router-dom";
 import Footer from "components/Footer.js";
-import * as Yup from "yup";
-import { Formik, Field, Form, ErrorMessage } from "formik";
 import axios from "axios";
 import "./Sale.css"
+import "views/spinner.css"
 import {
   Collapse,
   Navbar,
@@ -13,30 +12,25 @@ import {
   NavItem,
   NavLink,
   Container,
-  Card,
-  Row,
   Col,
-  CardBody,
-  CardImg,
-  CardTitle,
-  CardSubtitle,
-  CardText,
-  FormGroup,
-  Button,
+  Row,
   UncontrolledAlert,
   
 } from "reactstrap";
 import logo from "assets/img/simple-logo.png";
-import { Multiselect } from 'multiselect-react-dropdown';
+
 import "./Suscription.css";
 import ruta from "views/url.js" 
+import CardProduct from "views/CardProduct.js"
 
 function Suscription(props) {
-  const brokenImage = "http://karinlifoods.com/wp-content/uploads/2017/09/imagen-no-disponible.jpg"
+  let brokenImage = "http://karinlifoods.com/wp-content/uploads/2017/09/imagen-no-disponible.jpg"
   const [isOpen, setIsOpen] = useState(false);
   const [isSend, setSend] = useState(false);
-  const [ingredients, setIngredients]= useState([])
+  const [productChoosed, setproductChoosed]= useState([])
+  const [loading, setLoading]=useState(false)
 
+ 
   const toggle = () => setIsOpen(!isOpen);
   let history = useHistory();
 
@@ -54,12 +48,21 @@ function Suscription(props) {
     },
   ]);
 
+  function sale(product){
+    let tLista = productChoosed;
+                 tLista.push(product);
+    setproductChoosed(tLista)
+    console.log(productChoosed.length)
+  }
+
   useEffect(() => {
+    setLoading(true)
     axios
       .get('http://'+ruta+'/api/products/')
       .then(
         (res) => {setProdcutList(res.data)  
-        console.log(res.data)}
+        console.log(res.data)
+        setLoading(false)}
       )
       .catch((err) => console.log(err));
   }, []);
@@ -67,51 +70,24 @@ function Suscription(props) {
 
 
   const onSubmit = (values, { resetForm }) => {
-    let mensaje = values;
-    mensaje.Plan = props.match.params.id;
-    console.log(JSON.stringify(mensaje));
-    setSend(true);
-    setTimeout(() => {
-      resetForm(initialValues);
-    }, 600);
-    axios
-      .post("http://hyperfoods.team/api/categories/sendEmail/", mensaje)
+   
+    /*axios
+      .post("", mensaje)
       .then((res) => {
         console.log("%c response ", "background: #222; color: #bada55");
         console.table(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err));*/
     //    setTimeout(() => {  history.push("/"); }, 800);
 
     //history.push("/");
   };
   
-  const mostrarAlerta = () => {
-    if (isSend) {
-      return (
-        <UncontrolledAlert color="success">
-          <span>
-            <b>Sent successfully-</b>
-            We will get in touch with you in the shortest time possible
-          </span>
-        </UncontrolledAlert>
-      );
-    }
-  };
-  const onSelect=(selectedList, selectedItem)=> {
-    console.log(selectedList)
-
-  }
-  const onRemove=(selectedList, removedItem)=> {
-   
-}
 
   return (
+    <>
     <body data-spy="scroll" data-target="#navbar-l" data-offset="20">
-      {
-        //Barra de navegación
-        console.log(props.match.params.id)
-      }
+      
       <section id="home">
         <Navbar
           id="navbar-l"
@@ -151,7 +127,7 @@ function Suscription(props) {
 
         <div className="caption text-center">
           <h1>Sale</h1>
-          <h3 className=" lead px-5">Foods sales management system</h3>
+       
         </div>
         <div className="onda-s">
           <svg
@@ -168,44 +144,19 @@ function Suscription(props) {
       </section>
       <section className="campos py-5">
       <h2 className="title">Productos</h2>
+     
       <Container className="text-center">
-      {productList.map((product, i) => {
-                         
-       return (
-        <div  key={i} className="product">
-              <div className="product-img">
-                  <img src={product.imageProduct} className="App-logo" alt="Producto" />
-              </div>
-              <div className="product-body">
-                  <p className="product-category">
-                      Category
-                  </p>
-                  <h3 className="product-name">{product.nameProduct}</h3>
-                  <h4 className="product-price">{product.priceProduct}</h4>  
-                  <p className="product-name">Ingredients</p>
-                  
-                  <Multiselect 
-                    options={product.ingredientProduct}
-                    selectedValues={product.ingredientProduct} 
-                    onSelect={onSelect}
-                    displayValue='nameIngredient'/>   
-                    <br></br>
-                  <p className="product-name">Additional ingredients</p>
-                  <Multiselect 
-                    options={ingredients} 
-                    onSelect={onSelect}
-                    displayValue='nameIngredient'/>
-              </div>
-                  
-              <div className="add-to-cart">                
-                  <button className="add-to-cart-btn"><i className="fa fa-shopping-cart"></i> Elegir</button>
-              </div> 
-          </div>
-         );
-        })}
+        { loading ? 
+          <div className="spinner"></div>:
+          productList.map((product, i) => {
+            return (
+              <CardProduct key={i} product1={product} setSale={sale}/>
+            );
+          })
+        }
           
-          </Container>
-        {mostrarAlerta()}
+       </Container>
+      
       </section>
       <div className="onda-footer-s">
         <svg
@@ -222,6 +173,7 @@ function Suscription(props) {
      
       <Footer fluid />
     </body>
+    </>
   );
 }
 
