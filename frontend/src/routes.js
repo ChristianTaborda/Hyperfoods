@@ -5,6 +5,7 @@ import CreateWorker from "views/CreateWorker.js"
 import ListClients from "views/ListClients.js"
 import CreateClient from "views/CreateClient.js"
 
+
 // Template views
 // import Dashboard from "views/Dashboard.js";
 // import Icons from "views/Icons.js";
@@ -14,6 +15,11 @@ import CreateClient from "views/CreateClient.js"
 // import Typography from "views/Typography.js";
 // import UserProfile from "views/UserProfile.js";
 import CreateTenant from "views/CreateTenat.js"
+import CreateIngredient from "views/CreateIngredient.js"
+import CreateCategory from "views/CreateCategory.js"
+import Product from "views/ListProduct.js"
+import ProductCreate from "views/CreateProduct1.js"
+
 
 
 var routes = [  
@@ -50,6 +56,34 @@ var routes = [
     name: "Create Tenant",
     icon: "tim-icons icon-chart-pie-36",
     component: CreateTenant,
+    layout: "/admin"
+  },
+  {
+    path: "/category",
+    name: "Create category",
+    icon: "tim-icons icon-single-copy-04",
+    component: CreateCategory,
+    layout: "/admin"
+  },
+  {
+    path: "/ingredient",
+    name: "Create Ingredient",
+    icon: "tim-icons icon-single-copy-04",
+    component: CreateIngredient,
+    layout: "/admin"
+  },
+  {
+    path: "/productl",
+    name: "Product list",
+    icon: "tim-icons icon-bullet-list-67",
+    component: Product,
+    layout: "/admin"
+  },
+  {
+    path: "/product",
+    name: "Create product",
+    icon: "tim-icons icon-single-copy-04",
+    component: ProductCreate,
     layout: "/admin"
   },
 
