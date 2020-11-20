@@ -19,7 +19,7 @@ function CreateCombo(){
         descriptionCombo: "",
         discountCombo: ""
     });
-   
+    const [loading, setLoading]=useState(false)
     const [products, setproducts]= useState([])
     const [productsChoosed, setproductsChoosed]=useState([])
    
@@ -66,34 +66,38 @@ function CreateCombo(){
     
     const onSubmit = async(values, { resetForm }) => {
    
-        let combo=productsChoosed.map((product, i) => {
-          return product.codeProduct
-        });
-        values.productCombo=combo
+        
+        //values.productCombo=combo
         let data= new FormData();
         for ( var key in values ) {
           data.append(key, values[key]);
           console.log(key)
           console.log(data.getAll(key))
         }
+        for (var i=0; i<productsChoosed.length; i++){
+          console.log(productsChoosed[i].codeProduct)
+          data.append("productCombo",productsChoosed[i].codeProduct)
+        }
+       
       
         data.append("imageCombo",image.image)
-       /*
-        setTimeout(() => {
-          resetForm(initialValues);
-        }, 600);*/
-        /*await axios
-             .post("http://tenant1.hyperfoods.team/api/products/create/",data)
+        
+
+        const config = {
+          headers: {
+              'content-type': "multipart/form-data; boundary=---011000010111000001101001"
+          }
+        };
+        setLoading(true)
+        await axios
+            .post('http://'+ruta+'/api/combos/create/',data, config)
             .then((res) => {
              setSend(true)
+             setLoading(false)
              console.log("%c response ", "background: #222; color: #bada55");
              console.table(res.data); 
              })
-       .catch((err) => console.log(err)) */
-       
-      
-      
-      
+       .catch((err) => console.log(err))           
       }
 
       const formSchema = Yup.object().shape({
@@ -249,6 +253,9 @@ function CreateCombo(){
               </CardFooter> 
             </Form>
             </Formik>
+            {loading ? 
+                 <div className="spinner"></div>:null
+            }
           </Card>
          
         {mostrarAlerta()}

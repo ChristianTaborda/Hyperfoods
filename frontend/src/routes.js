@@ -20,6 +20,7 @@ import CreateCategory from "views/CreateCategory.js"
 import Product from "views/ListProduct.js"
 import ProductCreate from "views/CreateProduct1.js"
 import CreateCombo from "views/CreateCombo.js"
+import ListCombo from "views/ListCombo.js"
 
 
 
@@ -85,6 +86,13 @@ var routes = [
     name: "Create product",
     icon: "tim-icons icon-single-copy-04",
     component: ProductCreate,
+    layout: "/admin"
+  },
+  {
+    path: "/listcombo",
+    name: "Combo list",
+    icon: "tim-icons icon-bullet-list-67",
+    component: ListCombo,
     layout: "/admin"
   },
   {
