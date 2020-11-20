@@ -36,7 +36,7 @@ function CreateCategory(){
           resetForm(initialValues);
         }, 600);
         await axios
-        .post("http://'+ruta+'/api/categories/create/",values)
+        .post("http://"+ruta+"/api/categories/create/",values)
         .then((res) => {
           setSend(true)
           setLoading(false)
