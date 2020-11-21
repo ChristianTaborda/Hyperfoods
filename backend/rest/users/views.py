@@ -92,10 +92,13 @@ class Login(APIView):
 class Login(APIView):
     serializer_class = UserLoginSerializer
     def post(self,request):
-        #print("================================")
-        #print(request.data['type'].exists())
+
         copy_data = request.data.copy()
         copy_data['type'] = request.path.split("/")[-3]
+        print("================================")
+        if (request.data.get('type')!=None):
+            copy_data['social'] = request.data['type']
+ 
         serializer = UserLoginSerializer(data=copy_data)
         serializer.is_valid(raise_exception=True)
         user, token = serializer.save()

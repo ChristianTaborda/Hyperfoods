@@ -71,22 +71,21 @@ function CreateProduct1(){
     
     const onSubmit = async(values, { resetForm }) => {
    
-        let ingrendients1=ingredientChoosed.map((ingredient, i) => {
-          return parseInt(ingredient.codeIngredient)
-        });
-        console.log(ingrendients1)
-
-        values.categoryProduct=categoryChoosed
-
-        let data= new FormData();
-        for ( var key in values ) {
-          data.append(key, values[key]);
-          console.log(key)
-          console.log(data.getAll(key))
-        }
         
-        data.append("ingredientProduct",ingrendients1)
-       
+      values.categoryProduct=categoryChoosed
+
+      let data= new FormData();
+      for ( var key in values ) {
+        data.append(key, values[key]);
+        console.log(key)
+        console.log(data.getAll(key))
+      }
+      for (var i=0; i<ingredientChoosed.length; i++){
+        console.log(ingredientChoosed[i].codeIngredient)
+        data.append("ingredientProduct", ingredientChoosed[i].codeIngredient)
+      }
+        
+    
 
         const config = {
           headers: {

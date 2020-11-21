@@ -4,21 +4,20 @@ import { setIn } from 'formik';
 
 function CardProduct({product1, setSale}){
     let product={...product1}
-    console.log(product)
-    const [ingredients, setIngredients]= useState([])
+    const [ingredients, setIngredients]= useState(product.ingredientProduct)
     const [ingredientChoosed, setIngredientsChoosed]=useState([])
-/*
-    product.ingredientProduct ===undefined ? 
-    setIngredients([]):
-    setIngredients(product.ingredientProduct)*/
-   
+ 
     const onSelect=(selectedList, selectedItem)=> {
         product['ingredientProduct']=selectedList
+       
       
     }
   
     const onRemove=(selectedList, removedItem)=> {
-          product['ingredientProduct']=selectedList
+        console.log(selectedList)
+        product['ingredientProduct']=selectedList
+        console.log(product)
+         
     }
   
     return(
@@ -43,6 +42,9 @@ function CardProduct({product1, setSale}){
                     onSelect={onSelect}
                     onRemove={onRemove}
                     displayValue='nameIngredient'/>  
+                    <br></br>
+                    <br></br>
+                    <br></br>
                  
               </div>
               <div className="add-to-cart">                
@@ -50,6 +52,7 @@ function CardProduct({product1, setSale}){
                     className="add-to-cart-btn" 
                     onClick={
                         
+                        console.log(product),                        
                         ()=>setSale(product)
                     }
                     ><i className="fa fa-shopping-cart"></i> Elegir</button>

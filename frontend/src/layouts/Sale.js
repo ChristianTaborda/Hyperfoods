@@ -1,8 +1,6 @@
-import React , { useState, useEffect, initialValues }from 'react'
+import React , { useState, useEffect }from 'react'
 import { useHistory } from "react-router-dom";
 import Footer from "components/Footer.js";
-import * as Yup from "yup";
-import { Formik, Field, Form, ErrorMessage } from "formik";
 import axios from "axios";
 import "./Sale.css"
 import "views/spinner.css"
@@ -14,16 +12,8 @@ import {
   NavItem,
   NavLink,
   Container,
-  Card,
-  Row,
   Col,
-  CardBody,
-  CardImg,
-  CardTitle,
-  CardSubtitle,
-  CardText,
-  FormGroup,
-  Button,
+  Row,
   UncontrolledAlert,
   
 } from "reactstrap";
@@ -34,7 +24,7 @@ import ruta from "views/url.js"
 import CardProduct from "views/CardProduct.js"
 
 function Suscription(props) {
-  const brokenImage = "http://karinlifoods.com/wp-content/uploads/2017/09/imagen-no-disponible.jpg"
+  let brokenImage = "http://karinlifoods.com/wp-content/uploads/2017/09/imagen-no-disponible.jpg"
   const [isOpen, setIsOpen] = useState(false);
   const [isSend, setSend] = useState(false);
   const [productChoosed, setproductChoosed]= useState([])
@@ -58,6 +48,13 @@ function Suscription(props) {
     },
   ]);
 
+  function sale(product){
+    let tLista = productChoosed;
+                 tLista.push(product);
+    setproductChoosed(tLista)
+    console.log(productChoosed.length)
+  }
+
   useEffect(() => {
     setLoading(true)
     axios
@@ -73,46 +70,22 @@ function Suscription(props) {
 
 
   const onSubmit = (values, { resetForm }) => {
-    let mensaje = values;
-    mensaje.Plan = props.match.params.id;
-    console.log(JSON.stringify(mensaje));
-    setSend(true);
-    setTimeout(() => {
-      resetForm(initialValues);
-    }, 600);
-    axios
-      .post("http://hyperfoods.team/api/categories/sendEmail/", mensaje)
+   
+    /*axios
+      .post("", mensaje)
       .then((res) => {
         console.log("%c response ", "background: #222; color: #bada55");
         console.table(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err));*/
     //    setTimeout(() => {  history.push("/"); }, 800);
 
     //history.push("/");
   };
   
-  const mostrarAlerta = () => {
-    if (isSend) {
-      return (
-        <UncontrolledAlert color="success">
-          <span>
-            <b>Sent successfully-</b>
-            We will get in touch with you in the shortest time possible
-          </span>
-        </UncontrolledAlert>
-      );
-    }
-  };
-  const onSelect=(selectedList, selectedItem)=> {
-    console.log(selectedList)
-
-  }
-  const onRemove=(selectedList, removedItem)=> {
-   
-}
 
   return (
+    <>
     <body data-spy="scroll" data-target="#navbar-l" data-offset="20">
       
       <section id="home">
@@ -171,19 +144,19 @@ function Suscription(props) {
       </section>
       <section className="campos py-5">
       <h2 className="title">Productos</h2>
+     
       <Container className="text-center">
-      { loading ? 
-        <div className="spinner"></div>:
-         productList.map((product, i) => {
-                         
-          return (
-            
-            <CardProduct key={i} product1={product} setSale={setproductChoosed}/>
-          );
-          })}
+        { loading ? 
+          <div className="spinner"></div>:
+          productList.map((product, i) => {
+            return (
+              <CardProduct key={i} product1={product} setSale={sale}/>
+            );
+          })
+        }
           
-          </Container>
-        {mostrarAlerta()}
+       </Container>
+      
       </section>
       <div className="onda-footer-s">
         <svg
@@ -200,6 +173,7 @@ function Suscription(props) {
      
       <Footer fluid />
     </body>
+    </>
   );
 }
 

@@ -45,7 +45,7 @@ function CreateIngredient(){
          resetForm(initialValues);
       }, 600);
       await axios
-      .post("http://'+ruta+'/api/ingredients/create/",values)
+      .post("http://"+ruta+"/api/ingredients/create/",values)
       .then((res) => {
          setSend(true)
          setLoading(false)

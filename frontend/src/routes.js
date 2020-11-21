@@ -1,6 +1,4 @@
 /* eslint-disable */
-import React, { useState } from "react";
-
 // Added views
 import ListWorkers from "views/ListWorkers.js";
 import CreateWorker from "views/CreateWorker.js";
