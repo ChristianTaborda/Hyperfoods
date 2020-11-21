@@ -1,3 +1,4 @@
 export const SET_CREDENTIALS = "SET_CREDENTIALS";
 export const SET_SIDEBAR_OPENED = "SET_SIDEBAR_OPENED";
 export const SET_BGCOLOR = "SET_BGCOLOR";
+export const SET_USERTYPE = "SET_USERTYPE";

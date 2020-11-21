@@ -43,3 +43,7 @@ input {
   border: 1px solid #525f7f !important;
   border-radius: 5px !important;
 }
+
+.icon-badge {
+  margin-bottom: 5px !important;
+}

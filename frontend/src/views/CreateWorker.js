@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import NotificationAlert from "react-notification-alert";
 import axios from "axios";
+import ruta from "./url.js";
 
 // reactstrap components
 import {
@@ -10,6 +11,7 @@ import {
   Card,
   CardHeader,
   CardBody,
+  CardTitle,
   CardFooter,
   FormGroup,
   Input,
@@ -68,7 +70,7 @@ function CreateWorker() {
 
     console.log(payload);
     axios
-      .post("http://tenant1.hyperfoods.team/api/users/worker/create/", payload)
+      .post("http://" + ruta + "/api/users/worker/create/", payload)
       .then((res) => {
         if (res.status === 201) {
           notify("br", "success", "User Created Successfully");
@@ -174,7 +176,7 @@ function CreateWorker() {
           <Form>
             <Card>
               <CardHeader>
-                <h5 className="title">Create Worker</h5>
+                <CardTitle tag="h4">Create Worker</CardTitle>
               </CardHeader>
               <CardBody>
                 <Row>
