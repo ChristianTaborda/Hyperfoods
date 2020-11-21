@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import PerfectScrollbar from "perfect-scrollbar";
 import { connect } from "react-redux";
-import routes from "routes.js";
+import availableRoutes from "routes.js";
 import { setSidebarOpened } from "../redux/Template/actions.js";
 
 // core components
@@ -19,6 +19,7 @@ function Admin(props) {
   const [backgroundColor, setBackgroundColor] = useState(props.bgColor);
   const mainPanel = useRef();
   let history = useHistory();
+  const routes = availableRoutes();
 
   useEffect(
     () => {
@@ -90,7 +91,7 @@ function Admin(props) {
 
           <Switch>
             {getRoutes(routes)}
-            <Redirect from="*" to="/admin/dashboard" />
+            <Redirect from="*" to="/" />
           </Switch>
           <Footer fluid />
         </div>

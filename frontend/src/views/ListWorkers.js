@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import ruta from "./url.js";
 
 // reactstrap components
 import {
@@ -29,10 +30,10 @@ function ListWorkers() {
       },
     },
   ]);
-
+  
   useEffect(() => {
     axios
-      .get("http://tenant1.hyperfoods.team/api/users/worker/")
+      .get('http://'+ruta+'/api/users/worker/')
       .then((res) => setUserList(res.data))
       .catch((err) => console.log(err));
   }, []);

@@ -7,12 +7,13 @@ import PerfectScrollbar from "perfect-scrollbar";
 
 // reactstrap components
 import { Nav } from "reactstrap";
-import routes from "../routes.js";
+import availableRoutes from "../routes.js";
 
 var ps;
 
 function Sidebar(props) {
   const sidebar = useRef();
+  const routes = availableRoutes();
 
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {

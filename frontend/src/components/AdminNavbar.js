@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import routes from "routes.js";
+import availableRoutes from "routes.js";
 import { setSidebarOpened } from "../redux/Template/actions.js";
 import classNames from "classnames";
 
@@ -26,12 +26,13 @@ function AdminNavbar(props) {
   const [collapseOpen, setCollapseOpen] = useState(false);
   const [modalSearch, setModalSearch] = useState(false);
   const [color, setColor] = useState("navbar-transparent");
-
+  const routes = availableRoutes();
+  
   useEffect(
     () => {
       //component mounted (ComponentDidMount)
       window.addEventListener("resize", updateColor);
-
+      
       // callback at unmount (ComponentWillUnmount)
       return () => {
         window.removeEventListener("resize", updateColor);
@@ -77,7 +78,7 @@ function AdminNavbar(props) {
     )[0].name;
     // console.log(routes.map(route=>route.layout + route.path))
     // console.log(props.history.location.pathname)
-    // return "Brand";
+    // return "Brand"; 
   };
 
   return (
