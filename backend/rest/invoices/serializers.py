@@ -1,7 +1,7 @@
 from .models import Invoice
 from invoiceDetails.models import InvoiceDetail
 from rest_framework import serializers
-from users.serializers import ClientAllSerializer
+from users.serializers import ClientAllSerializer, WorkerSerializer
 from invoiceDetails.serializers import InvoiceDetailSerializer, CreateInvoiceDetailSerializer
 
 # Serializers for invoices:
@@ -11,6 +11,7 @@ from invoiceDetails.serializers import InvoiceDetailSerializer, CreateInvoiceDet
 class InvoiceSerializer(serializers.ModelSerializer):
 
     clientInvoice = ClientAllSerializer()
+    workerInvoice = WorkerSerializer()
     detailInvoice = InvoiceDetailSerializer(many = True)
 
     class Meta:
@@ -26,12 +27,14 @@ class CreateInvoiceSerializer(serializers.ModelSerializer):
         model = Invoice
         fields = [
             'clientInvoice',
+            'workerInvoice',
             'detailInvoice'
         ]
     
     def create(self, validated_data):        
         invoice = Invoice.objects.create(
-            clientInvoice = validated_data['clientInvoice']
+            clientInvoice = validated_data['clientInvoice'],
+            workerInvoice = validated_data['workerInvoice']
         )
 
         # InvoiceDetails creation:
@@ -87,11 +90,13 @@ class UpdateInvoiceSerializer(serializers.ModelSerializer):
         model = Invoice
         fields = [
             'clientInvoice',
+            'workerInvoice',
             'detailInvoice'
         ]
 
     def update(self, instance, validated_data):     
         instance.clientInvoice = validated_data['clientInvoice']
+        instance.workerInvoice = validated_data['workerInvoice']
         instance.totalInvoice = 0
         oldInvoiceDetails = Invoice.objects.get(codeInvoice = instance.codeInvoice).detailInvoice.all()
     

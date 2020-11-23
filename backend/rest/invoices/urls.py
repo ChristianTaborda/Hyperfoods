@@ -4,6 +4,7 @@ from .views import (
     DetailInvoice,
     ListInvoice,
     ListInvoice_Client,
+    ListInvoice_Worker,
     CreateInvoice,
     UpdateInvoice,
     DeleteInvoice,
@@ -17,4 +18,5 @@ urlpatterns = [
     path('update/<pk>/', UpdateInvoice.as_view()),
     path('delete/<pk>/', DeleteInvoice.as_view()),
     path('client/<clientInvoice>', ListInvoice_Client.as_view()),
+    path('worker/<workerInvoice>', ListInvoice_Worker.as_view())
 ]
