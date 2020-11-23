@@ -41,6 +41,17 @@ class ListInvoice_Client(ListAPIView):
 
     serializer_class = InvoiceSerializer
 
+# List operations view by worker
+class ListInvoice_Worker(ListAPIView):
+
+    def get_queryset(self):
+        invoices = Invoice.objects.filter(
+        workerInvoice = self.kwargs['workerInvoice']
+        )
+        return invoices
+
+    serializer_class = InvoiceSerializer
+
 # Create operations view
 class CreateInvoice(ListCreateAPIView):
     queryset = Invoice.objects.all()
