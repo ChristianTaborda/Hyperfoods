@@ -1,4 +1,4 @@
 # hyperfoods
 
 
-Primera version xd
+Aplicación multitenant para el manejo de franquicias de comida
