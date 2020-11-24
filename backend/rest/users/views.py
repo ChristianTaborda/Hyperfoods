@@ -24,6 +24,7 @@ from users.serializers import (
     WorkerSerializer,
     WorkerSingleSerializer,
     UserLoginSerializer,
+    SuperLoginSerializer,
     #CreateNewWorkerSerializer,
 )
 from rest_framework.views import APIView 
@@ -104,6 +105,19 @@ class Login(APIView):
         user, token = serializer.save()
         data = {
             'user': ClientAllSerializer(user).data if copy_data['type']=='client' else WorkerSerializer(user).data ,
+            'access_token': token
+        }
+        return Response(data)
+
+
+class LoginSuper(APIView):
+    serializer_class = SuperLoginSerializer
+    def post(self,request):
+        serializer = SuperLoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user, token = serializer.save()
+        data = {
+            'user': UserSerializer(user).data,
             'access_token': token
         }
         return Response(data)
