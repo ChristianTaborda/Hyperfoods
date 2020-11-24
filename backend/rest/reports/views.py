@@ -3,8 +3,10 @@ from django.http import HttpResponse
 from invoiceDetails.models import InvoiceDetail
 from invoices.models import Invoice
 from products.models import Product
+from users.models import Client
 from products.serializers import ProductSerializer
 from invoices.serializers import InvoiceSerializer
+from users.serializers import ClientAllSerializer
 import json
 
 # View for Report 1:
@@ -66,6 +68,32 @@ class HoursWithMoreSales(View):
         }
 
         return HttpResponse(json.dumps(response))
+
+# View for Report 3:
+class ClientsWithMorePurchases(View):
+    def get(self, request):
+
+        # Client purchases count:
+        clients = ClientAllSerializer(Client.objects.all(), many = True).data
+        dictionary = []
+        for i in range(len(clients)):
+            client = clients[i]['id_user']
+
+            invoices = Invoice.objects.filter(clientInvoice = client)
+            
+            data = {
+                'client': clients[i],
+                'purchases': len(invoices)                     
+            }
+            dictionary.append(data)
+
+        # Most selled products:
+        response = {
+            'report': sorted(dictionary, key = lambda x: x['purchases'], reverse = True)[:5]
+        }
+
+        return HttpResponse(json.dumps(response))
+
 
 
 
