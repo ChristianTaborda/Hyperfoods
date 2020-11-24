@@ -63,7 +63,7 @@ function Clients() {
                     <tr>
                       <th>Code</th>
                       <th>Category</th>
-                      <th>Nombre</th>
+                      <th>Name</th>
                       <th>Description</th>
                       <th>Price</th>
                     </tr>

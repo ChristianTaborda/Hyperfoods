@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import ruta from "./url.js"
 // reactstrap components
 import {
   Card,
@@ -16,32 +16,42 @@ function Combo() {
   const [comboList, setCombolist] = useState([
    { 
     codeCombo: "-",
-    comboCombo: [
-     {
-      codecombo: "-",
-      categorycombo: {
-        codeCategory: "-",
-        nameCategory: "-",
-
-      },
-      namecombo: "-",
-      descriptioncombo: "-",
-      pricecombo: "-"
-    },],
+    productCombo: [
+        {
+            codeProduct: "-",
+            categoryProduct: {
+                codeCategory:"-",
+                nameCategory: "-"
+            },
+            nameProduct: "-",
+            descriptionProduct: "-",
+            priceProduct: "-",
+            imageProduct: "-"
+        },
+        {
+            codeProduct: "-",
+            categoryProduct: {
+                codeCategory: "-",
+                nameCategory: "-"
+            },
+            nameProduct: "-",
+            descriptionProduct: "-",
+            priceProduct: "-",
+            imageProduct: "-"
+        },
+    ],
     nameCombo: "-",
     descriptionCombo: "-",
     discountCombo: "-",
-    priceCombo:"-",
-    imageCombo:"-"
+    priceCombo: "-",
+    imageCombo: "-"
+}
 
-
-
-   }
   ]);
 
   useEffect(() => {
     axios
-      .get("http://tenant1.hyperfoods.team/api/combo")
+      .get('http://'+ruta+'/api/combos/')
       .then(
         (res) => setCombolist(res.data)  
       )
@@ -60,13 +70,12 @@ function Combo() {
                 <CardTitle tag="h4">combos</CardTitle>
               </CardHeader>
               <CardBody>
-              {console.log(comboList)}
-                <Table className="tablesorter" responsive>
+                <Table className="tablesorter" responsive bordered>
                   <thead className="text-primary">
                     <tr>
                       <th>Code</th>
-                      <th>Category</th>
-                      <th>Nombre</th>
+                      <th>Name</th>
+                      <th className="text-center">Products</th>
                       <th>Description</th>
                       <th>Price</th>
                     </tr>
@@ -75,11 +84,35 @@ function Combo() {
                     {comboList.map((combo, i) => {
                       return (
                         <tr key={i}>
-                          <td>{combo.codecombo}</td>
-                          <td>{combo.categorycombo.nameCategory}</td>
-                          <td>{combo.namecombo}</td>
-                          <td>{combo.descriptioncombo}</td>
-                          <td>{combo.pricecombo}</td>
+                          <td>{combo.codeCombo}</td>
+                          <td>{combo.nameCombo}</td>
+                          <td> 
+                            <Table className="tablesorter" style={{background: "white"}}>
+                              <thead>
+                                <tr>
+                                  <th>code</th>
+                                  <th>Category</th>
+                                  <th>Name</th>
+                                  <th>Description</th>
+                                </tr>
+                              </thead>
+                            {combo.productCombo.map((product, i) => {
+                                  return (
+                                    <tr key={i}>
+                                      <td>{product.codeProduct}</td>
+                                      <td>{product.categoryProduct.nameCategory}</td>
+                                      <td>{product.nameProduct}</td>
+                                      <td>{product.descriptionProduct}</td>
+                                      
+                                    </tr>
+                                  );
+                                }
+                                )
+                                }
+                          </Table>
+                          </td>
+                          <td>{combo.descriptionCombo}</td>
+                          <td>{combo.priceCombo}</td>
                         </tr>
                       );
                     })}
