@@ -60,7 +60,7 @@ class HoursWithMoreSales(View):
             }
             dictionary.append(data)
 
-        # Most selled products:
+        # Hours with more Sales:
         response = {
             'report': sorted(dictionary, key = lambda x: x['sales'], reverse = True)[:5]
         }
