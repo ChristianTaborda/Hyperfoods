@@ -94,6 +94,40 @@ class ClientsWithMorePurchases(View):
 
         return HttpResponse(json.dumps(response))
 
+# View for Report 4:
+class ZonesWithMorePurchases(View):
+    def get(self, request):
+
+        # Zone purchases count:
+        clients = Invoice.objects.all().values('clientInvoice')
+        invoiceZones = []
+        zones = []
+        for i in clients:
+            zone = Client.objects.get(id_user = i['clientInvoice']).user.address
+            invoiceZones.append(zone)
+            if (zone not in zones):
+                zones.append(zone)
+
+        dictionary = []
+        for i in zones:
+            purchases = 0
+            for j in invoiceZones:
+                if (i == j):
+                    purchases = purchases + 1
+
+            data = {
+                'zone': i,
+                'purchases': purchases                     
+            }
+            dictionary.append(data)
+
+        # Hours with more Sales:
+        response = {
+            'report': sorted(dictionary, key = lambda x: x['purchases'], reverse = True)[:5]
+        }
+
+        return HttpResponse(json.dumps(response))
+
 
 
 
