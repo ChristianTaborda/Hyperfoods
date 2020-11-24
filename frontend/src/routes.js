@@ -19,6 +19,7 @@ import CreateCategory from "views/CreateCategory.js";
 import Product from "views/ListProduct.js";
 import ProductCreate from "views/CreateProduct1.js";
 import CreateCombo from "views/CreateCombo.js";
+import ListCombo from "views/ListCombo.js"
 
 import Sales from "./views/Sales/Sales";
 
@@ -92,6 +93,13 @@ export default function availableRoutes() {
       name: "Create Combo",
       icon: "tim-icons icon-single-copy-04",
       component: CreateCombo,
+      layout: "/admin",
+    },
+    {
+      path: "/list-combo",
+      name: "List Combo",
+      icon: "tim-icons icon-bullet-list-67",
+      component: ListCombo,
       layout: "/admin",
     },
     {
