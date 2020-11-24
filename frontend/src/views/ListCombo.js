@@ -11,8 +11,10 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import './spinner.css'
 
 function Combo() {
+  const [loading, setLoading]=useState(false)
   const [comboList, setCombolist] = useState([
    { 
     codeCombo: "-",
@@ -50,10 +52,15 @@ function Combo() {
   ]);
 
   useEffect(() => {
+    setLoading(true)
     axios
       .get('http://'+ruta+'/api/combos/')
       .then(
-        (res) => setCombolist(res.data)  
+        (res) => {
+          setCombolist(res.data)  
+          setLoading(false)
+
+        }
       )
       .catch((err) => console.log(err));
   }, []);
@@ -66,10 +73,11 @@ function Combo() {
         <Row>
           <Col md="12">
             <Card>
-              <CardHeader>
-                <CardTitle tag="h4">combos</CardTitle>
-              </CardHeader>
+             
               <CardBody>
+              {
+                 loading ? 
+                 <div className="spinner"></div>:
                 <Table className="tablesorter" responsive bordered>
                   <thead className="text-primary">
                     <tr>
@@ -117,7 +125,7 @@ function Combo() {
                       );
                     })}
                   </tbody>
-                </Table>
+                </Table>}
               </CardBody>
             </Card>
           </Col>
