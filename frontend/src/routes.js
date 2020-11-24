@@ -20,6 +20,7 @@ import Product from "views/ListProduct.js";
 import ProductCreate from "views/CreateProduct1.js";
 import CreateCombo from "views/CreateCombo.js";
 import ListCombo from "views/ListCombo.js"
+import ReportsText from "views/Charts.js"
 
 import Sales from "./views/Sales/Sales";
 
@@ -109,6 +110,14 @@ export default function availableRoutes() {
       component: Sales,
       layout: "/admin",
     },
+    {
+      path: "/reports",
+      name: "Reports text",
+      icon: "tim-icons icon-bag-16",
+      component: ReportsText,
+      layout: "/admin",
+    }
+
     // Template views
     // {
     //   path: "/dashboard",
