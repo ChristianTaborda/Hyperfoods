@@ -31,4 +31,5 @@ class CreateInvoiceDetailSerializer(serializers.ModelSerializer):
             'productInvoiceDetail',
             'ingredientInvoiceDetail',
         ]
+    
 
