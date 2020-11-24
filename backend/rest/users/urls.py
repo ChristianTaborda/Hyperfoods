@@ -31,17 +31,6 @@ from .views import (
     #DeleteClient,
 
 )
-"""
-    DeleteUser,
-
-WorkerList,
-WorkerDetail,
-CreateWorker,
-NewWorkerCreate,
-CreateMultipleWorker,
-WorkerUpdate,
-DeleteWorker
-"""
 
 urlpatterns = [
 
@@ -59,7 +48,6 @@ urlpatterns = [
     path('client-single/get/<pk>/', ClientSingleDetail.as_view()),
     path('client-single/update/<pk>/', ClientSingleUpdate.as_view()),
     path('client/login/', Login.as_view()),
-
 
     path('worker/', WorkerList.as_view()),
     path('worker/create/', WorkerCreate.as_view()),
