@@ -43,6 +43,7 @@ SINGLE_APPS = (
     'combos',
     'invoices',
     'invoiceDetails',
+    'reports',
     'front',
 )
 
