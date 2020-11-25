@@ -1,17 +1,12 @@
 
-FROM loquendomanzano/pyarn:latest
+FROM python:latest
 #ENV PYTHONUNBUFFERED 1
-
 RUN mkdir /app
 WORKDIR /app
 
 COPY ./backend/requirements.txt .
 COPY ./backend/rest .
 COPY ./frontend/build ./front/build
-#RUN cd react && yarn install && yarn run build && cd ..
-#RUN echo $(ls)
-#RUN mv react/build rest/front
-#RUN rm -rf react
 RUN pip install -r requirements.txt
 RUN useradd -s /bin/bash myuser
 USER myuser
