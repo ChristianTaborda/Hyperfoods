@@ -1,11 +1,9 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import (
-    AbstractBaseUser, BaseUserManager,
-    PermissionsMixin,
+    BaseUserManager,
     AbstractUser
 )
-import datetime
 from django.conf import settings
 
 #Extendemos la creacion del usuario abstracto de django
@@ -49,7 +47,7 @@ class CustomUser(AbstractUser):
     is_superuser = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'document'
-    REQUIRED_FIELDS = [ 'name', 'surname']
+    REQUIRED_FIELDS = [ 'name', 'surname', 'email']
     objects = UserManager()
 
     class Meta:

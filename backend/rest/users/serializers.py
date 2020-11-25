@@ -147,48 +147,25 @@ class UserLoginSerializer(serializers.Serializer):
         """Generar o recuperar token."""
         token, created = Token.objects.get_or_create(user=self.context['user'])
         return self.context['type'], token.key
-"""
-#========== Serializador para crear cliente con usuario ========== 
-class CreateNewClientSerializer(serializers.ModelSerializer):
-
-    user = UserSerializer()
-
-    class Meta:
-        model = Client
-        fields = [            
-            'type_client', 
-            'user', 
-        ]
-
-    def create(self, validated_data):
-        usuario = validated_data.pop('user')
-        usuario['password'] = make_password(usuario['password'])
-        custom = CustomUser.objects.create(**usuario)
-        #cliente['user'] = custom
-        cliente = Client.objects.create(user=custom, **validated_data)
-        return cliente        
-
-#========== Serializador para actualizar el cliente ========== 
-class UpdateClientSerializer(serializers.ModelSerializer):
-
-    #usuario = UserSerializer()
-    class Meta:
-        model = Client
-        fields = [
-            'type_client', 
-            'category',
-        ]
-
-    def update(self, instance, validated_data):
-        print("===============IMPORMIENDO================")
-        print(validated_data)
-        #validated_data['password'] = make_password(validated_data['password'])
-        user = super().update(instance, validated_data)
-        return user
-"""
-
-"""
 
 
+class SuperLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(max_length=12)
 
-"""
+    def validate(self, data):
+        queryset = CustomUser.objects.filter(email=data['email'])
+        if not queryset.exists():
+            raise serializers.ValidationError('Este correo no esta registrado')
+        user = queryset.values()[0]
+
+        if(not check_password(data['password'], user['password'])):
+            raise serializers.ValidationError('Contraseña incorrecta')
+            
+        self.context['user'] = queryset[0]
+        return data
+
+    def create(self, data):
+        """Generar o recuperar token."""
+        token, created = Token.objects.get_or_create(user=self.context['user'])
+        return self.context['token'], token.key

@@ -20,6 +20,7 @@ from django.conf.urls import url
 urlpatterns = [
     path('tenants/', include('tenant.urls')),
     path('admin/', admin.site.urls),
+    path('api/admin/', include('users.urls_tu')),
     url(r'^', include('front.urls'))
 ]
 handler404 = 'front.views.handler404'

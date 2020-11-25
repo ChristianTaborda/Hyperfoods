@@ -4,3 +4,4 @@ django-tenants==3.2.1
 djangorestframework==3.11.1
 Pillow==7.2.0
 psycopg2-binary==2.8.6
+pyrebase==3.0.27
