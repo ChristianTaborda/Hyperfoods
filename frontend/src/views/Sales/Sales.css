@@ -1,0 +1,40 @@
+.stepper-head {
+  padding-bottom: 22px;
+  margin-top: -10px;
+}
+
+.stepper-body {
+  margin-top: -25px;
+}
+
+.btn-sales {
+  max-height: 30px !important;
+  min-height: 30px !important;
+  max-width: 100px !important;
+  min-width: 100px !important;
+}
+
+.btn-confirm {
+  max-height: 35px !important;
+  min-height: 35px !important;
+  max-width: 120px !important;
+  min-width: 120px !important;
+  margin-top: -10px;
+}
+
+.order-buttons {
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.form-check-input {
+  margin-top: -12px !important;
+  margin-left: -22px !important;
+}
+.form-check {
+  margin-bottom: -20px !important;
+}
+
+.Card-body-center .card-body {
+  margin-bottom: -30px !important;
+}

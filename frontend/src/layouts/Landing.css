@@ -1,0 +1,216 @@
+body {
+    overflow-x: hidden;
+}
+/*Navegación*/
+.navbar-l {
+    text-transform: uppercase;
+    position: fixed !important;
+    font-weight: 700;
+    font-size: .9rem;
+    letter-spacing: .1rem;
+    background-color: rgba(0, 0, 0, 0.6) !important;
+}
+.navbar-l .nav-item .nav-link {
+    color: #ffffff;
+    font-weight: 600;
+}
+.navbar-brand-l img {
+    position: relative !important;
+    height: 2rem;
+    padding-top: .3125rem;
+    padding-bottom: .3125rem;
+    color: #ffffff;
+    margin-left: 17px;
+    margin-top: 3px;
+    font-size: 1rem;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color:white;
+}
+.navbar-dark .navbar-nav .nav-item .nav-link.active,
+.navbar-dark .navbar-nav .nav-item .nav-link:hover  {
+    color:rgb(221, 218, 17);
+}
+/*Home*/
+
+#home{
+    background-image: url(../assets/img/fondo.jpg);
+    min-height: 500px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;  
+    background-size: cover;    
+}
+.home-inner{
+    position: relative;
+    background: rgba(0, 6, 7, 0.9);
+    min-height: 500px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.caption {
+    background:  fixed no-repeat 50% 50%;
+    background-size: cover;
+    width: 100%;
+    max-width: 100%;
+    position: absolute;
+    top: 28%;
+    z-index: 1;
+    color: black;
+    text-transform: uppercase;
+}
+
+.caption h1{
+    font-size: 3.8rem;
+    font-weight: 600;
+    letter-spacing: .3rem;
+    text-shadow: .1rem .1rem .8rem black;
+}
+.caption h3{
+    font-size: 2rem;
+    text-shadow: .1rem .1rem .8rem black;
+    padding-bottom: 1rem;
+}
+/*Fin home*/
+
+.img-fluid{
+    float: center !important;
+    width: 50% !important;
+    display:block;
+margin:auto;
+  }
+
+.pricing {
+    background:  rgba(249, 202, 36,1.0)}
+
+.pricing h1{
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: .3rem;
+    text-shadow: .1rem .1rem .8rem black;
+}
+.pricing .text-prim {
+    border-bottom-width: 1px;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 900 !important;
+    border: 0;
+    color:#000000;
+    justify-content:center !important;
+}
+
+.pricing .table-responsive {
+    overflow-x:hidden; 
+    overflow-y:hidden;
+}
+
+.pricing .card, .team .card {
+    
+    position: relative ;
+    display: flex ;
+    flex-direction: column ;
+    min-width: 0 ;
+    word-wrap: break-word;
+    background-color: #ffffff ;
+    background-clip: border-box ;
+    border: .5rem solid rgba(243,247,250,.05);
+    border-radius: .5rem ;
+}
+.pricing .text-black, .team .text-black{
+    color: black ;
+}
+
+.pricing .features td, .team .features td{
+    color: gray;
+    border: none;
+    padding: 0.4rem;
+    vertical-align: top;
+    border-top: none ;
+}
+.pricing .card-text, .team .card-text {
+    color: gray;
+}
+.price1 {
+    color: #0648b3!important;
+}
+
+.pricing .check{
+    color: green;
+}
+.pricing .cancel{
+    color: red;
+}
+
+
+.team {
+    background:rgba(235, 77, 75,.6);
+}
+.team h1{
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: .3rem;
+    text-shadow: .1rem .1rem .8rem black;
+}
+
+.team .card .card-body .card-title {
+    color: #000;
+    text-transform: inherit;
+    font-weight: 600;
+    margin-bottom: .75rem;
+}
+
+.pay h3{
+    font-size: 2rem;
+    text-shadow: .1rem .1rem .8rem black;
+    padding-bottom: 1rem;
+}
+.tamano {
+    font-size: 2.5em;
+}
+.onda {
+    height: 160px; overflow: hidden;
+ 
+}
+.ondaa {
+    
+    height: 100%; width: 100%;
+    background:rgba(0, 6, 7, 0.9);
+}
+.ondaaa {
+    stroke: none; fill: rgba(249, 202, 36,1.0);
+
+}
+
+.onda-team {
+    height: 100px; overflow: hidden;
+}
+.ondaa-team {
+    height: 100%; width: 100%;  background:rgba(106, 176, 76,1.0)
+}
+.ondaaa-team {
+    stroke: none; fill: rgb(153, 59, 63);
+}
+.onda-pricing-team {
+    height: 100px; overflow: hidden;
+}
+.ondaa-pricing-team {
+    height: 100%; width: 100%;  background:rgba(106, 176, 76,1.0)
+}
+.ondaaa-pricing-team {
+    stroke: none; fill: rgba(249, 202, 36,1.0);
+}
+.onda-footer {
+    height: 150px; overflow: hidden;
+}
+.ondaa-footer {
+    height: 100%; width: 100%;  background:rgba(225, 73, 75, 0.63);
+}
+.ondaaa-footer {
+    stroke: none; fill: rgb(30, 31, 45);
+}
+
