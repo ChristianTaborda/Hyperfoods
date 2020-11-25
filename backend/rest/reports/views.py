@@ -3,8 +3,11 @@ from django.http import HttpResponse
 from invoiceDetails.models import InvoiceDetail
 from invoices.models import Invoice
 from products.models import Product
+from users.models import Client
+from users.models import Worker
 from products.serializers import ProductSerializer
 from invoices.serializers import InvoiceSerializer
+from users.serializers import ClientAllSerializer, WorkerSerializer
 import json
 
 # View for Report 1:
@@ -61,6 +64,90 @@ class HoursWithMoreSales(View):
             dictionary.append(data)
 
         # Hours with more Sales:
+        response = {
+            'report': sorted(dictionary, key = lambda x: x['sales'], reverse = True)[:5]
+        }
+
+        return HttpResponse(json.dumps(response))
+
+# View for Report 3:
+class ClientsWithMorePurchases(View):
+    def get(self, request):
+
+        # Client purchases count:
+        clients = ClientAllSerializer(Client.objects.all(), many = True).data
+        dictionary = []
+        for i in range(len(clients)):
+            client = clients[i]['id_user']
+
+            invoices = Invoice.objects.filter(clientInvoice = client)
+            
+            data = {
+                'client': clients[i],
+                'purchases': len(invoices)                     
+            }
+            dictionary.append(data)
+
+        # Most selled products:
+        response = {
+            'report': sorted(dictionary, key = lambda x: x['purchases'], reverse = True)[:5]
+        }
+
+        return HttpResponse(json.dumps(response))
+
+# View for Report 4:
+class ZonesWithMorePurchases(View):
+    def get(self, request):
+
+        # Zone purchases count:
+        clients = Invoice.objects.all().values('clientInvoice')
+        invoiceZones = []
+        zones = []
+        for i in clients:
+            zone = Client.objects.get(id_user = i['clientInvoice']).user.address
+            invoiceZones.append(zone)
+            if (zone not in zones):
+                zones.append(zone)
+
+        dictionary = []
+        for i in zones:
+            purchases = 0
+            for j in invoiceZones:
+                if (i == j):
+                    purchases = purchases + 1
+
+            data = {
+                'zone': i,
+                'purchases': purchases                     
+            }
+            dictionary.append(data)
+
+        # Hours with more Sales:
+        response = {
+            'report': sorted(dictionary, key = lambda x: x['purchases'], reverse = True)[:5]
+        }
+
+        return HttpResponse(json.dumps(response))
+
+# View for Report 5:
+class WorkersWithMoreSales(View):
+    def get(self, request):
+
+        # Worker sales count:
+        workers = WorkerSerializer(Worker.objects.all(), many = True).data
+        dictionary = []
+        for i in range(len(workers)):
+            worker = workers[i]['id_user']
+
+            invoices = Invoice.objects.filter(workerInvoice = worker)
+            
+            data = {
+                'worker': workers[i],
+                'sales': len(invoices)                     
+            }
+            dictionary.append(data)
+
+        # Most selled products:
         response = {
             'report': sorted(dictionary, key = lambda x: x['sales'], reverse = True)[:5]
         }
