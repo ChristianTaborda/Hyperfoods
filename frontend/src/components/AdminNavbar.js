@@ -1,25 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import availableRoutes from "routes.js";
 import { setSidebarOpened } from "../redux/Template/actions.js";
 import classNames from "classnames";
-
+import NotificationAlert from "react-notification-alert";
+import "./AdminNavbar.css";
 // reactstrap components
 import {
-  Button,
   Collapse,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
-  Input,
-  InputGroup,
   NavbarBrand,
   Navbar,
   NavLink,
   Nav,
   Container,
-  Modal,
+  Button,
 } from "reactstrap";
 
 function AdminNavbar(props) {
@@ -27,12 +25,24 @@ function AdminNavbar(props) {
   const [modalSearch, setModalSearch] = useState(false);
   const [color, setColor] = useState("navbar-transparent");
   const routes = availableRoutes();
-  
+  const notificationAlert = useRef();
+
+  // // function to show the status of local changes
+  // const localChangesStatus = () => {
+  //   let workers = window.sessionStorage.getItem("workers")
+  //   console.log(JSON.parse(workers))
+  // }
+
   useEffect(
     () => {
+      if (window.sessionStorage.getItem("workers") != null) {
+        sessionStorage.removeItem("workers");
+        notify("br", "success", "Successfully Synced");
+      }
+
       //component mounted (ComponentDidMount)
       window.addEventListener("resize", updateColor);
-      
+
       // callback at unmount (ComponentWillUnmount)
       return () => {
         window.removeEventListener("resize", updateColor);
@@ -78,12 +88,30 @@ function AdminNavbar(props) {
     )[0].name;
     // console.log(routes.map(route=>route.layout + route.path))
     // console.log(props.history.location.pathname)
-    // return "Brand"; 
+    // return "Brand";
+  };
+
+  //Function for notification settings
+  const notify = (place, type, message) => {
+    notificationAlert.current.notificationAlert({
+      place: place,
+      type: type, //["primary", "success", "danger", "warning", "info"]
+      message: <b>{message}</b>,
+      icon:
+        type === "success"
+          ? "tim-icons icon-check-2"
+          : "tim-icons icon-alert-circle-exc",
+      autoDismiss: 7,
+    });
   };
 
   return (
     <>
+      {/* {console.log(JSON.parse(window.sessionStorage.getItem("workers")))} */}
       <Navbar className={classNames("navbar-absolute", color)} expand="lg">
+        <div className="react-notification-alert-container">
+          <NotificationAlert ref={notificationAlert} />
+        </div>
         <Container fluid>
           <div className="navbar-wrapper">
             <div
@@ -101,7 +129,7 @@ function AdminNavbar(props) {
                 <span className="navbar-toggler-bar bar3" />
               </button>
             </div>
-            <NavbarBrand href="#pablo" onClick={(e) => e.preventDefault()}>
+            <NavbarBrand href="" onClick={(e) => e.preventDefault()}>
               {getBrandText()}
             </NavbarBrand>
           </div>
@@ -121,56 +149,38 @@ function AdminNavbar(props) {
           </button>
           <Collapse navbar isOpen={collapseOpen}>
             <Nav className="ml-auto" navbar>
-              <InputGroup className="search-bar">
+              {props.networkStatus && props.pending.length ? (
                 <Button
-                  color="link"
-                  data-target="#searchModal"
-                  data-toggle="modal"
-                  id="search-button"
-                  onClick={toggleModalSearch}
+                  onClick={() => {
+                    window.location.reload(false);
+                  }}
+                  className="btn-reload"
+                  color="info"
+                  size="sm"
                 >
-                  <i className="tim-icons icon-zoom-split" />
-                  <span className="d-lg-none d-md-block">Search</span>
+                  <i className="tim-icons icon-refresh-02" /> SYNC
+                  {props.pending.length ? ` (${props.pending.length})` : ""}
                 </Button>
-              </InputGroup>
+              ) : null}
               <UncontrolledDropdown nav>
                 <DropdownToggle
-                  caret
-                  color="default"
+                  // caret
+                  // color="default"
                   data-toggle="dropdown"
                   nav
                 >
-                  <div className="notification d-none d-lg-block d-xl-block" />
-                  <i className="tim-icons icon-sound-wave" />
-                  <p className="d-lg-none">Notifications</p>
+                  {props.networkStatus ? (
+                    <div>
+                      <i className="tim-icons icon-check-2 icon-online" />
+                      <p className="online-text">ONLINE</p>
+                    </div>
+                  ) : (
+                    <div>
+                      <i className="tim-icons icon-alert-circle-exc icon-offline" />
+                      <p className="offline-text">OFFLINE</p>
+                    </div>
+                  )}
                 </DropdownToggle>
-                <DropdownMenu className="dropdown-navbar" right tag="ul">
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      Mike John responded to your email
-                    </DropdownItem>
-                  </NavLink>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      You have 5 more tasks
-                    </DropdownItem>
-                  </NavLink>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      Your friend Michael is in town
-                    </DropdownItem>
-                  </NavLink>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      Another notification
-                    </DropdownItem>
-                  </NavLink>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      Another one
-                    </DropdownItem>
-                  </NavLink>
-                </DropdownMenu>
               </UncontrolledDropdown>
               <UncontrolledDropdown nav>
                 <DropdownToggle
@@ -204,7 +214,7 @@ function AdminNavbar(props) {
           </Collapse>
         </Container>
       </Navbar>
-      <Modal
+      {/* <Modal
         modalClassName="modal-search"
         isOpen={modalSearch}
         toggle={toggleModalSearch}
@@ -221,15 +231,16 @@ function AdminNavbar(props) {
             <i className="tim-icons icon-simple-remove" />
           </button>
         </div>
-      </Modal>
+      </Modal> */}
     </>
   );
 }
 
-
 const mapStateToProps = (state) => {
   return {
     sidebarOpened: state.templateReducer.templateProps.sidebarOpened,
+    networkStatus: state.templateReducer.templateProps.networkStatus,
+    pending: state.offlineReducer.pending,
   };
 };
 

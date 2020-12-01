@@ -4,6 +4,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 import { connect } from "react-redux";
 import availableRoutes from "routes.js";
 import { setSidebarOpened } from "../redux/Template/actions.js";
+import { setNetworkStatus } from "../redux/Template/actions.js";
 
 // core components
 import AdminNavbar from "components/AdminNavbar.js";
@@ -13,6 +14,13 @@ import FixedPlugin from "components/FixedPlugin.js";
 
 import "./Admin.css";
 
+// -- message from service-worker --
+// const channel = new BroadcastChannel('sw-messages');
+// channel.addEventListener('message', event => {
+// console.log('Received', event.data);
+// });
+// -- -- -- -- -- -- -- -- -- -- ---
+
 var ps;
 
 function Admin(props) {
@@ -20,9 +28,15 @@ function Admin(props) {
   const mainPanel = useRef();
   let history = useHistory();
   const routes = availableRoutes();
+  props.setNetworkStatus(window.navigator.onLine);
 
   useEffect(
     () => {
+  
+      // Listeners for network status
+        window.addEventListener('online', () => props.setNetworkStatus(true))
+        window.addEventListener('offline', () => props.setNetworkStatus(false))  
+
       // component mounted (ComponentDidMount)
       if (navigator.platform.indexOf("Win") > -1) {
         document.documentElement.className += " perfect-scrollbar-on";
@@ -111,6 +125,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setSidebarOpened: (state) => dispatch(setSidebarOpened(state)),
+    setNetworkStatus: (state) => dispatch(setNetworkStatus(state)),
   };
 };
 

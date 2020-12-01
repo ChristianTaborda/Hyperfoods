@@ -245,7 +245,7 @@ function CreateCombo(){
                <Button 
                  className="btn-fill" 
                  color="primary" 
-                 color="success" 
+                 color="info"
                  type="submit"
                >
                Create

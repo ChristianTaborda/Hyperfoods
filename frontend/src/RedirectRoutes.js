@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 
 export default function RedirectRoutes() {
-  console.log(window.sessionStorage.getItem("userType"));
+  // console.log(window.sessionStorage.getItem("userType"));
 
   if (window.sessionStorage.getItem("userType") === null) {
     return <Redirect from="/" to="/landing" />;

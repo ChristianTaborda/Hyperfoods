@@ -7,7 +7,6 @@ import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import NotificationAlert from "react-notification-alert";
 import { setCredentials } from "../redux/Login/actions.js";
-import { setUserType } from "../redux/Template/actions";
 import logo from "../assets/img/logo.png";
 import "./Login.css";
 import firebase from "firebase/app";
@@ -35,11 +34,11 @@ function LoginWorkers(props) {
 
   //Function to handle Login submit
   const onSubmit = (values, { resetForm }) => {
-    console.log(values);
+    // console.log(values);
     axios
       .post("http://" + ruta + "/api/users/worker/login/", values)
       .then((res) => {
-        console.log("res", res.data);
+        // console.log("res", res.data);
         if (res.status === 200) {
           if (res.data.user.user.is_active) {
             notify("br", "success", "Login successful");
@@ -118,10 +117,7 @@ function LoginWorkers(props) {
         }
 
         setIsSignedIn(!!user);
-      });
-
-      // Setting de type of user to the initial Template state
-      props.setUserType(userType);
+      });            
     },
     // eslint-disable-next-line
     []
@@ -217,8 +213,7 @@ function LoginWorkers(props) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setCredentials: (credentials) => dispatch(setCredentials(credentials)),
-    setUserType: (type) => dispatch(setUserType(type)),
+    setCredentials: (credentials) => dispatch(setCredentials(credentials)),    
   };
 };
 
