@@ -14,13 +14,6 @@ import FixedPlugin from "components/FixedPlugin.js";
 
 import "./Admin.css";
 
-// -- message from service-worker --
-// const channel = new BroadcastChannel('sw-messages');
-// channel.addEventListener('message', event => {
-// console.log('Received', event.data);
-// });
-// -- -- -- -- -- -- -- -- -- -- ---
-
 var ps;
 
 function Admin(props) {

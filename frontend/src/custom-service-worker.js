@@ -1,5 +1,4 @@
 const FOLDER_NAME = "post_requests";
-//const FOLDER_NAME = 'post_requests';
 
 function openDatabase() {
   // if `react-form` does not already exist in our browser (under  our site), it is created
@@ -37,7 +36,8 @@ self.addEventListener("install", function (e) {
       caches
         .open(cacheName)
         .then((cache) => {
-          console.log("Service Worker: Caching Files");
+          // console.log("Service Worker: Caching Files");
+          // console.log(cacheUrls);
           // slice(1) skip the fetch request to http://tenant1.localhost:8000/admin/list-workers
           // try again when Django can serve all routes
           cache.addAll(cacheUrls); //.slice(1)
@@ -51,7 +51,7 @@ self.addEventListener("install", function (e) {
       if (e.data.hasOwnProperty("form_data")) {
         // receives form data from Login upon submission
         form_data = e.data.form_data;
-        console.log("form data", e.data);
+        // console.log("form data", e.data);
       }
 
       if (e.data.payload != undefined) {
@@ -136,8 +136,10 @@ self.addEventListener("fetch", (e) => {
   }
 });
 
-//Sync - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-const channel = new BroadcastChannel('sw-messages'); //<----------------------------------------------
+// Sync - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// communication service-worker -> client
+const channel = new BroadcastChannel("sw-messages");
 
 function sendPostToServer() {
   try {
@@ -170,17 +172,19 @@ function sendPostToServer() {
             body: payload,
           })
             .then(function (response) {
-              //console.log("server response", response);
-                              // From service-worker.js:
-                              //channel.postMessage({response: response.status});//<----------------------------------------------
+              // console.log("server response", response);
+              // Message from service-worker to client -- -- -|              
+              channel.postMessage({ 
+                response: response.status,
+                email: savedRequest.payload.user.email
+              });
+              // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- |
 
-              if (response.status < 400) {
-                // If sending the POST request was successful, then
-                // remove it from the IndexedDB.
-                getObjectStore(FOLDER_NAME, "readwrite").delete(
-                  savedRequest.id
-                );
-              }
+              //if (response.status < 400) { // for custom response messages from  server
+              // If sending the POST request was successful, then
+              // remove it from the IndexedDB.
+              getObjectStore(FOLDER_NAME, "readwrite").delete(savedRequest.id);
+              //}
             })
             .catch(function (error) {
               // This will be triggered if the network is still down.

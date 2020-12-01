@@ -27,18 +27,34 @@ function AdminNavbar(props) {
   const routes = availableRoutes();
   const notificationAlert = useRef();
 
-  // // function to show the status of local changes
-  // const localChangesStatus = () => {
-  //   let workers = window.sessionStorage.getItem("workers")
-  //   console.log(JSON.parse(workers))
-  // }
+  // Message from service-worker to client
+  const channel = new BroadcastChannel("sw-messages");
+
+  // Message from service-worker to client
+  function notificationFromServiceWorker(event) {
+    if (event.data.response === 201) {
+      notify(
+        "br",
+        "success",
+        `User registration with email ${event.data.email} was successful`
+      );
+    } else {
+      notify(
+        "br",
+        "danger",
+        `User with email ${event.data.email} already exist`
+      );
+    }
+  }
 
   useEffect(
     () => {
       if (window.sessionStorage.getItem("workers") != null) {
         sessionStorage.removeItem("workers");
-        notify("br", "success", "Successfully Synced");
       }
+
+      // Message from service-worker to client
+      channel.addEventListener("message", notificationFromServiceWorker);
 
       //component mounted (ComponentDidMount)
       window.addEventListener("resize", updateColor);
@@ -96,7 +112,7 @@ function AdminNavbar(props) {
     notificationAlert.current.notificationAlert({
       place: place,
       type: type, //["primary", "success", "danger", "warning", "info"]
-      message: <b>{message}</b>,
+      message: message,
       icon:
         type === "success"
           ? "tim-icons icon-check-2"
