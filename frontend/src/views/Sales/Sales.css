@@ -38,3 +38,7 @@
 .Card-body-center .card-body {
   margin-bottom: -30px !important;
 }
+
+.delete-order {
+  border-color: white !important;
+}

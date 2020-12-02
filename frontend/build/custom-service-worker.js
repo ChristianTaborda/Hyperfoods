@@ -1,5 +1,4 @@
 const FOLDER_NAME = "post_requests";
-//const FOLDER_NAME = 'post_requests';
 
 function openDatabase() {
   // if `react-form` does not already exist in our browser (under  our site), it is created
@@ -38,7 +37,7 @@ self.addEventListener("install", function (e) {
         .open(cacheName)
         .then((cache) => {
           // console.log("Service Worker: Caching Files");
-          console.log(cacheUrls);
+          // console.log(cacheUrls);
           // slice(1) skip the fetch request to http://tenant1.localhost:8000/admin/list-workers
           // try again when Django can serve all routes
           cache.addAll(cacheUrls); //.slice(1)

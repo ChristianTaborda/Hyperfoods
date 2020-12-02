@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 // reactstrap components
 import {
@@ -9,18 +9,70 @@ import {
   Table,
   Row,
   Col,
+  Button,
 } from "reactstrap";
 
 export default function Order(props) {
-  const products = props.order.filter((item) => item.codeProduct);
-  const combos = props.order.filter((item) => item.codeCombo);
+  const indexProducts = [];
+  const products = props.order.filter((item, index) => {
+    if (item.codeProduct) indexProducts.push(index);
+    return item.codeProduct;
+  });
 
-  let priceProducts = 0;
-  let priceCombos = 0;
-  let priceProductsCombos = 0;
-  let taxes = 19 / 100;
-  // let granTotal = 0;
-  let fixed = 0;
+  const indexCombos = [];
+  const combos = props.order.filter((item, index) => {
+    if (item.codeCombo) indexCombos.push(index);
+    return item.codeCombo;
+  });
+
+  const taxes = 19 / 100;
+  const fixed = 0;
+
+  const [priceProducts, setpriceProducts] = useState(0);
+  const [priceCombos, setpriceCombos] = useState(0);
+  const [priceProductsCombos, setpriceProductsCombos] = useState(0);
+
+  function calculatePricesProducts() {
+    return products.reduce((accumulator, item) => {
+      let ingredientsPrices = item.ingredientProduct
+        .filter((ingredient) => ingredient.additionalIngredient)
+        .reduce((total, ingredient) => total + ingredient.priceIngredient, 0);
+
+      return accumulator + item.priceProduct + ingredientsPrices;
+    }, 0);
+  }
+
+  function calculatePricesCombos() {
+    let price = combos.reduce((accumulator, item) => {
+      let discount = item.priceCombo * (item.discountCombo / 100);
+
+      let extra = item.productCombo.reduce(
+        (accumulatorProduct, product) =>
+          accumulatorProduct + product.ingredientProduct.length
+            ? product.ingredientProduct
+                .map((ingredient) => ingredient.priceIngredient)
+                .reduce((a, b) => a + b, 0)
+            : 0,
+        0
+      );
+      let totalComboItem = item.priceCombo + extra - discount;
+      return accumulator + totalComboItem;
+    }, 0);
+
+    return price;
+  }
+
+  useEffect(() => {
+    let pricesProducts = calculatePricesProducts();
+    let pricesCombos = calculatePricesCombos();
+    let pricesProductsCombos = pricesProducts + pricesCombos;
+
+    setpriceProducts(pricesProducts);
+    setpriceCombos(pricesCombos);
+    setpriceProductsCombos(pricesProductsCombos);
+
+    props.setGranTotal(pricesProductsCombos + pricesProductsCombos * taxes);
+  });
 
   function trimCommas(str) {
     str = str.join("").replaceAll(",,", ", ");
@@ -43,30 +95,60 @@ export default function Order(props) {
               <Table className="order-tablesorter" responsive>
                 <thead className="text-primary">
                   <tr>
+                    <th>Remove</th>
                     <th>Code Product</th>
-                    <th>Name Product</th>
                     <th>Category</th>
+                    <th>Name Product</th>
                     <th>Basic Price</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    <th>Extra</th>
+                    <th>Extra Price</th>
                     <th className="text-right">Products Price</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
                   {products.map((item, i) => {
-                    priceProducts += item.priceProduct;
+                    let ingredients = item.ingredientProduct
+                      .filter((ingredient) => ingredient.additionalIngredient)
+                      .map((ingredient) => ingredient.nameIngredient)
+                      .join(", ");
+
+                    let ingredientsPrices = item.ingredientProduct
+                      .filter((ingredient) => ingredient.additionalIngredient)
+                      .reduce(
+                        (total, ingredient) =>
+                          total + ingredient.priceIngredient,
+                        0
+                      );
+
                     return (
                       <tr key={i}>
+                        <td className="text-center">
+                          <button
+                            className="delete-order"
+                            onClick={() =>
+                              props.setOrder((prev) =>
+                                prev.filter(
+                                  (item, index) => index != indexProducts[i]
+                                )
+                              )
+                            }
+                          >
+                            x
+                          </button>
+                        </td>
                         <td>{item.codeProduct}</td>
-                        <td>{item.nameProduct}</td>
                         <td>{item.categoryProduct.nameCategory}</td>
-                        <td>$ {(item.priceProduct).toFixed(fixed)}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td className="text-right">$ {(item.priceProduct).toFixed(fixed)}</td>
+                        <td>{item.nameProduct}</td>
+                        <td>$ {item.priceProduct.toFixed(fixed)}</td>
+                        <td>{ingredients}</td>
+                        <td>$ {ingredientsPrices}</td>
+                        <td className="text-right">
+                          ${" "}
+                          {(item.priceProduct + ingredientsPrices).toFixed(
+                            fixed
+                          )}
+                        </td>
                         <td></td>
                       </tr>
                     );
@@ -79,7 +161,9 @@ export default function Order(props) {
                     <th></th>
                     <th></th>
                     <th></th>
-                    <th className="text-right">$ {priceProducts.toFixed(fixed)}</th>
+                    <th className="text-right">
+                      $ {priceProducts.toFixed(fixed)}
+                    </th>
                     <th></th>
                   </tr>
                 </tbody>
@@ -90,6 +174,7 @@ export default function Order(props) {
               <Table className="order-tablesorter" responsive>
                 <thead className="text-primary">
                   <tr>
+                    <th>Remove</th>
                     <th>Code Combo</th>
                     <th>Name Combo</th>
                     <th>Basic</th>
@@ -128,17 +213,26 @@ export default function Order(props) {
                         : ""
                     );
                     extra = trimCommas(extra);
+
                     let totalComboItem =
                       item.priceCombo + extraPriceItem - discount;
-                    priceCombos += totalComboItem;
-
-                    priceProductsCombos = priceProducts + priceCombos;
-                    props.setGranTotal(
-                      priceProductsCombos + priceProductsCombos * taxes
-                      )
 
                     return (
                       <tr key={i}>
+                        <td className="text-center">
+                          <button
+                            className="delete-order"
+                            onClick={() =>
+                              props.setOrder((prev) =>
+                                prev.filter(
+                                  (item, index) => index != indexCombos[i]
+                                )
+                              )
+                            }
+                          >
+                            X
+                          </button>
+                        </td>
                         <td>{item.codeCombo}</td>
                         <td>{item.nameCombo}</td>
                         <td>{basic}</td>
@@ -154,6 +248,7 @@ export default function Order(props) {
                     );
                   })}
                   <tr>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -189,7 +284,9 @@ export default function Order(props) {
 
                   <tr>
                     <th className="text-right">TOTAL</th>
-                <th className="text-right">$ {props.granTotal.toFixed(fixed)} {`<`}</th>
+                    <th className="text-right">
+                      $ {props.granTotal.toFixed(fixed)} {`<`}
+                    </th>
                   </tr>
                 </tbody>
               </Table>

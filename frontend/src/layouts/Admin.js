@@ -21,14 +21,14 @@ function Admin(props) {
   const mainPanel = useRef();
   let history = useHistory();
   const routes = availableRoutes();
-  props.setNetworkStatus(window.navigator.onLine);
 
   useEffect(
     () => {
-  
+      props.setNetworkStatus(window.navigator.onLine);
+
       // Listeners for network status
-        window.addEventListener('online', () => props.setNetworkStatus(true))
-        window.addEventListener('offline', () => props.setNetworkStatus(false))  
+      window.addEventListener("online", () => props.setNetworkStatus(true));
+      window.addEventListener("offline", () => props.setNetworkStatus(false));
 
       // component mounted (ComponentDidMount)
       if (navigator.platform.indexOf("Win") > -1) {

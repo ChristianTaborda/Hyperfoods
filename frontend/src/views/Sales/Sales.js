@@ -107,7 +107,7 @@ const combos = [
           {
             codeIngredient: 2,
             nameIngredient: "Tocino",
-            priceIngredient: 3500,
+            priceIngredient: 4500,
             additionalIngredient: true,
           },
           {
@@ -187,7 +187,7 @@ const products = [
 
 function Sales() {
   const [activeStep, setActiveStep] = useState(0);
-  const order = [...products, ...combos];
+  const [order, setOrder] = useState([]); // ([...products,...combos])
 
   const nextStep = () => {
     if (activeStep < 3) {
@@ -268,12 +268,15 @@ function Sales() {
             <div className="stepper-body">
               <Card>
                 <CardBody>
-                  {activeStep === 0 ? <Products nextStep={nextStep} /> : null}
+                  {activeStep === 0 ? (
+                    <Products setOrder={setOrder} order={order} />
+                  ) : null}
                   {activeStep === 1 ? (
                     <Order
                       nextStep={nextStep}
                       previousStep={previousStep}
                       order={order}
+                      setOrder={setOrder}
                       granTotal={granTotal}
                       setGranTotal={setGranTotal}
                     />
