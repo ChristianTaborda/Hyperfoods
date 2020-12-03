@@ -33,7 +33,6 @@ class UserSerializer(serializers.ModelSerializer):
         return user  
 
     def update(self, instance, validated_data):
-        print(validated_data['surname'])
         if 'password' in validated_data:
             validated_data['password'] = make_password(validated_data['password'])
         user = super().update(instance, validated_data)
@@ -69,10 +68,13 @@ class ClientAllSerializer(serializers.ModelSerializer):
         return cliente    
 
     def update(self, instance, validated_data):
+        user_data = validated_data.pop('user')
+        user = UserSerializer()
         if 'password' in validated_data:
             validated_data['password'] = make_password(validated_data['password'])
-        cliente = super().update(instance, validated_data)
-        return cliente  
+        super(UserSerializer,user).update(instance.user,user_data)
+        super().update(instance, validated_data)
+        return instance  
 
 #========== Serializador para crear el cliente ========== 
 class CreateClientSerializer(serializers.ModelSerializer):
@@ -108,10 +110,13 @@ class WorkerSerializer(serializers.ModelSerializer):
         return worker  
 
     def update(self, instance, validated_data):
+        user_data = validated_data.pop('user')
+        user = UserSerializer()
         if 'password' in validated_data:
             validated_data['password'] = make_password(validated_data['password'])
-        worker = super().update(instance, validated_data)
-        return worker
+        super(UserSerializer,user).update(instance.user,user_data)
+        super().update(instance, validated_data)
+        return instance  
 
 
 class UserLoginSerializer(serializers.Serializer):
