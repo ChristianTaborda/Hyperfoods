@@ -74,3 +74,11 @@ class Worker(models.Model):
     USER_TYPE_CHOICES = ((1, 'manager'), (2, 'digitizer'))
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     user_type = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES)
+
+class ChangePassword(models.Model):
+    id_cp = models.AutoField(primary_key=True)
+    idlink = models.CharField(max_length=25, unique=True)
+    used = models.BooleanField(default=False)
+    generated = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    
