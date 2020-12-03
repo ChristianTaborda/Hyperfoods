@@ -25,6 +25,8 @@ from users.serializers import (
     WorkerSingleSerializer,
     UserLoginSerializer,
     SuperLoginSerializer,
+    RequestPasswordReset,
+    PasswordReset,
     #CreateNewWorkerSerializer,
 )
 from rest_framework.views import APIView 
@@ -122,7 +124,26 @@ class LoginSuper(APIView):
         }
         return Response(data)
 
+class RequestPasswordResetView(APIView):
+    serializer_class = RequestPasswordReset
+    def post(self,request):
+        serializer = RequestPasswordReset(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        data = {
+            'message': 'llave creada con exito, revisar el correo' 
+        }
+        return Response(data)
 
+class PasswordResetView(APIView):
+    serializer_class = PasswordReset
+    def post(self,request):
+        serializer = PasswordReset(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = {
+            'message': 'Clave cambiada' 
+        }
+        return Response(data)
 
 #========== CRUD para la informacion basica del usuario ==========
 #Listar todos los usuarios basicos

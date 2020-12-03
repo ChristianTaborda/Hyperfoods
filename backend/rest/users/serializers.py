@@ -2,11 +2,15 @@ from rest_framework import serializers
 from users.models import (
     CustomUser,
     Client,
-    Worker
+    Worker,
+    ChangePassword
     )
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import password_validation, authenticate
 from rest_framework.authtoken.models import Token
+import time
+import random
+
 
 #========== Serializador completo para el usuario basico ========== 
 class UserSerializer(serializers.ModelSerializer):
@@ -174,3 +178,45 @@ class SuperLoginSerializer(serializers.Serializer):
         """Generar o recuperar token."""
         token, created = Token.objects.get_or_create(user=self.context['user'])
         return self.context['token'], token.key
+
+
+class RequestPasswordReset(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate(self, data):
+        queryset = CustomUser.objects.filter(email=data['email'])
+        if not queryset.exists():
+            raise serializers.ValidationError('Este correo no esta registrado')
+        self.context['user'] = queryset[0]
+        return data
+
+    def create(self, data):
+        hora = time.strftime("%Y%m%d%H%M%S")
+        idlink = hora + str(random.randint(100000, 999999))     
+        """Generar o recuperar token."""
+        query = ChangePassword.objects.create(
+            idlink=idlink,
+            user=self.context['user']
+        )
+        return query
+
+class PasswordReset(serializers.Serializer):
+    idlink = serializers.CharField()
+    password = serializers.CharField()
+    def validate(self, data):
+        change_pass = ChangePassword.objects.filter(idlink=data['idlink'])
+        if not change_pass.exists():
+            raise serializers.ValidationError('Este enlace no existe')
+        print("==================")
+        print(change_pass.values()[0]['used'])
+        if change_pass.values()[0]['used']==True:
+            raise serializers.ValidationError('Este enlace ya no es valido')
+
+        new_password = make_password(data['password'])
+       
+        user = CustomUser.objects.filter(id_user=change_pass.values()[0]['user_id'])
+        user.update(password = new_password)
+        change_pass.update(used=True)
+        #user.save
+        #user = super().update(instance, validated_data)
+        return user

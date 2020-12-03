@@ -3,6 +3,8 @@ from django.urls import path
 from .views import (
 
     Login,
+    RequestPasswordResetView,
+    PasswordResetView,
     
     UserList, 
     UserCreate, 
@@ -38,6 +40,9 @@ urlpatterns = [
     path('create/', UserCreate.as_view()),
     path('get/<pk>/', UserDetail.as_view()),
     path('update/<pk>/', UserUpdate.as_view()),
+    path('request-password-reset/', RequestPasswordResetView.as_view()),
+    path('password-reset/', PasswordResetView.as_view()),
+
 
     path('client/', ClientList.as_view()),
     path('client/create/', ClientCreate.as_view()),
