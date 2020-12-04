@@ -1,5 +1,10 @@
 from django.db import models
 from django_tenants.models import TenantMixin, DomainMixin
+from django.core.validators import RegexValidator
+from django.contrib.auth.models import (
+    BaseUserManager,
+    AbstractUser
+)
 
 class Tenant(TenantMixin):
     name = models.CharField(max_length=100)
@@ -12,3 +17,5 @@ class Tenant(TenantMixin):
 
 class Domain(DomainMixin):
     pass
+
+

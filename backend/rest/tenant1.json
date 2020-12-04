@@ -108,8 +108,8 @@
     "is_active": true,
     "type_document": "1",
     "document": "1144189189",
-    "name": "Estemen",
-    "surname": "Lafrego",
+    "name": "Carlos",
+    "surname": "Guerra",
     "phone": "4455474",
     "address": "Car 28# A51-1234",
     "email": "stemen@gmail.com",
@@ -164,11 +164,71 @@
   }
 },
 {
+  "model": "users.customuser",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$216000$orzpomuTz0ef$SJ2UYVLwHSRF3pAdZgapmF9MwFLHDcR98N1RKgveuuw=",
+    "last_login": null,
+    "is_staff": false,
+    "date_joined": "2020-11-19T20:50:28.458Z",
+    "is_active": true,
+    "type_document": "1",
+    "document": "577653910",
+    "name": "christian",
+    "surname": "taborda",
+    "phone": "423432444",
+    "address": "8687786 aven street",
+    "email": "christian.tabora@correounivalle.edu.co",
+    "color": null,
+    "is_superuser": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.customuser",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$216000$V34VsvkVl2hG$MF6WpqyFQWathTQbozwIRToXsY1VifauofB3WjDooqI=",
+    "last_login": null,
+    "is_staff": false,
+    "date_joined": "2020-11-19T21:01:37.421Z",
+    "is_active": true,
+    "type_document": "1",
+    "document": "1144189914",
+    "name": "jem pool",
+    "surname": "suarez",
+    "phone": "3146774001",
+    "address": "11786 Bay Avenue",
+    "email": "jem.suarez@correounivalle.edu.co",
+    "color": null,
+    "is_superuser": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
   "model": "users.client",
   "pk": 1,
   "fields": {
     "credit_card": "123654789",
     "user": 1
+  }
+},
+{
+  "model": "users.client",
+  "pk": 2,
+  "fields": {
+    "credit_card": "3432444234",
+    "user": 5
+  }
+},
+{
+  "model": "users.client",
+  "pk": 3,
+  "fields": {
+    "credit_card": "4432433424",
+    "user": 6
   }
 },
 {
