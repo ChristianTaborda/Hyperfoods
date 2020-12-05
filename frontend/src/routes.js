@@ -19,6 +19,8 @@ import CreateCategory from "views/CreateCategory.js";
 import Product from "views/ListProduct.js";
 import ProductCreate from "views/CreateProduct1.js";
 import CreateCombo from "views/CreateCombo.js";
+import ListCombo from "views/ListCombo.js"
+import ReportsText from "views/Charts.js"
 
 import Sales from "./views/Sales/Sales";
 
@@ -95,12 +97,27 @@ export default function availableRoutes() {
       layout: "/admin",
     },
     {
+      path: "/list-combo",
+      name: "List Combo",
+      icon: "tim-icons icon-bullet-list-67",
+      component: ListCombo,
+      layout: "/admin",
+    },
+    {
       path: "/sales",
       name: "Sale",
       icon: "tim-icons icon-single-copy-04",
       component: Sales,
       layout: "/admin",
     },
+    {
+      path: "/reports",
+      name: "Reports text",
+      icon: "tim-icons icon-bag-16",
+      component: ReportsText,
+      layout: "/admin",
+    }
+
     // Template views
     // {
     //   path: "/dashboard",

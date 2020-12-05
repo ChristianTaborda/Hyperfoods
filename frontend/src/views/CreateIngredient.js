@@ -179,7 +179,7 @@ function CreateIngredient(){
             <thead >
               <tr>
                 <th>Code</th>
-                <th>Nombre</th>
+                <th>Name</th>
                 <th>Price</th>
                 <th>Aditional?</th>
               </tr>

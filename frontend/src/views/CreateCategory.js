@@ -131,7 +131,7 @@ function CreateCategory(){
                     <thead >
                         <tr>
                           <th>Code</th>
-                          <th>Nombre</th>
+                          <th>Name</th>
                         </tr>
                       </thead>
                       <tbody>
