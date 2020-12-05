@@ -85,7 +85,7 @@ function Clients() {
                          type="button"
                          color="warning"
                          className="fa fa-cog"
-                       >Edit</Button>
+                      >{" "}Edit</Button>
                      </td>
                         </tr>
                       );

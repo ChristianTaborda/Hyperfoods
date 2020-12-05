@@ -1,10 +1,15 @@
-import { SET_SIDEBAR_OPENED, SET_BGCOLOR, SET_USERTYPE } from "../constants.js";
+import {
+  SET_SIDEBAR_OPENED,
+  SET_BGCOLOR,
+  SET_MODE,
+  SET_NETWORKSTATUS,
+} from "../constants.js";
 import logo from "../../assets/img/simple-logo.png";
 
 const initialState = {
   templateProps: {
-    userType: "user", // ["user","client", "admin"]
-    sidebarOpened: true,
+    networkStatus: window.navigator.onLine, // [true, false]
+    sidebarOpened: true, // [true, false]
     bgColor: "blue", //["primary", "blue", "green"]
     mode: "light", // ["light", "dark"]
     logo: {
@@ -42,18 +47,31 @@ function templateReducer(state = initialState, action) {
     );
   }
 
-    // setUserType
-    if (action.type === SET_USERTYPE) {
-      return Object.assign(
-        {},
-        {
-          templateProps: {
-            ...state.templateProps,
-            userType: action.payload,
-          },
-        }
-      );
-    }
+  // setMode
+  if (action.type === SET_MODE) {
+    return Object.assign(
+      {},
+      {
+        templateProps: {
+          ...state.templateProps,
+          mode: action.payload,
+        },
+      }
+    );
+  }
+
+  // setUserType
+  if (action.type === SET_NETWORKSTATUS) {
+    return Object.assign(
+      {},
+      {
+        templateProps: {
+          ...state.templateProps,
+          networkStatus: action.payload,
+        },
+      }
+    );
+  }
 
   return state;
 }

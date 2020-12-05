@@ -113,7 +113,7 @@ function CreateCategory(){
                     <Button 
                       className="btn-fill" 
                       color="primary" 
-                      color="success" 
+                      color="info"
                       type="submit"
                     >
                     Create
@@ -146,7 +146,7 @@ function CreateCategory(){
                                
                                  color="warning"
                                  className="fa fa-cog"
-                                >Edit</Button>
+                               >{" "}Edit</Button>
                               </td>
                             </tr>
                           );

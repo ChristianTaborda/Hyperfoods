@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import NotificationAlert from "react-notification-alert";
 import { setCredentials } from "../redux/Login/actions.js";
-import { setUserType } from "../redux/Template/actions";
+import { setBgColor, setMode } from "../redux/Template/actions.js";
 import logo from "../assets/img/logo.png";
 import "./Login.css";
 import firebase from "firebase/app";
@@ -32,18 +32,21 @@ function LoginClients(props) {
   window.sessionStorage.setItem("userType", userType);
   const notificationAlert = useRef();
   let history = useHistory();
+  const [loading, setLoading] = useState(false);
 
   //Function to handle Login submit
   const onSubmit = (values, { resetForm }) => {
-    console.log(values);
+    // console.log(values);
     axios
       .post("http://" + ruta + "/api/users/client/login/", values)
       .then((res) => {
-        console.log("res", res.data);
+        // console.log("res", res.data);
         if (res.status === 200) {
           if (res.data.user.user.is_active) {
+            loadColorProfile(res.data.user.user.color);
             notify("br", "success", "Login successful");
             props.setCredentials(res.data);
+            window.sessionStorage.setItem("idUser", res.data.user.id_user);
             setTimeout(() => {
               history.push("/");
             }, 800);
@@ -52,6 +55,7 @@ function LoginClients(props) {
       })
       .catch((e) => {
         console.log(e);
+        setLoading(false);
         notify("br", "danger", "Incorrect user Id or password");
         setTimeout(() => {
           resetForm({
@@ -60,6 +64,20 @@ function LoginClients(props) {
           });
         }, 600);
       });
+  };
+
+  // load color profile from user
+  const loadColorProfile = (profile) => {
+    console.log(profile);
+    if (profile != null) {
+      let jsonProfile = JSON.parse(profile);
+      props.setBgColor(jsonProfile.bgColor);
+      props.setMode(jsonProfile.mode);
+    } else {
+      // default settings
+      props.setBgColor("blue");
+      props.setMode("light");
+    }
   };
 
   //Schema for input data valiation using Yup
@@ -86,7 +104,7 @@ function LoginClients(props) {
         type === "success"
           ? "tim-icons icon-check-2"
           : "tim-icons icon-alert-circle-exc",
-      autoDismiss: 7,
+      autoDismiss: 2,
     });
   };
 
@@ -119,9 +137,6 @@ function LoginClients(props) {
 
         setIsSignedIn(!!user);
       });
-
-      // Setting de type of user to the initial Template state
-      props.setUserType(userType);
     },
     // eslint-disable-next-line
     []
@@ -147,8 +162,8 @@ function LoginClients(props) {
             <div className="text-center">
               <img className="login-logo" alt="logo" src={logo} />
             </div>
+            {loading ? <div className="loader" /> : null}
             <br />
-
             <FormGroup>
               &nbsp;
               <i className="tim-icons icon-single-02" />
@@ -187,8 +202,13 @@ function LoginClients(props) {
               <Button
                 type="submit"
                 className="btn btn-dark btn-block"
-                // onClick={onClickLogin}
                 onSubmit={() => {}}
+                onClick={() => {
+                  setTimeout(() => {
+                    setLoading(true);
+                  }, 5);
+                }}
+                disabled={loading}
               >
                 Log in
               </Button>
@@ -218,7 +238,8 @@ function LoginClients(props) {
 const mapDispatchToProps = (dispatch) => {
   return {
     setCredentials: (credentials) => dispatch(setCredentials(credentials)),
-    setUserType: (type) => dispatch(setUserType(type)),
+    setBgColor: (color) => dispatch(setBgColor(color)),
+    setMode: (mode) => dispatch(setMode(mode)),
   };
 };
 

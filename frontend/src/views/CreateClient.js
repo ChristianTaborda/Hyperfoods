@@ -368,7 +368,7 @@ function CreateClient() {
                 <Button
                   type="submit"
                   className="btn-fill"
-                  color="success"
+                  color="info"
                   onSubmit={() => {}}
                 >
                   Save
