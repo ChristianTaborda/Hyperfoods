@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import NotificationAlert from "react-notification-alert";
 import { setCredentials } from "../redux/Login/actions.js";
+import { setBgColor, setMode } from "../redux/Template/actions.js";
 import logo from "../assets/img/logo.png";
 import "./Login.css";
 import firebase from "firebase/app";
@@ -31,6 +32,7 @@ function LoginWorkers(props) {
   window.sessionStorage.setItem("userType", userType);
   const notificationAlert = useRef();
   let history = useHistory();
+  const [loading, setLoading] = useState(false);
 
   //Function to handle Login submit
   const onSubmit = (values, { resetForm }) => {
@@ -38,11 +40,12 @@ function LoginWorkers(props) {
     axios
       .post("http://" + ruta + "/api/users/worker/login/", values)
       .then((res) => {
-        // console.log("res", res.data);
         if (res.status === 200) {
           if (res.data.user.user.is_active) {
+            loadColorProfile(res.data.user.user.color);
             notify("br", "success", "Login successful");
             props.setCredentials(res.data);
+            window.sessionStorage.setItem("idUser", res.data.user.id_user);
             setTimeout(() => {
               history.push("/");
             }, 800);
@@ -51,6 +54,7 @@ function LoginWorkers(props) {
       })
       .catch((e) => {
         console.log(e);
+        setLoading(false);
         notify("br", "danger", "Incorrect user Id or password");
         setTimeout(() => {
           resetForm({
@@ -59,6 +63,20 @@ function LoginWorkers(props) {
           });
         }, 600);
       });
+  };
+
+  // load color profile from user
+  const loadColorProfile = (profile) => {
+    // console.log(profile);
+    if (profile != null) {
+      let jsonProfile = JSON.parse(profile);
+      props.setBgColor(jsonProfile.bgColor);
+      props.setMode(jsonProfile.mode);
+    } else {
+      // default settings
+      props.setBgColor("blue");
+      props.setMode("light");
+    }
   };
 
   //Schema for input data valiation using Yup
@@ -85,7 +103,7 @@ function LoginWorkers(props) {
         type === "success"
           ? "tim-icons icon-check-2"
           : "tim-icons icon-alert-circle-exc",
-      autoDismiss: 7,
+      autoDismiss: 2,
     });
   };
 
@@ -117,7 +135,7 @@ function LoginWorkers(props) {
         }
 
         setIsSignedIn(!!user);
-      });            
+      });
     },
     // eslint-disable-next-line
     []
@@ -130,7 +148,6 @@ function LoginWorkers(props) {
         <div className="react-notification-alert-container">
           <NotificationAlert ref={notificationAlert} />
         </div>
-
         <Formik
           initialValues={{
             email: "",
@@ -143,8 +160,8 @@ function LoginWorkers(props) {
             <div className="text-center">
               <img className="login-logo" alt="logo" src={logo} />
             </div>
+            {loading ? <div className="loader" /> : null}
             <br />
-
             <FormGroup>
               &nbsp;
               <i className="tim-icons icon-badge" />
@@ -183,8 +200,13 @@ function LoginWorkers(props) {
               <Button
                 type="submit"
                 className="btn btn-dark btn-block"
-                // onClick={onClickLogin}
                 onSubmit={() => {}}
+                onClick={() => {
+                  setTimeout(() => {
+                    setLoading(true);
+                  }, 5);
+                }}
+                disabled={loading}
               >
                 Log in
               </Button>
@@ -213,7 +235,9 @@ function LoginWorkers(props) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setCredentials: (credentials) => dispatch(setCredentials(credentials)),    
+    setCredentials: (credentials) => dispatch(setCredentials(credentials)),
+    setBgColor: (color) => dispatch(setBgColor(color)),
+    setMode: (mode) => dispatch(setMode(mode)),
   };
 };
 

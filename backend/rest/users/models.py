@@ -1,11 +1,9 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import (
-    AbstractBaseUser, BaseUserManager,
-    PermissionsMixin,
+    BaseUserManager,
     AbstractUser
 )
-import datetime
 from django.conf import settings
 
 #Extendemos la creacion del usuario abstracto de django
@@ -49,7 +47,7 @@ class CustomUser(AbstractUser):
     is_superuser = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'document'
-    REQUIRED_FIELDS = [ 'name', 'surname']
+    REQUIRED_FIELDS = [ 'name', 'surname', 'email']
     objects = UserManager()
 
     class Meta:
@@ -76,3 +74,11 @@ class Worker(models.Model):
     USER_TYPE_CHOICES = ((1, 'manager'), (2, 'digitizer'))
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     user_type = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES)
+
+class ChangePassword(models.Model):
+    id_cp = models.AutoField(primary_key=True)
+    idlink = models.CharField(max_length=25, unique=True)
+    used = models.BooleanField(default=False)
+    generated = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    

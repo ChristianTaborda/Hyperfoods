@@ -30,29 +30,34 @@ DJANGO_APPS = (
     'django.contrib.staticfiles',
 )
 
-OWN_APPS = (
-    'users',
-    'categories',
-    'ingredients',
-    'products',
-    'combos',
-    'invoices',
-    'invoiceDetails',
-    'front',
-)
-
 THIRD_PARTY_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
 )
 
-SHARED_APPS = (
+SINGLE_APPS = (
+    'categories',
+    'ingredients',
+    'products',
+    'combos',
+    'invoices',
+    'invoiceDetails',
+    'reports',
+    'front',
+)
+
+PRINCIPAL = (
     'django_tenants',
     'tenant',
-)  
+)
 
-TENANT_APPS = DJANGO_APPS + THIRD_PARTY_APPS + OWN_APPS 
+SHARED = (
+    'users',
+)
+
+SHARED_APPS = PRINCIPAL + DJANGO_APPS + THIRD_PARTY_APPS + SHARED
+TENANT_APPS = DJANGO_APPS + THIRD_PARTY_APPS + SHARED + SINGLE_APPS 
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
 

@@ -24,6 +24,9 @@ from users.serializers import (
     WorkerSerializer,
     WorkerSingleSerializer,
     UserLoginSerializer,
+    SuperLoginSerializer,
+    RequestPasswordReset,
+    PasswordReset,
     #CreateNewWorkerSerializer,
 )
 from rest_framework.views import APIView 
@@ -109,6 +112,38 @@ class Login(APIView):
         return Response(data)
 
 
+class LoginSuper(APIView):
+    serializer_class = SuperLoginSerializer
+    def post(self,request):
+        serializer = SuperLoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user, token = serializer.save()
+        data = {
+            'user': UserSerializer(user).data,
+            'access_token': token
+        }
+        return Response(data)
+
+class RequestPasswordResetView(APIView):
+    serializer_class = RequestPasswordReset
+    def post(self,request):
+        serializer = RequestPasswordReset(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        data = {
+            'message': 'llave creada con exito, revisar el correo' 
+        }
+        return Response(data)
+
+class PasswordResetView(APIView):
+    serializer_class = PasswordReset
+    def post(self,request):
+        serializer = PasswordReset(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = {
+            'message': 'Clave cambiada' 
+        }
+        return Response(data)
 
 #========== CRUD para la informacion basica del usuario ==========
 #Listar todos los usuarios basicos
@@ -221,105 +256,8 @@ class CreateSingleWorker(ListCreateAPIView):
 class WorkerSingleUpdate(UpdateAPIView):
     queryset = Worker.objects.all()
     serializer_class = WorkerSingleSerializer
-"""
-#Crear cliente asignando un usuario ya existente
-class ClientCreate(ListCreateAPIView):
-    queryset = Client.objects.all()
-    serializer_class = CreateClientSerializer
-
-
 
 #Crear cliente incluyendo usuario al mismo tiempo
 class NewClientCreate(ListCreateAPIView):
     queryset = Client.objects.all()
-    serializer_class = CreateNewClientSerializer
-
-"""
-#Crear cliente incluyendo usuario al mismo tiempo
-class NewClientCreate(ListCreateAPIView):
-    queryset = Client.objects.all()
     serializer_class = ClientSerializer
-
-"""
-#Crear un grupo de clientes completos
-class CreateMultipleClient(APIView):
-    queryset = Client.objects.all()
-    def post(self,request):
-        data = request.data
-        for user in data:
-            print(user)
-            usuario = user.pop('user')
-            usuario['password'] = make_password(usuario['password'])
-            custom = CustomUser.objects.create(**usuario)
-            client = Client.objects.create(user=custom, **user)
-
-        return Response({"message": "Creacion exitoso",  "code": 200})
-"""
-
-#Actualizar datos de Cliente por id
-"""
-class ClientUpdate(UpdateAPIView):
-    queryset = Client.objects.all()
-    serializer_class = UpdateClientSerializer
-
-"""
-
-
-"""
-#Eliminar Un cliente sin afectar usuario
-class DeleteClient(DestroyAPIView):
-    queryset = Client.objects.all()
-    serializer_class = ClientSerializer
-
-"""
-"""
-#========== CRUD para la informacion del trabajador ==========
-#Listar todos los trabajadores
-class WorkerList(ListAPIView):
-    queryset = Worker.objects.all()
-    serializer_class = CreateNewWorkerSerializer
-
-
-#Listar un cliente por id
-class WorkerDetail(RetrieveAPIView):
-    queryset = Worker.objects.all()
-    serializer_class = WorkerSerializer
-
-
-#Crear un trabajador para asignar a usuario existente
-class CreateWorker(ListCreateAPIView):
-    queryset = Worker.objects.all()
-    serializer_class = WorkerSerializer
-
-#Crear un grupo de trabajadores
-class CreateMultipleWorker(APIView):
-    queryset = Worker.objects.all()
-    def post(self,request):
-        data = request.data
-        for user in data:
-            print(user)
-            usuario = user.pop('user')
-            usuario['password'] = make_password(usuario['password'])
-            custom = CustomUser.objects.create(**usuario)
-            worker = Worker.objects.create(user=custom, **user)
-
-        return Response({"message": "Creacion exitoso",  "code": 200})
-
-#Crear cliente incluyendo usuario al mismo tiempo
-class NewWorkerCreate(ListCreateAPIView):
-    queryset = Worker.objects.all()
-    serializer_class = CreateNewWorkerSerializer
-
-
-#Actualizar datos del trabajador por id
-class WorkerUpdate(UpdateAPIView):
-    queryset = Worker.objects.all()
-    serializer_class = WorkerSerializer
-
-
-#Eliminar Un trabajador sin afectar usuario
-class DeleteWorker(DestroyAPIView):
-    queryset = Worker.objects.all()
-    serializer_class = WorkerSerializer
-
-"""

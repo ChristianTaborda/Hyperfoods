@@ -42,7 +42,8 @@ function CardProduct({ product1, setSale }) {
           onSelect={onSelect}
           onRemove={onRemove}
           displayValue="nameIngredient"
-        />
+          />
+          {product['ingredientProduct']=[]}
         <br></br>
         <br></br>
         <br></br>

@@ -3,6 +3,8 @@ from django.urls import path
 from .views import (
 
     Login,
+    RequestPasswordResetView,
+    PasswordResetView,
     
     UserList, 
     UserCreate, 
@@ -31,17 +33,6 @@ from .views import (
     #DeleteClient,
 
 )
-"""
-    DeleteUser,
-
-WorkerList,
-WorkerDetail,
-CreateWorker,
-NewWorkerCreate,
-CreateMultipleWorker,
-WorkerUpdate,
-DeleteWorker
-"""
 
 urlpatterns = [
 
@@ -49,6 +40,9 @@ urlpatterns = [
     path('create/', UserCreate.as_view()),
     path('get/<pk>/', UserDetail.as_view()),
     path('update/<pk>/', UserUpdate.as_view()),
+    path('request-password-reset/', RequestPasswordResetView.as_view()),
+    path('password-reset/', PasswordResetView.as_view()),
+
 
     path('client/', ClientList.as_view()),
     path('client/create/', ClientCreate.as_view()),
@@ -59,7 +53,6 @@ urlpatterns = [
     path('client-single/get/<pk>/', ClientSingleDetail.as_view()),
     path('client-single/update/<pk>/', ClientSingleUpdate.as_view()),
     path('client/login/', Login.as_view()),
-
 
     path('worker/', WorkerList.as_view()),
     path('worker/create/', WorkerCreate.as_view()),

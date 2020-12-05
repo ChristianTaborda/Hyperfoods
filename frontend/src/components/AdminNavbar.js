@@ -4,6 +4,9 @@ import availableRoutes from "routes.js";
 import { setSidebarOpened } from "../redux/Template/actions.js";
 import classNames from "classnames";
 import NotificationAlert from "react-notification-alert";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import ruta from "../views/url";
 import "./AdminNavbar.css";
 // reactstrap components
 import {
@@ -26,6 +29,7 @@ function AdminNavbar(props) {
   const [color, setColor] = useState("navbar-transparent");
   const routes = availableRoutes();
   const notificationAlert = useRef();
+  let history = useHistory();
 
   // Message from service-worker to client
   const channel = new BroadcastChannel("sw-messages");
@@ -121,9 +125,50 @@ function AdminNavbar(props) {
     });
   };
 
+  const logout = () => {
+    //borra id usser
+    if (window.sessionStorage.getItem("userType") === "worker") {
+      window.sessionStorage.removeItem("idUser");
+      history.push("/login-workers");
+    }
+    if (window.sessionStorage.getItem("userType") === "client") {
+      window.sessionStorage.removeItem("idUser");
+      history.push("/login-clients");
+    }
+  };
+
+  const saveProfile = () => {
+    let userType = window.sessionStorage.getItem("userType");
+    let customState = {
+      bgColor: props.bgColor,
+      mode: //document.body.getAttribute("class") es null cuando no es blanco
+        document.body.getAttribute("class").split(" ")[0] === "white-content"
+          ? "light"
+          : "dark",
+    };
+    let id_user = window.sessionStorage.getItem("idUser");
+    let payload = {
+      user: {
+        color: JSON.stringify(customState),
+      },
+    };
+
+    console.log(payload);
+    console.log("id_user: ", id_user);
+
+    axios
+      .patch(`http://${ruta}/api/users/${userType}/update/${id_user}/`, payload)
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          notify("br", "success", "Changes saved");
+        }
+      })
+      .catch((err) => notify("br", "danger", "Unable to connect to server"));
+  };
+
   return (
     <>
-      {/* {console.log(JSON.parse(window.sessionStorage.getItem("workers")))} */}
       <Navbar className={classNames("navbar-absolute", color)} expand="lg">
         <div className="react-notification-alert-container">
           <NotificationAlert ref={notificationAlert} />
@@ -214,14 +259,20 @@ function AdminNavbar(props) {
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-navbar" right tag="ul">
                   <NavLink tag="li">
-                    <DropdownItem className="nav-item">Profile</DropdownItem>
+                    <DropdownItem className="nav-item" onClick={saveProfile}>
+                      <i className="tim-icons icon-palette" />
+                      Save Color Profile
+                    </DropdownItem>
                   </NavLink>
-                  <NavLink tag="li">
+                  {/* <NavLink tag="li">
                     <DropdownItem className="nav-item">Settings</DropdownItem>
-                  </NavLink>
+                  </NavLink> */}
                   <DropdownItem divider tag="li" />
                   <NavLink tag="li">
-                    <DropdownItem className="nav-item">Log out</DropdownItem>
+                    <DropdownItem className="nav-item" onClick={logout}>
+                      <i className="tim-icons icon-user-run" />
+                      Log out
+                    </DropdownItem>
                   </NavLink>
                 </DropdownMenu>
               </UncontrolledDropdown>
@@ -254,8 +305,12 @@ function AdminNavbar(props) {
 
 const mapStateToProps = (state) => {
   return {
-    sidebarOpened: state.templateReducer.templateProps.sidebarOpened,
+    // Template reducer
     networkStatus: state.templateReducer.templateProps.networkStatus,
+    sidebarOpened: state.templateReducer.templateProps.sidebarOpened,
+    bgColor: state.templateReducer.templateProps.bgColor,
+    mode: state.templateReducer.templateProps.mode,
+    // Offline reducer
     pending: state.offlineReducer.pending,
   };
 };
