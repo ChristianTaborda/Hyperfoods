@@ -1,16 +1,19 @@
 
 import React, { useState, useEffect } from "react";
 import {
-  Card, CardImg, Table, CardBody,
-  CardTitle, CardSubtitle, Button
+  Card, Col, Table, CardBody,
+  CardTitle, CardSubtitle, Button, Row, Container
 } from 'reactstrap';
 import axios from "axios";
 import ruta from "./url.js"
+import './spinner.css'
 
 function Example() {
   const [productSalesTop, setProductSalesTop] = useState("")
   const [salesHour, setSalesHour] = useState("")
+  const [loading, setLoading]=useState(false)
   useEffect(() => {
+    setLoading(true)
     axios
       .get('http://'+ruta+'/api/reports/1')
       .then(
@@ -22,77 +25,80 @@ function Example() {
     axios
       .get('http://'+ruta+'/api/reports/2')
       .then(
-        (res) => setSalesHour(res.data)  
+        (res) => {setSalesHour(res.data) 
+            setLoading(false) }
       )
       .catch((err) => console.log(err));
   }, []);
   return (
-    <div>
+    <div className="content">
+       {
+                 loading ? 
+                 <div className="spinner"></div>:  
+      <Row>  
+      <Col sm="6">   
       <Card>
         <CardBody>
           <CardTitle tag="h5">Top most sold products</CardTitle>
-          <Table>
+          <Table  className="tablesorter text-center">
             <thead>
-                <tr>
+                <tr >
                     <th>Name</th>
                     <th>Sales</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                {productSalesTop.report.map((product, i) => {
+                {productSalesTop.report ===undefined ? null :
+                productSalesTop.report.map((product, i) => {
                                   return (
                                     <tr key={i}>
                                       <td>{product.product.nameProduct}</td>
                                       <td>{product.sales}</td>
-                                      
-                                      
                                     </tr>
                                   );
                                 }
                                 )
                                 }
-                </tr>
+             
             </tbody>
     </Table>
+    
          
         </CardBody>
       </Card>
+      </Col>
+      <Col sm="6">
       <Card>
         <CardBody>
-          <CardTitle tag="h5">Card title</CardTitle>
-          <Table>
+          <CardTitle tag="h5">Hours with more sales</CardTitle>
+          <Table className="tablesorter">
             <thead>
                 <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
+                    <th>Hour</th>
+                    <th>Sales</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                </tr>
-                <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                </tr>
-                <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-                </tr>
+            
+                {salesHour.report ===undefined ? null :
+                salesHour.report.map((product, i) => {
+                                  return (
+                                    <tr key={i}>
+                                      <td>{product.time}</td>
+                                      <td>{product.sales}</td>
+                                    </tr>
+                                  );
+                                }
+                                )
+                                }
+               
             </tbody>
         </Table>
         </CardBody>
       </Card>
+      </Col>
+      </Row>
+}
     </div>
   );
 };

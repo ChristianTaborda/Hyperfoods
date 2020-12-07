@@ -39,7 +39,7 @@ class CustomUser(AbstractUser):
     document = models.CharField(unique=True, max_length=12)
     name = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
-    phone = models.CharField(validators=[phone_validate], max_length=10, unique=True)
+    phone = models.CharField(validators=[phone_validate], max_length=10)
     address = models.CharField(max_length=50)
     email = models.EmailField(max_length=70, blank=True, null=True, unique=True)
     color = models. CharField(max_length=70, null=True)

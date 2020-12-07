@@ -177,7 +177,7 @@ class SuperLoginSerializer(serializers.Serializer):
     def create(self, data):
         """Generar o recuperar token."""
         token, created = Token.objects.get_or_create(user=self.context['user'])
-        return self.context['token'], token.key
+        return self.context['user'], token.key
 
 
 class RequestPasswordReset(serializers.Serializer):
@@ -193,12 +193,11 @@ class RequestPasswordReset(serializers.Serializer):
     def create(self, data):
         hora = time.strftime("%Y%m%d%H%M%S")
         idlink = hora + str(random.randint(100000, 999999))     
-        """Generar o recuperar token."""
         query = ChangePassword.objects.create(
             idlink=idlink,
             user=self.context['user']
         )
-        return query
+        return query.idlink
 
 class PasswordReset(serializers.Serializer):
     idlink = serializers.CharField()
@@ -207,8 +206,6 @@ class PasswordReset(serializers.Serializer):
         change_pass = ChangePassword.objects.filter(idlink=data['idlink'])
         if not change_pass.exists():
             raise serializers.ValidationError('Este enlace no existe')
-        print("==================")
-        print(change_pass.values()[0]['used'])
         if change_pass.values()[0]['used']==True:
             raise serializers.ValidationError('Este enlace ya no es valido')
 
