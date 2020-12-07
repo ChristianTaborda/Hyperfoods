@@ -126,6 +126,7 @@ export default function Order(props) {
                         <td className="text-center">
                           <button
                             className="delete-order"
+                            style={{ cursor: "pointer" }}
                             onClick={() =>
                               props.setOrder((prev) =>
                                 prev.filter(

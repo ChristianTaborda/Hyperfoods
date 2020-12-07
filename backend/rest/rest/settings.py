@@ -102,7 +102,7 @@ WSGI_APPLICATION = 'rest.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
-        #'NAME': 'hyperfoods',
+        # 'NAME': 'hyperfoods',
         'NAME': 'localhost',
         'USER': 'postgres',
         'PASSWORD': 'stemen',

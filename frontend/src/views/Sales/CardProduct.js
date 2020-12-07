@@ -50,6 +50,7 @@ function CardProduct({ product1, setSale }) {
       </div>
       <div className="add-to-cart">
         <button
+          style={{ cursor:"pointer" }}
           className="add-to-cart-btn"
           onClick={
             //   (console.log(product), 

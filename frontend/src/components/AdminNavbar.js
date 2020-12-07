@@ -153,13 +153,13 @@ function AdminNavbar(props) {
       },
     };
 
-    console.log(payload);
-    console.log("id_user: ", id_user);
+    // console.log(payload);
+    // console.log("id_user: ", id_user);
 
     axios
       .patch(`http://${ruta}/api/users/${userType}/update/${id_user}/`, payload)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.status === 200) {
           notify("br", "success", "Changes saved");
         }
