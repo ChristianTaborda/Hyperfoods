@@ -18,7 +18,7 @@ Pyrebase = "==3.0.27"
 python_version = "3.7"
 
 [scripts]
-dev = "python3 manage.py runserver"
+dev = "python3 manage.py runserver --insecure"
 make = "python3 manage.py makemigrations"
 migra = "./manage.py migrate_schemas"
 migrate = "python3 manage.py migrate_schemas --shared"

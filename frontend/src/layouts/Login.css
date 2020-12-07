@@ -22,6 +22,12 @@
   margin-top: -2px;
 }
 
+.forgot {
+  float: center !important;
+  text-align: center !important;
+  width: 100px !important;
+  margin-top: -2px;
+}
 html {
   background-color: #f5f6fa !important;
 }
