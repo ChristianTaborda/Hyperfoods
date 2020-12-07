@@ -32,7 +32,7 @@ export function register(config) {
     }
 
     window.addEventListener("load", () => {
-      const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
+      const swUrl = `${process.env.PUBLIC_URL}/custom-service-worker.js`;
 
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
@@ -105,12 +105,27 @@ function registerValidSW(swUrl, config) {
     .catch((error) => {
       console.error("Error during service worker registration:", error);
     });
+
+  // Background Sync
+  navigator.serviceWorker.ready
+    .then(function (registration) {
+      console.log("Service Worker Ready");
+      return registration.sync.register("sendFormData");
+    })
+    .then(function () {
+      console.log("sync event registered");
+    })
+    .catch(function () {
+      // system was unable to register for a sync,
+      // this could be an OS-level restriction
+      console.log("sync registration failed");
+    });
 }
 
 function checkValidServiceWorker(swUrl, config) {
   // Check if the service worker can be found. If it can't reload the page.
   fetch(swUrl, {
-    headers: { "Service-Worker": "script" },
+    headers: { "custom-service-worker": "script" },
   })
     .then((response) => {
       // Ensure service worker exists, and that we really are getting a JS file.

@@ -1,25 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import availableRoutes from "routes.js";
 import { setSidebarOpened } from "../redux/Template/actions.js";
 import classNames from "classnames";
-
+import NotificationAlert from "react-notification-alert";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import ruta from "../views/url";
+import "./AdminNavbar.css";
 // reactstrap components
 import {
-  Button,
   Collapse,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
-  Input,
-  InputGroup,
   NavbarBrand,
   Navbar,
   NavLink,
   Nav,
   Container,
-  Modal,
+  Button,
 } from "reactstrap";
 
 function AdminNavbar(props) {
@@ -27,12 +28,41 @@ function AdminNavbar(props) {
   const [modalSearch, setModalSearch] = useState(false);
   const [color, setColor] = useState("navbar-transparent");
   const routes = availableRoutes();
-  
+  const notificationAlert = useRef();
+  let history = useHistory();
+
+  // Message from service-worker to client
+  const channel = new BroadcastChannel("sw-messages");
+
+  // Message from service-worker to client
+  function notificationFromServiceWorker(event) {
+    if (event.data.response === 201) {
+      notify(
+        "br",
+        "success",
+        `User registration with email ${event.data.email} was successful`
+      );
+    } else {
+      notify(
+        "br",
+        "danger",
+        `User with email ${event.data.email} already exist`
+      );
+    }
+  }
+
   useEffect(
     () => {
+      if (window.sessionStorage.getItem("workers") != null) {
+        sessionStorage.removeItem("workers");
+      }
+
+      // Message from service-worker to client
+      channel.addEventListener("message", notificationFromServiceWorker);
+
       //component mounted (ComponentDidMount)
       window.addEventListener("resize", updateColor);
-      
+
       // callback at unmount (ComponentWillUnmount)
       return () => {
         window.removeEventListener("resize", updateColor);
@@ -78,12 +108,71 @@ function AdminNavbar(props) {
     )[0].name;
     // console.log(routes.map(route=>route.layout + route.path))
     // console.log(props.history.location.pathname)
-    // return "Brand"; 
+    // return "Brand";
+  };
+
+  //Function for notification settings
+  const notify = (place, type, message) => {
+    notificationAlert.current.notificationAlert({
+      place: place,
+      type: type, //["primary", "success", "danger", "warning", "info"]
+      message: message,
+      icon:
+        type === "success"
+          ? "tim-icons icon-check-2"
+          : "tim-icons icon-alert-circle-exc",
+      autoDismiss: 7,
+    });
+  };
+
+  const logout = () => {
+    //borra id usser
+    if (window.sessionStorage.getItem("userType") === "worker") {
+      window.sessionStorage.removeItem("idUser");
+      history.push("/login-workers");
+    }
+    if (window.sessionStorage.getItem("userType") === "client") {
+      window.sessionStorage.removeItem("idUser");
+      history.push("/login-clients");
+    }
+  };
+
+  const saveProfile = () => {
+    let userType = window.sessionStorage.getItem("userType");
+    let customState = {
+      bgColor: props.bgColor,
+      mode: //document.body.getAttribute("class") es null cuando no es blanco
+        document.body.getAttribute("class").split(" ")[0] === "white-content"
+          ? "light"
+          : "dark",
+    };
+    let id_user = window.sessionStorage.getItem("idUser");
+    let payload = {
+      user: {
+        color: JSON.stringify(customState),
+      },
+    };
+
+    console.log(payload);
+    console.log("id_user: ", id_user);
+
+    axios
+      .patch(`http://${ruta}/api/users/${userType}/update/${id_user}/`, payload)
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          notify("br", "success", "Changes saved");
+        }
+      })
+      .catch((err) => notify("br", "danger", "Unable to connect to server"));
   };
 
   return (
     <>
       <Navbar className={classNames("navbar-absolute", color)} expand="lg">
+        <div className="react-notification-alert-container">
+          <NotificationAlert ref={notificationAlert} />
+        </div>
         <Container fluid>
           <div className="navbar-wrapper">
             <div
@@ -101,7 +190,7 @@ function AdminNavbar(props) {
                 <span className="navbar-toggler-bar bar3" />
               </button>
             </div>
-            <NavbarBrand href="#pablo" onClick={(e) => e.preventDefault()}>
+            <NavbarBrand href="" onClick={(e) => e.preventDefault()}>
               {getBrandText()}
             </NavbarBrand>
           </div>
@@ -121,56 +210,38 @@ function AdminNavbar(props) {
           </button>
           <Collapse navbar isOpen={collapseOpen}>
             <Nav className="ml-auto" navbar>
-              <InputGroup className="search-bar">
+              {props.networkStatus && props.pending.length ? (
                 <Button
-                  color="link"
-                  data-target="#searchModal"
-                  data-toggle="modal"
-                  id="search-button"
-                  onClick={toggleModalSearch}
+                  onClick={() => {
+                    window.location.reload(false);
+                  }}
+                  className="btn-reload"
+                  color="info"
+                  size="sm"
                 >
-                  <i className="tim-icons icon-zoom-split" />
-                  <span className="d-lg-none d-md-block">Search</span>
+                  <i className="tim-icons icon-refresh-02" /> SYNC
+                  {props.pending.length ? ` (${props.pending.length})` : ""}
                 </Button>
-              </InputGroup>
+              ) : null}
               <UncontrolledDropdown nav>
                 <DropdownToggle
-                  caret
-                  color="default"
+                  // caret
+                  // color="default"
                   data-toggle="dropdown"
                   nav
                 >
-                  <div className="notification d-none d-lg-block d-xl-block" />
-                  <i className="tim-icons icon-sound-wave" />
-                  <p className="d-lg-none">Notifications</p>
+                  {props.networkStatus ? (
+                    <div>
+                      <i className="tim-icons icon-check-2 icon-online" />
+                      <p className="online-text">ONLINE</p>
+                    </div>
+                  ) : (
+                    <div>
+                      <i className="tim-icons icon-alert-circle-exc icon-offline" />
+                      <p className="offline-text">OFFLINE</p>
+                    </div>
+                  )}
                 </DropdownToggle>
-                <DropdownMenu className="dropdown-navbar" right tag="ul">
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      Mike John responded to your email
-                    </DropdownItem>
-                  </NavLink>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      You have 5 more tasks
-                    </DropdownItem>
-                  </NavLink>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      Your friend Michael is in town
-                    </DropdownItem>
-                  </NavLink>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      Another notification
-                    </DropdownItem>
-                  </NavLink>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      Another one
-                    </DropdownItem>
-                  </NavLink>
-                </DropdownMenu>
               </UncontrolledDropdown>
               <UncontrolledDropdown nav>
                 <DropdownToggle
@@ -188,14 +259,20 @@ function AdminNavbar(props) {
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-navbar" right tag="ul">
                   <NavLink tag="li">
-                    <DropdownItem className="nav-item">Profile</DropdownItem>
+                    <DropdownItem className="nav-item" onClick={saveProfile}>
+                      <i className="tim-icons icon-palette" />
+                      Save Color Profile
+                    </DropdownItem>
                   </NavLink>
-                  <NavLink tag="li">
+                  {/* <NavLink tag="li">
                     <DropdownItem className="nav-item">Settings</DropdownItem>
-                  </NavLink>
+                  </NavLink> */}
                   <DropdownItem divider tag="li" />
                   <NavLink tag="li">
-                    <DropdownItem className="nav-item">Log out</DropdownItem>
+                    <DropdownItem className="nav-item" onClick={logout}>
+                      <i className="tim-icons icon-user-run" />
+                      Log out
+                    </DropdownItem>
                   </NavLink>
                 </DropdownMenu>
               </UncontrolledDropdown>
@@ -204,7 +281,7 @@ function AdminNavbar(props) {
           </Collapse>
         </Container>
       </Navbar>
-      <Modal
+      {/* <Modal
         modalClassName="modal-search"
         isOpen={modalSearch}
         toggle={toggleModalSearch}
@@ -221,15 +298,20 @@ function AdminNavbar(props) {
             <i className="tim-icons icon-simple-remove" />
           </button>
         </div>
-      </Modal>
+      </Modal> */}
     </>
   );
 }
 
-
 const mapStateToProps = (state) => {
   return {
+    // Template reducer
+    networkStatus: state.templateReducer.templateProps.networkStatus,
     sidebarOpened: state.templateReducer.templateProps.sidebarOpened,
+    bgColor: state.templateReducer.templateProps.bgColor,
+    mode: state.templateReducer.templateProps.mode,
+    // Offline reducer
+    pending: state.offlineReducer.pending,
   };
 };
 

@@ -2,6 +2,8 @@ import React, { useState, useRef } from "react";
 import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import NotificationAlert from "react-notification-alert";
+import { connect } from "react-redux";
+import { addPendingWorkers } from "../redux/Offline/actions";
 import axios from "axios";
 import ruta from "./url.js";
 
@@ -19,17 +21,17 @@ import {
   Col,
 } from "reactstrap";
 
-function CreateWorker() {
+function CreateWorker(props) {
   const notificationAlert = useRef();
   const initialValues = {
     // userType: "3",
     // Id: "4",
     // DocumentType: "1",
-    // DocumentNumber: "777653910",
-    // Name: "Cristian",
-    // LastName: "Vallecilla",
+    // DocumentNumber: "979653010",
+    // Name: "Jesus",
+    // LastName: "Cuellar",
     // PhoneNumber: "6234231507",
-    // Email: "c.vallecilla@email.com",
+    // Email: "jesus@gmail.com",
     // Address: "6510 Bay Street",
     // password: "1234",
     // changepassword: "1234",
@@ -68,7 +70,37 @@ function CreateWorker() {
       },
     };
 
-    console.log(payload);
+    // Offline Only !! --------------------------------------|
+    if (!props.networkStatus) {
+      props.addPendingWorkers(payload);
+      let pendingWorkers = [];
+      if (props.pending.length) {
+        pendingWorkers = [
+          ...props.pending.map((item) => {
+            let email = { email: item.worker };
+            return email;
+          }),
+          { email: payload.user.email },
+        ];
+      } else {
+        pendingWorkers = [{ email: payload.user.email }];
+      }
+
+      window.sessionStorage.setItem(
+        "workers",
+        JSON.stringify([...pendingWorkers])
+      );
+    }
+    //-------------------------------------------------------|
+
+    if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
+      // send message to service worker via postMessage
+      var msg = {
+        form_data: payload,
+      };
+      navigator.serviceWorker.controller.postMessage(msg);
+    }
+
     axios
       .post("http://" + ruta + "/api/users/worker/create/", payload)
       .then((res) => {
@@ -81,7 +113,10 @@ function CreateWorker() {
       })
       .catch((err) => {
         console.log(err);
-        notify("br", "danger", "Error establishing a database connection");
+        notify("br", "danger", "Data not saved");
+        setTimeout(() => {
+          resetForm(initialValues);
+        }, 600);
       });
   };
 
@@ -162,6 +197,9 @@ function CreateWorker() {
     });
   };
 
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const toggle = () => setPopoverOpen(!popoverOpen);
+
   return (
     <>
       <div className="content">
@@ -227,7 +265,7 @@ function CreateWorker() {
                       <Field
                         className="form-control"
                         name="DocumentNumber"
-                        placeholder="type your id"
+                        placeholder="type your document number"
                       />
                       <ErrorMessage
                         name="DocumentNumber"
@@ -360,9 +398,10 @@ function CreateWorker() {
               </CardBody>
               <CardFooter>
                 <Button
+                  disabled={props.networkStatus && !!props.pending.length}
                   type="submit"
                   className="btn-fill"
-                  color="success"
+                  color="info"
                   onSubmit={() => {}}
                 >
                   Save
@@ -376,4 +415,16 @@ function CreateWorker() {
   );
 }
 
-export default CreateWorker;
+const mapStateToProps = (state) => {
+  return {
+    pending: state.offlineReducer.pending,
+    networkStatus: state.templateReducer.templateProps.networkStatus,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addPendingWorkers: (worker) => dispatch(addPendingWorkers(worker)),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(CreateWorker);

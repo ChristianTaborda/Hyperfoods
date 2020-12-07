@@ -1,0 +1,31 @@
+.btn-reload {
+  border-radius: 8px !important;
+  min-height: 30px !important;
+  max-height: 30px !important;
+  margin-top: 7px !important;
+  margin-right: -1px !important;
+}
+
+.icon-online {
+  margin-bottom: -10px !important;
+  margin-right: 10px !important;
+  color: green !important;
+}
+
+.online-text {
+  margin-top: -16px !important;
+  color: green !important;
+  margin-left: 24px !important;
+}
+
+.icon-offline {
+  margin-bottom: -10px !important;
+  margin-right: 10px !important;
+  color: red !important;
+}
+
+.offline-text {
+  margin-top: -16px !important;
+  color: red !important;
+  margin-left: 24px !important;
+}
