@@ -35,6 +35,14 @@ from rest_framework.response import Response
 from django.contrib.auth.hashers import check_password
 from rest_framework.authtoken.models import Token
 
+
+
+from django.core.mail import EmailMessage
+from email.mime.image import MIMEImage
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from django.conf import settings
+
 """ ===================================================
 Las siguientes clases verifican si quien consulta una ruta
 tiene el cargo para poder hacer dicha consulta.
@@ -129,11 +137,59 @@ class RequestPasswordResetView(APIView):
     def post(self,request):
         serializer = RequestPasswordReset(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        data = {
-            'message': 'llave creada con exito, revisar el correo' 
-        }
-        return Response(data)
+        idlink = serializer.save()
+        print("==================")
+        print(idlink)
+
+
+
+        try:
+
+            html_part = MIMEMultipart(_subtype='related')
+            body = '''
+                <h2>Hola</h2>
+                <p><b>APRECIADO USUARIO</b></p>
+                <div style="padding-top: 20px;border-top: 5px solid crimson;">
+                <div style="clear: left; float: left;margin-right: 1em; ">
+                    <img width="70px" src="https://1.bp.blogspot.com/-ebhZaGmzGqY/X8mcxbPJKRI/AAAAAAAAIrQ/gHtVWVGDkEUnRsjfcd4xvkTOzLo2uh3EgCLcBGAsYHQ/s0/reset-password.png" />
+                </div>
+                </div>    
+                Usted recientemente solicito el cambio de contraseña para su cuenta.<br/>
+                A continuación aparece un botón ROJO para hacer el cambio, una vez
+                haga click sobre el botón, podrás continuar con el cambio de contraseña, 
+                si usted no ha realizado dicha solicitud, por favor haga caso omiso a este mensaje.
+
+                <div style="text-align: center; margin-top:50px;width: 200px; padding: 8px;background-color:firebrick;">
+                        <a target="_blank" style="color: white; text-decoration: none;" href="http://altopuntaje.com/" >CAMBIAR CONTRASEÑA</a>
+                </div>
+            '''
+
+            body = MIMEText(body, _subtype='html')
+            html_part.attach(body)
+    
+
+
+            email = EmailMessage(
+                'CAMBIO DE CONTRASEÑA',
+                None,
+                settings.EMAIL_HOST_USER,
+                ['roothyperfoods@gmail.com']
+            )   
+            email.attach(html_part)
+            email.send()
+            data = {
+                'message': 'llave creada con exito, revisar el correo' 
+            }
+            return Response(data)
+
+        except Exception as e:
+            message = "Error"
+            return Response({"error": False, "find": False, "message": str(e)})
+
+
+
+
+        
 
 class PasswordResetView(APIView):
     serializer_class = PasswordReset
