@@ -30,10 +30,10 @@ function ListWorkers() {
       },
     },
   ]);
-  
+
   useEffect(() => {
     axios
-      .get('http://'+ruta+'/api/users/worker/')
+      .get("http://" + ruta + "/api/users/worker/")
       .then((res) => setUserList(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -51,6 +51,7 @@ function ListWorkers() {
                 <Table className="tablesorter" responsive>
                   <thead className="text-primary">
                     <tr>
+                      <th>Edit</th>
                       <th>Status</th>
                       <th>User Type</th>
                       <th>Document</th>
@@ -67,6 +68,13 @@ function ListWorkers() {
                     {userList.map((user, i) => {
                       return (
                         <tr key={i}>
+                          <td>
+                            <i
+                              style={{ cursor: "pointer" }}
+                              className="tim-icons icon-pencil"
+                              onClick={() => {}}
+                            />
+                          </td>
                           <td>
                             {user.user.is_active === "-"
                               ? "-"
