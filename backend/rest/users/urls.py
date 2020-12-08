@@ -31,7 +31,6 @@ from .views import (
     CreateSingleWorker,
     WorkerSingleUpdate,
     #DeleteClient,
-
 )
 
 urlpatterns = [

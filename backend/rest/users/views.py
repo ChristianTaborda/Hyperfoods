@@ -119,7 +119,6 @@ class Login(APIView):
         }
         return Response(data)
 
-
 class LoginSuper(APIView):
     serializer_class = SuperLoginSerializer
     def post(self,request):
@@ -200,6 +199,7 @@ class PasswordResetView(APIView):
 #Listar todos los usuarios basicos
 class UserList(ListAPIView):
     queryset = CustomUser.objects.all()
+    #queryset = Worker.objects.all()
     serializer_class = UserSerializer
     #spermission_classes = (AllowOperator,)
 
