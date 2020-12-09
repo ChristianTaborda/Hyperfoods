@@ -10,7 +10,7 @@ import { setCredentials } from "../redux/Login/actions.js";
 import { setBgColor, setMode } from "../redux/Template/actions.js";
 import logo from "../assets/img/logo.png";
 import "./Login.css";
-import { adminPath } from "../views/url";
+import path, { adminPath } from "../views/url";
 
 // User type const.
 export const userType = "superadmin"; // DO NOT MODIFY
@@ -23,6 +23,7 @@ function LoginAdmins(props) {
 
   //Function to handle Login submit
   const onSubmit = (values, { resetForm }) => {
+    setLoading(true);
     axios
       .post("http://" + adminPath + "/api/admin/login/", values)
       .then((res) => {
@@ -107,7 +108,7 @@ function LoginAdmins(props) {
         onSubmit={(values, { resetForm }) => onSubmit(values, { resetForm })}
       >
         <Form className="login-form login-form-admin shadow p-4 mb-0 rounded">
-        <br />
+          <br />
           <div className="text-center">
             <img className="login-logo" alt="logo" src={logo} />
           </div>
@@ -149,21 +150,20 @@ function LoginAdmins(props) {
 
           <div className="text-center pt-2">
             <Button
-            color="info"
+              color="info"
               type="submit"
               className="btn btn-dark btn-block"
               onSubmit={() => {}}
-              onClick={() => {
-                setTimeout(() => {
-                  setLoading(true);
-                }, 5);
-              }}
               disabled={loading}
             >
               Log in
             </Button>
             <br />
-            <br />
+            <div className="text-center">
+              <a href={`${path}/landing`}>Sign up</a>
+              <span className="p-2">|</span>
+              <a href={`${path}/reset-password`}>Forgot Password</a>
+            </div>
           </div>
         </Form>
       </Formik>

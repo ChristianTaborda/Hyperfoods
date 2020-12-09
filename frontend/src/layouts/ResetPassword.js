@@ -17,6 +17,7 @@ export default function LoginClients(props) {
 
   //Function to sumit a reset password
   const onSubmit = (values, { resetForm }) => {
+    setLoading(true);
     axios
       .post("http://" + ruta + "/api/users/request-password-reset/", values)
       .then((res) => {
@@ -170,11 +171,6 @@ export default function LoginClients(props) {
                     type="submit"
                     className="btn-block"
                     onSubmit={() => {}}
-                    onClick={() => {
-                      setTimeout(() => {
-                        setLoading(true);
-                      }, 5);
-                    }}
                     disabled={loading}
                   >
                     Change password
@@ -227,11 +223,6 @@ export default function LoginClients(props) {
                     type="submit"
                     className="btn-block"
                     onSubmit={() => {}}
-                    onClick={() => {
-                      setTimeout(() => {
-                        setLoading(true);
-                      }, 5);
-                    }}
                     disabled={loading}
                   >
                     Send
