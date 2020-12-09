@@ -1,10 +1,18 @@
-import React , { useState,useEffect }from 'react'
+import React , { useState,useEffect,useRef }from 'react'
 import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import NotificationAlert from "react-notification-alert";
 import axios from "axios";
 import {
-    Card,Table,Col,  CardBody,
-    CardFooter, FormGroup,  Button,UncontrolledAlert,Spinner,Container, Input
+    Card,
+    Table,
+    Col,
+    CardBody,
+    CardFooter,
+    FormGroup,  
+    Button,UncontrolledAlert,
+    Container,
+    Input
   } from 'reactstrap';
 import './spinner.css'
 
@@ -12,15 +20,14 @@ import ruta from "./url.js"
 
 function CreateIngredient(){
 
-
-    const [isSend, setSend]= useState(false) 
+    const notificationAlert = useRef();
     const [ingredients, setIngredients]= useState([])
     const [loading, setLoading]=useState(false)
     const [editing, setEditing] = useState(false);
     const [idIngredientEdited, setIdIngredientEdited] = useState(0);
 
     const [initialValues, setInitialValues] = useState({
-        nameIngredient: "estemen",
+        nameIngredient: "",
         priceIngredient:"",
         additionalIngredient:""
     });
@@ -45,57 +52,78 @@ function CreateIngredient(){
           setLoading(false)
         });
     },[editing]);
-
     
     const onSubmit = async(values, { resetForm }) => {
-      console.log(values)
 
-      /*setSend(false)
       setLoading(true)
-      if(aditional===undefined){
-          setAditional(true)
-      }  
-      values["additionalIngredient"]=aditional
-      console.log(JSON.stringify(values));
-       
+      
       setTimeout(() => {
          resetForm(initialValues);
-      }, 600);*/
-     /* if(editing){
-        await axios
-        .post("http://"+ruta+"/api/ingredients/create/",values)
-        .then((res) => {
-          setSend(true)
-          setLoading(false)
-          console.log("%c response ", "background: #222; color: #bada55");
-          console.table(res.data);
-          axios.get('http://'+ruta+'/api/ingredients/')
-            .then((response) => {
-              setIngredients(response.data)
-          });
-          })
-        .catch((err) => console.log(err))
-      }else{
+      }, 600);
+      if(editing){
         await axios
         .put(`http://${ruta}/api/ingredients/update/${idIngredientEdited}`,values)
         .then((res) => {
-          setSend(true)
           setLoading(false)
-          console.log("%c response ", "background: #222; color: #bada55");
-          console.table(res.data);
+          setEditing(false)
+          setInitialValues({
+            nameIngredient: "",
+            priceIngredient:"",
+            additionalIngredient:""
+           })
+          notify("br", "success", "Changes saved");
           })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          notify("br", "danger", "error in data change")
+          setEditing(false)
+        })
+      }else{
+        if(aditional===undefined){
+          setAditional(true)
+        }  
+        values["additionalIngredient"]=aditional
+        await axios
+        .post("http://"+ruta+"/api/ingredients/create/",values)
+        .then((res) => {
+          axios.get('http://'+ruta+'/api/ingredients/')
+            .then((response) => {
+              setIngredients(response.data)
+              setLoading(false)
+              setInitialValues({
+                nameIngredient: "",
+                priceIngredient:"",
+                additionalIngredient:""
+               })
+              notify("br", "success", "Ingredient saved");
+          });
+          })
+        .catch((err) =>{
+          notify("br", "danger", "error in data charge")
+        })
 
       } 
-     */
       
-      }
+    }
+     //Function for notification settings
+    const notify = (place, type, message) => {
+      notificationAlert.current.notificationAlert({
+        place: place,
+        type: type, //["primary", "success", "danger", "warning", "info"]
+        message: <b>{message}</b>,
+        icon:
+          type === "success"
+            ? "tim-icons icon-check-2"
+            : "tim-icons icon-alert-circle-exc",
+        autoDismiss: 7,
+      });
+    };
+    
 
-      const formSchema = Yup.object().shape({
+    const formSchema = Yup.object().shape({
    
         nameIngredient: Yup.string()
             .trim()
-            //.required("Required field")
+            .required("Required field")
             .min(2, "Minimum of 2 characters")
             .matches(
               /^([A-Z,a-z.'-])+/g,
@@ -103,30 +131,21 @@ function CreateIngredient(){
             ),
         priceIngredient: Yup.string()
           .trim()
-         // .required("Required field")
+          .required("Required field")
           .min(1, "Minimum of 1 characters")
           .matches(/^[0-9][0-9]*$/, "Must be an integer and positive number"),
             
       });
     
-    const mostrarAlerta = () => {
-        if (isSend) {
-            return (
-              <UncontrolledAlert color="success" toggle={()=>setSend(false)}>
-              <span>
-                <b>Successfully created</b>
-              </span>
-            </UncontrolledAlert>
-            )
-        }
-        
-    }
+    
     if(editing){
       return( 
       <div className="content">
+        
       <Card >
+        
         <h3 className="title pl-md-4 py-2">Create Ingredient</h3>
-        {console.log(initialValues)}
+        
         <Formik
           initialValues={initialValues}
           validationSchema={formSchema}
@@ -153,50 +172,53 @@ function CreateIngredient(){
             </FormGroup>
           </Col>
           <Col >
-          <FormGroup>
-            <label>Ingredient price</label>
-            <Field
-            className="form-control"
-              placeholder="Type the price "
-              type="text"
-              name="priceIngredient"
-              />
+            <FormGroup>
+              <label>Ingredient price</label>
+              <Field
+                className="form-control"
+                placeholder="Type the price "
+                type="text"
+                name="priceIngredient"
+                />
               <ErrorMessage
-                      
-                      name="priceIngredient"
-                      component="div"
-                      className="field-error text-danger"
-                    />
+                 name="priceIngredient"
+                 component="div"
+                 className="field-error text-danger"
+               />
             </FormGroup>
           </Col>
           <Col >
          
             <label>Aditional?</label>
             <Input 
-           type="select" 
-           name="additionalIngredient" 
-           id="exampleSelect" 
-           onChange={(e)=>setAditional(e.target.value)}
-          >
-          <option value={true} >Yes</option>
-          <option value={false} >No</option>
-          </Input>    
+              type="select" 
+              name="additionalIngredient" 
+              id="exampleSelect" 
+              onChange={(e)=>setAditional(e.target.value)}
+            >
+              <option value={true} >Yes</option>
+              <option value={false} >No</option>
+            </Input>    
              
           </Col>
-          </Container>   
+        </Container>   
       </CardBody>
-            <CardFooter className="text-center">
-              <Button 
-                className="btn-fill" 
-                color="primary" 
-                color="info"
-                type="submit"
-              >
-              Save
-              </Button>
-            </CardFooter>
-            </Form>
+      <CardFooter className="text-center">
+        <Button 
+           className="btn-fill" 
+           color="primary" 
+           color="info"
+           type="submit"
+         >
+         Save
+        </Button>
+      </CardFooter>
+    </Form>
    </Formik>
+   <div className="react-notification-alert-container">
+          <NotificationAlert ref={notificationAlert} />
+        </div>
+   <br />
    </Card>
    </div>
    )
@@ -205,9 +227,11 @@ function CreateIngredient(){
         <>
         
         <div className="content">
+        <div className="react-notification-alert-container">
+          <NotificationAlert ref={notificationAlert} />
+        </div>
             <Card >
               <h3 className="title pl-md-4 py-2">Create Ingredient</h3>
-              {console.log(initialValues)}
               <Formik
                 initialValues={initialValues}
                 validationSchema={formSchema}
@@ -278,7 +302,7 @@ function CreateIngredient(){
                   </CardFooter>
                   </Form>
          </Formik>
-         {mostrarAlerta()}
+         <br />
          
          <h3 className="title pl-md-4 py-2">Ingredients</h3>
          <Container className="text-center">
