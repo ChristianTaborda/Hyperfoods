@@ -9,6 +9,14 @@
   float: center !important;
 }
 
+.login-form-admin {
+  border: 2px solid lightgray !important;
+}
+
+.form-login-admin {
+  border: 1px solid #2871f6 !important;
+}
+
 .login-background {
   width: 100% !important;
   height: 100% !important;
