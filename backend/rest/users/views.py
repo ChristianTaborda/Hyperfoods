@@ -119,7 +119,6 @@ class Login(APIView):
         }
         return Response(data)
 
-
 class LoginSuper(APIView):
     serializer_class = SuperLoginSerializer
     def post(self,request):
@@ -138,9 +137,6 @@ class RequestPasswordResetView(APIView):
         serializer = RequestPasswordReset(data=request.data)
         serializer.is_valid(raise_exception=True)
         idlink = serializer.save()
-        print("==================")
-        print(idlink)
-
 
 
         try:
@@ -158,16 +154,14 @@ class RequestPasswordResetView(APIView):
                 A continuación aparece un botón ROJO para hacer el cambio, una vez
                 haga click sobre el botón, podrás continuar con el cambio de contraseña, 
                 si usted no ha realizado dicha solicitud, por favor haga caso omiso a este mensaje.
-
-                <div style="text-align: center; margin-top:50px;width: 200px; padding: 8px;background-color:firebrick;">
-                        <a target="_blank" style="color: white; text-decoration: none;" href="http://altopuntaje.com/" >CAMBIAR CONTRASEÑA</a>
-                </div>
+                <br/><br/><br/>
+                ''' + request.get_host() + "/reset-password/" + idlink + "/"'''
             '''
+            print("==================")
+            print(body)
 
             body = MIMEText(body, _subtype='html')
             html_part.attach(body)
-    
-
 
             email = EmailMessage(
                 'CAMBIO DE CONTRASEÑA',
@@ -205,6 +199,7 @@ class PasswordResetView(APIView):
 #Listar todos los usuarios basicos
 class UserList(ListAPIView):
     queryset = CustomUser.objects.all()
+    #queryset = Worker.objects.all()
     serializer_class = UserSerializer
     #spermission_classes = (AllowOperator,)
 

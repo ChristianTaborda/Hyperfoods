@@ -10,6 +10,8 @@ import Admin from "layouts/Admin.js";
 import LoginAdmins from "layouts/LoginAdmins.js";
 import LoginClients from "layouts/LoginClients.js";
 import LoginWorkers from "layouts/LoginWorkers.js";
+import ResetPassword from "layouts/ResetPassword";
+
 import LandingPage from "layouts/LandingPage.js";
 import Suscription from "layouts/Suscription.js";
 import ResetPassword from "layouts/ResetPassword.js";
