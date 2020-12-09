@@ -30,6 +30,23 @@ function Clients() {
       priceProduct: "-"
     },
   ]);
+  const [editing, setEditing] = useState(false);
+  const [idProduct, setIdProduct] = useState(0);
+  const [initialValues, setInitialValues] = useState({
+    nameProduct: "",
+    priceProduct: "",
+    descriptionProduct: ""
+  });
+
+  const editHandler = (event, product) => {
+    setEditing(true);
+    //setIdIngredientEdited(product.codeIngredient);
+    setInitialValues({
+      nameProduct: product.nameIngredient,
+      priceProduct:product.priceIngredient,
+      descriptionProduct:product.additionalIngredient
+    });
+  };
 
   useEffect(() => {
     setLoading(true)
@@ -43,7 +60,9 @@ function Clients() {
       .catch((err) => console.log(err));
   }, []);
 
-
+  if(editing){
+    
+  }else{
   return (
     <>
       <div className="content">
@@ -99,7 +118,7 @@ function Clients() {
         </Row>
       </div>
     </>
-  );
+  );}
 }
 
 export default Clients;
