@@ -13,7 +13,7 @@ import "./Login.css";
 import firebase from "firebase/app";
 import "firebase/auth";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-import ruta from "../views/url";
+import path from "../views/url";
 
 // Configure Firebase.
 const config = {
@@ -36,9 +36,9 @@ function LoginWorkers(props) {
 
   //Function to handle Login submit
   const onSubmit = (values, { resetForm }) => {
-    // console.log(values);
+    setLoading(true);
     axios
-      .post("http://" + ruta + "/api/users/worker/login/", values)
+      .post("http://" + path + "/api/users/worker/login/", values)
       .then((res) => {
         if (res.status === 200) {
           if (res.data.user.user.is_active) {
@@ -201,11 +201,6 @@ function LoginWorkers(props) {
                 type="submit"
                 className="btn btn-dark btn-block"
                 onSubmit={() => {}}
-                onClick={() => {
-                  setTimeout(() => {
-                    setLoading(true);
-                  }, 5);
-                }}
                 disabled={loading}
               >
                 Log in
@@ -221,9 +216,9 @@ function LoginWorkers(props) {
               />
             )}
             <div className="text-center">
-              <a href="/">Sign up</a>
+              <a href={`${path}/landing`}>Sign up</a>
               <span className="p-2">|</span>
-              <a href="/">Forgot Password</a>
+              <a href={`${path}/reset-password`}>Forgot Password</a>
             </div>
           </Form>
         </Formik>

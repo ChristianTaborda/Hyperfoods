@@ -4,8 +4,8 @@ import { Redirect } from "react-router-dom";
 export default function RedirectRoutes() {
   // console.log(window.sessionStorage.getItem("userType"));
 
-  if (window.sessionStorage.getItem("userType") === null) {
-    return <Redirect from="/" to="/landing" />;
+  if (window.sessionStorage.getItem("userType") === "superadmin") {
+    return <Redirect from="/" to="/admin/create-tenant" />;
   }
 
   if (window.sessionStorage.getItem("userType") === "client") {
