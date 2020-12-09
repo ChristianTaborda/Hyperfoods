@@ -161,6 +161,35 @@ class WorkersWithMoreSales(View):
 
         return HttpResponse(json.dumps(response))
 
+# View for Report 6:
+class MonthGain(View):
+    def get(self, request):
+
+        # Month gain calculation:
+        invoices = Invoice.objects.all()
+
+        dictionary = []
+        for i in range(1,13):
+            gain = 0
+            month = str(i)
+            if(i < 10):
+                month = '0' + month
+            for j in invoices:
+                if (month == j.dateTimeInvoice.strftime('%m')):
+                    gain = gain + j.totalInvoice
+
+            data = {
+                'month': month,
+                'gain': gain                     
+            }
+            dictionary.append(data)
+
+        # Month gain:
+        response = {
+            'report': dictionary
+        }
+
+        return HttpResponse(json.dumps(response))
 
 class Data(APIView):
     def get(self,request):

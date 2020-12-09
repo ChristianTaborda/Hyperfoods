@@ -6,6 +6,7 @@ from .views import (
     ClientsWithMorePurchases,
     ZonesWithMorePurchases,
     WorkersWithMoreSales,
+    MonthGain,
     Data
 )
 
@@ -16,6 +17,7 @@ urlpatterns = [
     path('3/', ClientsWithMorePurchases.as_view()),
     path('4/', ZonesWithMorePurchases.as_view()),
     path('5/', WorkersWithMoreSales.as_view()),
-    path('data/', Data.as_view()),
+    path('6/', MonthGain.as_view()),
+    path('data/', Data.as_view())
 
 ]
