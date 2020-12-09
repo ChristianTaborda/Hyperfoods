@@ -12,28 +12,45 @@ import ruta from "./url.js"
 
 function CreateIngredient(){
 
+
     const [isSend, setSend]= useState(false) 
     const [ingredients, setIngredients]= useState([])
     const [loading, setLoading]=useState(false)
+    const [editing, setEditing] = useState(false);
+    const [idIngredientEdited, setIdIngredientEdited] = useState(0);
 
     const [initialValues, setInitialValues] = useState({
-        nameIngredient: "",
+        nameIngredient: "estemen",
         priceIngredient:"",
         additionalIngredient:""
     });
     const [aditional, setAditional]=useState(true)
+
+    const editHandler = (event, ingredient) => {
+      setEditing(true);
+      setIdIngredientEdited(ingredient.codeIngredient);
+      setInitialValues({
+        nameIngredient: ingredient.nameIngredient,
+        priceIngredient:ingredient.priceIngredient,
+        additionalIngredient:ingredient.additionalIngredient
+      });
+    };
+    
     useEffect(() => {
       setLoading(true)
         axios.get('http://'+ruta+'/api/ingredients/')
         .then((response) => {
-          setLoading(false)
-            console.log(response.data)
+         
           setIngredients(response.data)
+          setLoading(false)
         });
-    },[]);
+    },[editing]);
 
     
     const onSubmit = async(values, { resetForm }) => {
+      console.log(values)
+
+      /*setSend(false)
       setLoading(true)
       if(aditional===undefined){
           setAditional(true)
@@ -41,23 +58,36 @@ function CreateIngredient(){
       values["additionalIngredient"]=aditional
       console.log(JSON.stringify(values));
        
-     setTimeout(() => {
+      setTimeout(() => {
          resetForm(initialValues);
-      }, 600);
-      await axios
-      .post("http://"+ruta+"/api/ingredients/create/",values)
-      .then((res) => {
-         setSend(true)
-         setLoading(false)
-         console.log("%c response ", "background: #222; color: #bada55");
-         console.table(res.data);
-         axios.get('http://'+ruta+'/api/ingredients/')
-          .then((response) => {
-            setIngredients(response.data)
-         });
-        })
-       .catch((err) => console.log(err)) 
-     
+      }, 600);*/
+     /* if(editing){
+        await axios
+        .post("http://"+ruta+"/api/ingredients/create/",values)
+        .then((res) => {
+          setSend(true)
+          setLoading(false)
+          console.log("%c response ", "background: #222; color: #bada55");
+          console.table(res.data);
+          axios.get('http://'+ruta+'/api/ingredients/')
+            .then((response) => {
+              setIngredients(response.data)
+          });
+          })
+        .catch((err) => console.log(err))
+      }else{
+        await axios
+        .put(`http://${ruta}/api/ingredients/update/${idIngredientEdited}`,values)
+        .then((res) => {
+          setSend(true)
+          setLoading(false)
+          console.log("%c response ", "background: #222; color: #bada55");
+          console.table(res.data);
+          })
+        .catch((err) => console.log(err))
+
+      } 
+     */
       
       }
 
@@ -65,7 +95,7 @@ function CreateIngredient(){
    
         nameIngredient: Yup.string()
             .trim()
-            .required("Required field")
+            //.required("Required field")
             .min(2, "Minimum of 2 characters")
             .matches(
               /^([A-Z,a-z.'-])+/g,
@@ -73,7 +103,7 @@ function CreateIngredient(){
             ),
         priceIngredient: Yup.string()
           .trim()
-          .required("Required field")
+         // .required("Required field")
           .min(1, "Minimum of 1 characters")
           .matches(/^[0-9][0-9]*$/, "Must be an integer and positive number"),
             
@@ -91,20 +121,99 @@ function CreateIngredient(){
         }
         
     }
+    if(editing){
+      return( 
+      <div className="content">
+      <Card >
+        <h3 className="title pl-md-4 py-2">Create Ingredient</h3>
+        {console.log(initialValues)}
+        <Formik
+          initialValues={initialValues}
+          validationSchema={formSchema}
+          onSubmit={(values, { resetForm }) => onSubmit(values, { resetForm })}
+        > 
+       
+       <Form  > 
+        <CardBody >
+        <Container className="d-flex justify-content-center align-items-center">
+          <Col >
+          <FormGroup>
+            <label>Ingredient name</label>
+            <Field
+            className="form-control"
+              placeholder="Type the ingredient name"
+              type="text"
+              name="nameIngredient"
+              />
+              <ErrorMessage
+                      name="nameIngredient"
+                      component="div"
+                      className="field-error text-danger"
+                    />
+            </FormGroup>
+          </Col>
+          <Col >
+          <FormGroup>
+            <label>Ingredient price</label>
+            <Field
+            className="form-control"
+              placeholder="Type the price "
+              type="text"
+              name="priceIngredient"
+              />
+              <ErrorMessage
+                      
+                      name="priceIngredient"
+                      component="div"
+                      className="field-error text-danger"
+                    />
+            </FormGroup>
+          </Col>
+          <Col >
+         
+            <label>Aditional?</label>
+            <Input 
+           type="select" 
+           name="additionalIngredient" 
+           id="exampleSelect" 
+           onChange={(e)=>setAditional(e.target.value)}
+          >
+          <option value={true} >Yes</option>
+          <option value={false} >No</option>
+          </Input>    
+             
+          </Col>
+          </Container>   
+      </CardBody>
+            <CardFooter className="text-center">
+              <Button 
+                className="btn-fill" 
+                color="primary" 
+                color="info"
+                type="submit"
+              >
+              Save
+              </Button>
+            </CardFooter>
+            </Form>
+   </Formik>
+   </Card>
+   </div>
+   )
+    }else{
     return(
         <>
         
         <div className="content">
-       
-       
             <Card >
               <h3 className="title pl-md-4 py-2">Create Ingredient</h3>
-             
+              {console.log(initialValues)}
               <Formik
                 initialValues={initialValues}
                 validationSchema={formSchema}
                 onSubmit={(values, { resetForm }) => onSubmit(values, { resetForm })}
               > 
+             
              <Form  > 
               <CardBody >
               <Container className="d-flex justify-content-center align-items-center">
@@ -146,7 +255,7 @@ function CreateIngredient(){
                   <label>Aditional?</label>
                   <Input 
                  type="select" 
-                 name="select" 
+                 name="additionalIngredient" 
                  id="exampleSelect" 
                  onChange={(e)=>setAditional(e.target.value)}
                 >
@@ -164,7 +273,7 @@ function CreateIngredient(){
                       color="info"
                       type="submit"
                     >
-                    Create
+                    Save
                     </Button>
                   </CardFooter>
                   </Form>
@@ -178,6 +287,7 @@ function CreateIngredient(){
             <Table responsive>
             <thead >
               <tr>
+                <th>Edit</th>
                 <th>Code</th>
                 <th>Name</th>
                 <th>Price</th>
@@ -188,25 +298,22 @@ function CreateIngredient(){
               {ingredients.map((ingredient, i) => {
                  return (
                    <tr key={i}>
+                     <td>
+                        <i
+                         style={{ cursor: "pointer" }}
+                         className="tim-icons icon-pencil"
+                         onClick={(e) => editHandler(e, ingredient)}
+                        />
+                      </td>
                      <td>{ingredient.codeIngredient}</td>
                      <td>{ingredient.nameIngredient}</td>
                      <td>{ingredient.priceIngredient}</td>
-                     <td>{ingredient.additionalIngredient? "Si":"No"}</td>
-                     <td>
-                       <Button
-                         type="button"
-                         color="warning"
-                         className="fa fa-cog"
-                 >{" "}Edit</Button>
-                     </td>
-                         
+                     <td>{ingredient.additionalIngredient? "Si":"No"}</td>   
                    </tr>
                  );
                })}
             </tbody>
           </Table>
-
-
            }
           
 
@@ -221,7 +328,7 @@ function CreateIngredient(){
        </div>
       </>
     );
-
+          }
   }
 
   export default CreateIngredient;
