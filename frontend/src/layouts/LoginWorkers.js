@@ -43,7 +43,9 @@ function LoginWorkers(props) {
         if (res.status === 200) {
           if (res.data.user.user.is_active) {
             loadColorProfile(res.data.user.user.color);
-            notify("br", "success", "Login successful");
+            if (typeof resetForm === "function") {
+              notify("br", "success", "Login successful");
+            }
             props.setCredentials(res.data);
             window.sessionStorage.setItem("idUser", res.data.user.id_user);
             setTimeout(() => {
@@ -56,12 +58,14 @@ function LoginWorkers(props) {
         console.log(e);
         setLoading(false);
         notify("br", "danger", "Incorrect user Id or password");
-        setTimeout(() => {
-          resetForm({
-            email: "",
-            password: "",
-          });
-        }, 600);
+        if (typeof resetForm === "function") {
+          setTimeout(() => {
+            resetForm({
+              email: "",
+              password: "",
+            });
+          }, 600);
+        }
       });
   };
 
@@ -132,6 +136,12 @@ function LoginWorkers(props) {
             email: firebase.auth().currentUser.providerData[0].email,
           });
           firebase.auth().signOut();
+          let values = {
+            email: firebase.auth().currentUser.providerData[0].email,
+            password: "any",
+            type: "any",
+          };
+          onSubmit(values, {});
         }
 
         setIsSignedIn(!!user);
