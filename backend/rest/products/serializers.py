@@ -79,8 +79,9 @@ class UpdateProductSerializer(serializers.ModelSerializer):
         ]
 
     def update(self, instance, validated_data):
-        url = saveImageFirebase(self.context['request'].get_host(), validated_data['imageProduct'])
-        validated_data['imageProduct'] = url
+        if 'imageProduct' in validated_data:
+            url = saveImageFirebase(self.context['request'].get_host(), validated_data['imageProduct'])
+            validated_data['imageProduct'] = url
 
         product = super().update(instance, validated_data)
 
