@@ -15,4 +15,8 @@ export default function RedirectRoutes() {
   if (window.sessionStorage.getItem("userType") === "worker") {
     return <Redirect from="/" to="/admin/list-workers" />;
   }
+
+  if (window.sessionStorage.getItem("userType") === null) {
+    return <Redirect from="/" to="/landing" />;
+  }
 }

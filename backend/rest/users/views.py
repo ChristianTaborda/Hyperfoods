@@ -106,7 +106,6 @@ class Login(APIView):
 
         copy_data = request.data.copy()
         copy_data['type'] = request.path.split("/")[-3]
-        print("================================")
         if (request.data.get('type')!=None):
             copy_data['social'] = request.data['type']
  
@@ -167,7 +166,7 @@ class RequestPasswordResetView(APIView):
                 'CAMBIO DE CONTRASEÑA',
                 None,
                 settings.EMAIL_HOST_USER,
-                ['roothyperfoods@gmail.com']
+                [request.data['email']]
             )   
             email.attach(html_part)
             email.send()
