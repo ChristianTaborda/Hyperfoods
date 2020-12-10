@@ -159,7 +159,6 @@ export default function Products(props) {
              })}
             </DropdownMenu>
           </ButtonDropdown>
-          
            <h2>Combos</h2>
           {
             comboList.map((combo, i) => {
@@ -174,7 +173,6 @@ export default function Products(props) {
               return <CardProduct key={i} product1={product} setSale={sale} />;
             })
           }
-         
         </div>}
       </Container>
     </div>
