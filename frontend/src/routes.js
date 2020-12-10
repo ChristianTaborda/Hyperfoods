@@ -69,7 +69,7 @@ export default function availableRoutes() {
       layout: "/admin",
     },
     {
-      path: "/productl",
+      path: "/list-product",
       name: "Product list",
       icon: "tim-icons icon-bullet-list-67",
       component: Product,
