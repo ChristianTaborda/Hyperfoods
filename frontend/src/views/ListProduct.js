@@ -64,7 +64,7 @@ function Clients() {
    
 
   const editHandler = (event, product) => {
-    console.log(product)
+   
     setEditing(true);
     setIdProduct(product.codeProduct);
     setInitialValues({
@@ -97,17 +97,17 @@ function Clients() {
   useEffect(() => {
     setLoading(true)
     //Actualizar producto
-    axios.get('http://'+ruta+'/api/categories/')
+     axios.get('http://'+ruta+'/api/categories/')
       .then((response) => {
         setCategorys(response.data)
       });
-      axios.get('http://'+ruta+'/api/ingredients/')
+     axios.get('http://'+ruta+'/api/ingredients/')
       .then((response) => {
         setIngredients(response.data)
       });
     //Actualizar producto
     
-    axios
+     axios
       .get('http://'+ruta+'/api/products/')
       .then(
        
@@ -115,7 +115,7 @@ function Clients() {
           setProdcutList(res.data) } 
       )
       .catch((err) => console.log(err));
-  }, []);
+  }, [editing]);
 
   //Actualizar producto
   const formSchema = Yup.object().shape({
@@ -173,33 +173,38 @@ function Clients() {
     let data= new FormData();
     for ( var key in values ) {
       data.append(key, values[key]);
-      console.log(key)
-      console.log(data.getAll(key))
+     
     }
     for (var i=0; i<ingredientChoosed.length; i++){
-      console.log(ingredientChoosed[i].codeIngredient)
+      
       data.append("ingredientProduct", ingredientChoosed[i].codeIngredient)
     }
       
-  
-
       const config = {
         headers: {
             'content-type': "multipart/form-data; boundary=---011000010111000001101001"
         }
       };
-      data.append("imageProduct",image.image)
+
+      if(image.size==1){
+        data.append("imageProduct",image.image)
+      }else{
+
+      }
+      
      /*
       setTimeout(() => {
         resetForm(initialValues);
       }, 600);*/
       setLoading(true)
-      await axios.put(`http://${ruta}/api/products/update/${idProduct}/`,data, config)
+      await axios.patch(`http://${ruta}/api/products/update/${idProduct}/`,data)
              .then((res) => {
-               setLoading(false)
+               setLoading(true)
+               setEditing(false)
                notify("br", "success", "Product saved");
               })
               .catch((err) => {
+               
                 notify("br", "danger", "error in data charge")
               }) 
      
@@ -338,12 +343,25 @@ function Clients() {
              >
              Save
              </Button>
+             <Button 
+               className="btn-fill" 
+               color="danger"
+               onClick={()=>setEditing(false)}
+             >
+             Cancel
+             </Button>
+           
             </CardFooter> 
           </Form>
           </Formik>
+          
           {loading ? 
                <div className="spinner"></div>:null
           }
+          <div className="react-notification-alert-container">
+               <NotificationAlert ref={notificationAlert} />
+              </div>
+              <br />
         </Card>
        
       </div>

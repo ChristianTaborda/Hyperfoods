@@ -1,4 +1,4 @@
-import React , { useState,useEffect }from 'react'
+import React , { useState,useEffect, useRef }from 'react'
 import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import axios from "axios";
@@ -8,11 +8,12 @@ import {
   } from 'reactstrap';
 import { Multiselect } from 'multiselect-react-dropdown';
 import ruta from "./url.js"
+import NotificationAlert from "react-notification-alert";
 
 import "./createProduct.css";
 function CreateCombo(){
 
-    const [isSend, setSend]= useState(false)
+    const notificationAlert = useRef();
     const [isSelected, setSelected]= useState(false)
     const [initialValues, setInitialValues] = useState({
         nameCombo: "",
@@ -35,6 +36,20 @@ function CreateCombo(){
         setproducts(response.data)
       });
     },[]);
+
+    //Function for notification settings
+   const notify = (place, type, message) => {
+    notificationAlert.current.notificationAlert({
+      place: place,
+      type: type, //["primary", "success", "danger", "warning", "info"]
+      message: <b>{message}</b>,
+      icon:
+        type === "success"
+          ? "tim-icons icon-check-2"
+          : "tim-icons icon-alert-circle-exc",
+      autoDismiss: 7,
+    });
+    };
 
     const selectFiles = (event) => {
       let images = event.target.files.item(0);
@@ -92,12 +107,12 @@ function CreateCombo(){
         await axios
             .post('http://'+ruta+'/api/combos/create/',data, config)
             .then((res) => {
-             setSend(true)
              setLoading(false)
-             console.log("%c response ", "background: #222; color: #bada55");
-             console.table(res.data); 
+             /*console.log("%c response ", "background: #222; color: #bada55");
+             console.table(res.data); */
+             notify("br", "success", "Combo saved")
              })
-       .catch((err) => console.log(err))           
+       .catch((err) => notify("br", "danger", "error in data charge"))           
       }
 
       const formSchema = Yup.object().shape({
@@ -121,18 +136,7 @@ function CreateCombo(){
             
       });
     
-    const mostrarAlerta = () => {
-        if (isSend) {
-            return (
-              <UncontrolledAlert color="success">
-              <span>
-                <b>Successfully created</b>
-              </span>
-            </UncontrolledAlert>
-            )
-        }
-        
-    }
+   
     return(
         <>
         <div className="content">
@@ -256,9 +260,13 @@ function CreateCombo(){
             {loading ? 
                  <div className="spinner"></div>:null
             }
+             <div className="react-notification-alert-container">
+               <NotificationAlert ref={notificationAlert} />
+              </div>
+              <br />
           </Card>
          
-        {mostrarAlerta()}
+       
         </div>
       </>
     );
