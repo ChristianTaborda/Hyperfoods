@@ -7,9 +7,13 @@ import ruta from "../url";
 
 
 // reactstrap components
-import { Container } from "reactstrap";
+import { Container,ButtonDropdown,DropdownToggle,DropdownMenu,DropdownItem } from "reactstrap";
 
 export default function Products(props) {
+
+  const [dropdownOpen, setOpen] = useState(false);
+
+   
   const [productChoosed, setproductChoosed] = useState(props.order);
   const [comboChoosed, setcomboChoosed] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -100,6 +104,18 @@ export default function Products(props) {
     setproductChoosed(selectedList)
   };
 
+  const deletProductChoosed=(value)=>{
+    
+    setproductChoosed(productChoosed.filter(product=>product.codeProduct===value))
+
+  }
+  const deletComboChoosed=(value)=>{
+    
+    setcomboChoosed(comboChoosed.filter(combo=>combo.codeCombo===value))
+
+  }
+
+
 
   return (
     <div>
@@ -108,6 +124,44 @@ export default function Products(props) {
           <div className="spinner"></div>
         ) : 
         <div>
+
+          <ButtonDropdown 
+            className="text-left"
+            
+            isOpen={dropdownOpen} 
+            toggle={() => setOpen(!dropdownOpen)
+            }
+            color="info">
+            <DropdownToggle caret>
+              Selecteds
+            </DropdownToggle>
+            <DropdownMenu>
+            <DropdownItem header>Products</DropdownItem>
+             {productChoosed.map((product,i)=>{
+               return(
+               <DropdownItem 
+                  key={product.codeProduct}
+                  value={product.codeProduct}
+                  onClick={(e)=>deletProductChoosed(e.target.value)}
+                  >{product.nameProduct}
+                
+               </DropdownItem>);
+
+             })}
+            <DropdownItem header>Combo</DropdownItem>
+              {comboChoosed.map((combo,i)=>{
+               return(
+               <DropdownItem 
+                  key={combo.codeCombo}
+                  value={combo.codeCombo}
+                  onClick={(e)=>deletComboChoosed(e.target.value)}
+                  >{combo.nameCombo}
+                
+               </DropdownItem>);
+
+             })}
+            </DropdownMenu>
+          </ButtonDropdown>
           
            <h2>Combos</h2>
           {
