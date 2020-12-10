@@ -126,7 +126,6 @@ function AdminNavbar(props) {
   };
 
   const logout = () => {
-    //borra id usser
     if (window.sessionStorage.getItem("userType") === "worker") {
       window.sessionStorage.removeItem("idUser");
       history.push("/login-workers");
@@ -135,13 +134,18 @@ function AdminNavbar(props) {
       window.sessionStorage.removeItem("idUser");
       history.push("/login-clients");
     }
+    if (window.sessionStorage.getItem("userType") === "superadmin") {
+      window.sessionStorage.removeItem("idUser");
+      history.push("/login-admins");
+    }
   };
 
   const saveProfile = () => {
     let userType = window.sessionStorage.getItem("userType");
     let customState = {
       bgColor: props.bgColor,
-      mode: //document.body.getAttribute("class") es null cuando no es blanco
+      //document.body.getAttribute("class") es null cuando no es blanco
+      mode:
         document.body.getAttribute("class").split(" ")[0] === "white-content"
           ? "light"
           : "dark",

@@ -13,19 +13,19 @@ import CreateClient from "views/CreateClient.js";
 // import TableList from "views/TableList.js";
 // import Typography from "views/Typography.js";
 // import UserProfile from "views/UserProfile.js";
-// import CreateTenant from "views/CreateTenat.js"
+import CreateTenant from "views/CreateTenat.js"
 import CreateIngredient from "views/CreateIngredient.js";
 import CreateCategory from "views/CreateCategory.js";
 import Product from "views/ListProduct.js";
 import ProductCreate from "views/CreateProduct1.js";
 import CreateCombo from "views/CreateCombo.js";
-import ListCombo from "views/ListCombo.js"
-import ReportsText from "views/Charts.js"
-
+import ListCombo from "views/ListCombo.js";
+import ReportsText from "views/Charts.js";
+import GraphicReports from "views/GraphicReports/GraphicReports";
 import Sales from "./views/Sales/Sales";
 
 export default function availableRoutes() {
-  const routesUsers = [
+  const routesWorkers = [
     {
       path: "/list-workers",
       name: "List Workers",
@@ -54,13 +54,6 @@ export default function availableRoutes() {
       component: CreateClient,
       layout: "/admin",
     },
-    // {
-    //   path: "/create-tenant",
-    //   name: "Create Tenant",
-    //   icon: "tim-icons icon-chart-pie-36",
-    //   component: CreateTenant,
-    //   layout: "/admin"
-    // },
     {
       path: "/category",
       name: "Create category",
@@ -116,8 +109,14 @@ export default function availableRoutes() {
       icon: "tim-icons icon-bag-16",
       component: ReportsText,
       layout: "/admin",
-    }
-
+    },
+    {
+      path: "/graphic-reports",
+      name: "Graphic Reports",
+      icon: "tim-icons icon-chart-pie-36",
+      component: GraphicReports,
+      layout: "/admin",
+    },
     // Template views
     // {
     //   path: "/dashboard",
@@ -169,6 +168,7 @@ export default function availableRoutes() {
     //   layout: "/admin"
     // },
   ];
+
   const routesClients = [
     {
       path: "/sales",
@@ -179,11 +179,24 @@ export default function availableRoutes() {
     },
   ];
 
+  const routesSuperadmins = [
+    {
+      path: "/create-tenant",
+      name: "Create Tenant",
+      icon: "tim-icons icon-tap-02",
+      component: CreateTenant,
+      layout: "/admin",
+    },
+  ];
+
   switch (window.sessionStorage.getItem("userType")) {
     case "client":
       return routesClients;
 
     case "worker":
-      return routesUsers;
+      return routesWorkers;
+
+    case "superadmin":
+      return routesSuperadmins;
   }
 }

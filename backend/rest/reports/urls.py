@@ -5,7 +5,9 @@ from .views import (
     HoursWithMoreSales,
     ClientsWithMorePurchases,
     ZonesWithMorePurchases,
-    WorkersWithMoreSales
+    WorkersWithMoreSales,
+    MonthGain,
+    Data
 )
 
 # URLS for reports:
@@ -14,5 +16,8 @@ urlpatterns = [
     path('2/', HoursWithMoreSales.as_view()),
     path('3/', ClientsWithMorePurchases.as_view()),
     path('4/', ZonesWithMorePurchases.as_view()),
-    path('5/', WorkersWithMoreSales.as_view())
+    path('5/', WorkersWithMoreSales.as_view()),
+    path('6/', MonthGain.as_view()),
+    path('data/', Data.as_view())
+
 ]

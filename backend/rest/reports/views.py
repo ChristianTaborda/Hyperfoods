@@ -1,14 +1,21 @@
 from rest_framework.views import View
 from django.http import HttpResponse
+from rest_framework.response import Response
+
+from categories.models import Category
+from combos.models import Combo
+from ingredients.models import Ingredient
 from invoiceDetails.models import InvoiceDetail
 from invoices.models import Invoice
 from products.models import Product
+from users.models import CustomUser
 from users.models import Client
 from users.models import Worker
 from products.serializers import ProductSerializer
 from invoices.serializers import InvoiceSerializer
-from users.serializers import ClientAllSerializer, WorkerSerializer
+from users.serializers import ClientAllSerializer, WorkerSerializer, UserSerializer
 import json
+from rest_framework.views import APIView 
 
 # View for Report 1:
 class MostSelledProducts(View):
@@ -154,5 +161,58 @@ class WorkersWithMoreSales(View):
 
         return HttpResponse(json.dumps(response))
 
+# View for Report 6:
+class MonthGain(View):
+    def get(self, request):
+
+        # Month gain calculation:
+        invoices = Invoice.objects.all()
+
+        dictionary = []
+        for i in range(1,13):
+            gain = 0
+            month = str(i)
+            if(i < 10):
+                month = '0' + month
+            for j in invoices:
+                if (month == j.dateTimeInvoice.strftime('%m')):
+                    gain = gain + j.totalInvoice
+
+            data = {
+                'month': month,
+                'gain': gain                     
+            }
+            dictionary.append(data)
+
+        # Month gain:
+        response = {
+            'report': dictionary
+        }
+
+        return HttpResponse(json.dumps(response))
+
+class Data(APIView):
+    def get(self,request):
+        users = UserSerializer(CustomUser.objects.defer("password"), many=True).data
+        workers = Worker.objects.all().values()
+        clients = Client.objects.all().values()
+        categories = Category.objects.all().values()
+        combos = Combo.objects.all().values()
+        ingredients = Ingredient.objects.all().values()
+        invoiceDetails = InvoiceDetail.objects.all().values()
+        invoices = Invoice.objects.all().values()
+        products = Product.objects.all().values()
+        data = {
+            'users': users,
+            'worker': workers,
+            'client': clients,
+            'categories': categories,
+            'combos': combos,
+            'ingredients': ingredients,
+            'products': products,
+            'invoices': invoices,
+            'invoiceDetails': invoiceDetails
+        }
+        return Response(data)
 
 
