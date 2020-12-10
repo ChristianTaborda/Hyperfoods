@@ -73,3 +73,13 @@ class ListDomain(ListAPIView):
 class CreateTenant(ListCreateAPIView):
     queryset = Domain.objects.all()
     serializer_class = DomainSerializer
+
+
+class TenantInfo(APIView):
+    def post(self,request):
+
+        query = Tenant.objects.filter(schema_name=request.data['schema_name'])
+        if query.exists():
+            return Response(query.values())
+        else:
+            return Response({'error': 'this domain does not exists'})

@@ -15,7 +15,8 @@ class CreateTenantSerializer(serializers.ModelSerializer):
         fields = [
             'name',
             'paid_until',
-            'on_trial'
+            'on_trial',
+            'type_plan'
         ]
 
 class DomainSerializer(serializers.ModelSerializer):
