@@ -166,7 +166,7 @@ class RequestPasswordResetView(APIView):
                 'CAMBIO DE CONTRASEÑA',
                 None,
                 settings.EMAIL_HOST_USER,
-                ['roothyperfoods@gmail.com']
+                [request.data['email']]
             )   
             email.attach(html_part)
             email.send()
