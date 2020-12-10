@@ -7,8 +7,8 @@ if (
   path = `${window.location.hostname}:8000`;
   adminPath = "localhost:8000";
 } else {
-  path = `${window.location.hostname}`;
-  adminPath = `${window.location.hostname.split(".").slice(1).join(".")}`;
+  path = `https://${window.location.hostname}`;
+  adminPath = `https://${window.location.hostname.split(".").slice(1).join(".")}`;
 }
 
 export { adminPath };
