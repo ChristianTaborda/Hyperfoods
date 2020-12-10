@@ -12,6 +12,7 @@ import { Container,ButtonDropdown,DropdownToggle,DropdownMenu,DropdownItem } fro
 export default function Products(props) {
 
   const [dropdownOpen, setOpen] = useState(false);
+  const [cant, setCant]=useState(0)
 
    
   const [productChoosed, setproductChoosed] = useState(props.order);
@@ -66,6 +67,7 @@ export default function Products(props) {
    ]);
 
   function sale(product) {
+    setCant(cant+1)
     let tLista = productChoosed;
     tLista.push(product);
     setproductChoosed(tLista);
@@ -73,6 +75,7 @@ export default function Products(props) {
     props.setOrder(productChoosed);
   }
   function sale2(combo) {
+    setCant(cant+1)
     let tLista = comboChoosed;
     tLista.push(combo);
     setcomboChoosed(tLista);
@@ -99,18 +102,14 @@ export default function Products(props) {
       )
   }, []);
 
-  const onRemove = (selectedList, removedItem) => {
-    console.log(selectedList);
-    setproductChoosed(selectedList)
-  };
 
   const deletProductChoosed=(value)=>{
-    
+    setCant(cant-1)
     setproductChoosed(productChoosed.filter(product=>product.codeProduct===value))
 
   }
   const deletComboChoosed=(value)=>{
-    
+    setCant(cant-1)    
     setcomboChoosed(comboChoosed.filter(combo=>combo.codeCombo===value))
 
   }
@@ -131,7 +130,7 @@ export default function Products(props) {
             }
             color="info">
             <DropdownToggle caret>
-              Selecteds
+              Selecteds({cant})
             </DropdownToggle>
             <DropdownMenu>
             <DropdownItem header>Products</DropdownItem>
