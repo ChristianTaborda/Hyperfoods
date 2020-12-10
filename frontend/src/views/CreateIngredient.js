@@ -212,6 +212,13 @@ function CreateIngredient(){
          >
          Save
         </Button>
+        <Button 
+               className="btn-fill" 
+               color="danger"
+               onClick={()=>setEditing(false)}
+             >
+             Cancel
+             </Button>
       </CardFooter>
     </Form>
    </Formik>
