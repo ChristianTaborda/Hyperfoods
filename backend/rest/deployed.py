@@ -7,6 +7,7 @@ URL_SERVER = "hyperfoods.team"
 tenant = Tenant(schema_name='public',
                 name='Hyperfoods Inc.',
                 paid_until='2020-12-12',
+                type_plan=3,
                 on_trial=False)
 tenant.save()
 
@@ -20,6 +21,7 @@ domain.save()
 tenant = Tenant(schema_name='tenant1',
                 name='Tenant1 Inc.',
                 paid_until='2020-12-12',
+                type_plan=1,
                 on_trial=True)
 tenant.save()
 
