@@ -134,7 +134,7 @@ class UserLoginSerializer(serializers.Serializer):
             raise serializers.ValidationError('Este correo no esta registrado')
         user = queryset.values()[0]
 
-        if (data.get('social')==None):
+        if (self.initial_data.get('social')==None):
             if(not check_password(data['password'], user['password'])):
                 raise serializers.ValidationError('Contraseña incorrecta')
 

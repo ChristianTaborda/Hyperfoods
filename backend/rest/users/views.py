@@ -106,7 +106,6 @@ class Login(APIView):
 
         copy_data = request.data.copy()
         copy_data['type'] = request.path.split("/")[-3]
-        print("================================")
         if (request.data.get('type')!=None):
             copy_data['social'] = request.data['type']
  
