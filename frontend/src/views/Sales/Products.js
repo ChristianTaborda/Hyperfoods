@@ -124,10 +124,8 @@ export default function Products(props) {
           <div className="spinner"></div>
         ) : 
         <div>
-
           <ButtonDropdown 
             className="text-left"
-            
             isOpen={dropdownOpen} 
             toggle={() => setOpen(!dropdownOpen)
             }
@@ -158,7 +156,6 @@ export default function Products(props) {
                   >{combo.nameCombo}
                 
                </DropdownItem>);
-
              })}
             </DropdownMenu>
           </ButtonDropdown>
