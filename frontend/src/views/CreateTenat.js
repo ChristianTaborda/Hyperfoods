@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import * as Yup from "yup";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import axios from "axios";
@@ -14,13 +14,16 @@ import {
   FormGroup,
   Button,
   UncontrolledAlert,
+  Input,
   Alert,
   Container,
 } from "reactstrap";
 import "../layouts/Suscription.css";
 import { isReturnStatement } from "typescript";
+import NotificationAlert from "react-notification-alert";
 
 function CreateTenant() {
+  const notificationAlert = useRef();
   const [isSend, setSend] = useState(false);
   /*
     const [schema_name, setNTenant] = useState("");
@@ -31,7 +34,9 @@ function CreateTenant() {
     schema_name: "",
     name: "",
     paid_until: "",
+    
   };
+  const[typePlan,setTypePlan]=useState(1)
   /*const onClick = (e) => {
         e.preventDefault();
 
@@ -49,14 +54,31 @@ function CreateTenant() {
         //history.push("/");
     
       };*/
+   //Function for notification settings
+   const notify = (place, type, message) => {
+    notificationAlert.current.notificationAlert({
+      place: place,
+      type: type, //["primary", "success", "danger", "warning", "info"]
+      message: <b>{message}</b>,
+      icon:
+        type === "success"
+          ? "tim-icons icon-check-2"
+          : "tim-icons icon-alert-circle-exc",
+      autoDismiss: 7,
+    });
+    };
+
+
   const onSubmit = (values, { resetForm }) => {
     const domain = values["schema_name"] + ".hyperfoods.team";
     const mensaje = {
       is_primary: true,
     };
     values.on_trial = true;
+    values.type_plan=parseInt(typePlan)
     mensaje.domain = domain;
     mensaje.tenant = values;
+
 
     console.log(JSON.stringify(mensaje));
     setSend(true);
@@ -64,13 +86,14 @@ function CreateTenant() {
       resetForm(initialValues);
     }, 600);
     axios
-      .post("http://" + ruta + "/tenants/create/", mensaje)
+      .post("http://hyperfoods.team/tenants/create/", mensaje)
       .then((res) => {
-        console.log("%c response ", "background: #222; color: #bada55");
-        console.table(res.data);
+        notify("br", "success", "Tenant saved")
       })
-      .catch((err) => console.log(err));
+      .catch((err) => notify("br", "danger", "error in data charge"));
   };
+
+
 
   const formSchema = Yup.object().shape({
     schema_name: Yup.string()
@@ -86,23 +109,13 @@ function CreateTenant() {
       .required("Required field")
       .min(2, "Minimum of 2 characters")
       .matches(
-        /^[a-z ,.'-]+$/i,
+        /^[a-z ,.'-,1-9]+$/i,
         "Must contain only letters and these symbols , . '   - "
       ),
     paid_until: Yup.string().trim().required("Required field"),
   });
 
-  const mostrarAlerta = () => {
-    if (isSend) {
-      return (
-        <UncontrolledAlert color="success">
-          <span>
-            <b>Successfully created</b>
-          </span>
-        </UncontrolledAlert>
-      );
-    }
-  };
+ 
   return (
     <>
       <div className="content">
@@ -152,6 +165,24 @@ function CreateTenant() {
                     </FormGroup>
                   </Col>
                   <Col className="pl-md-1" md="4">
+                  <label> Type plan</label>
+                  <Input 
+                        type="select" 
+                        name="select" 
+                        id="exampleSelect" 
+                        onChange={(e)=>setTypePlan(e.target.value)}
+                        >
+                      
+                        <option  value={1} >Basic</option>
+                        <option  value={2} >Medium</option>
+                        <option  value={3} >Full</option>
+                       
+                      
+                        
+                      </Input>
+                    </Col>
+
+                  <Col className="pl-md-1" md="4">
                     <FormGroup>
                       <label>Expiration</label>
                       <Field
@@ -174,11 +205,15 @@ function CreateTenant() {
                   Create
                 </Button>
               </CardFooter>
-              {/* </Container> */}
+             
+             
             </Card>
           </Form>
         </Formik>
-        {mostrarAlerta()}
+        <div className="react-notification-alert-container">
+               <NotificationAlert ref={notificationAlert} />
+            </div>
+            <br />
       </div>
     </>
   );
