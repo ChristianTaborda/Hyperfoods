@@ -7,11 +7,15 @@ import ruta from "../url";
 
 
 // reactstrap components
-import { Container } from "reactstrap";
+import { Container,ButtonDropdown,DropdownToggle,DropdownMenu,DropdownItem } from "reactstrap";
 
 export default function Products(props) {
+
+  const [dropdownOpen, setOpen] = useState(false);
+  const [cant, setCant]=useState(0)
+
+   
   const [productChoosed, setproductChoosed] = useState(props.order);
-  const [comboChoosed, setcomboChoosed] = useState([]);
   const [loading, setLoading] = useState(false);
   const [productList, setProductList] = useState([
     {
@@ -62,19 +66,14 @@ export default function Products(props) {
    ]);
 
   function sale(product) {
+    setCant(cant+1)
     let tLista = productChoosed;
     tLista.push(product);
     setproductChoosed(tLista);
     // console.log("productChoosed", productChoosed);
     props.setOrder(productChoosed);
   }
-  function sale2(combo) {
-    let tLista = comboChoosed;
-    tLista.push(combo);
-    setcomboChoosed(tLista);
-    console.log("productChoosed", comboChoosed);
-    //props.setOrder(productChoosed);
-  }
+ 
 
   useEffect(() => {
     setLoading(true);
@@ -95,10 +94,20 @@ export default function Products(props) {
       )
   }, []);
 
-  const onRemove = (selectedList, removedItem) => {
-    console.log(selectedList);
-    setproductChoosed(selectedList)
-  };
+
+  const deletProductChoosed=(value)=>{
+    setCant(cant-1)
+   
+    setproductChoosed(productChoosed.filter(product=>product.codeProduct===value))
+   
+
+  }
+  const deletComboChoosed=(value)=>{
+    setCant(cant-1)    
+    setproductChoosed(productChoosed.filter(combo=>combo.codeCombo===value))
+
+  }
+
 
 
   return (
@@ -108,11 +117,45 @@ export default function Products(props) {
           <div className="spinner"></div>
         ) : 
         <div>
-          
+          <ButtonDropdown 
+            className="text-left"
+            isOpen={dropdownOpen} 
+            toggle={() => setOpen(!dropdownOpen)
+            }
+            color="info">
+            <DropdownToggle caret>
+              Selecteds({cant})
+            </DropdownToggle>
+            <DropdownMenu>
+            <DropdownItem header>Products</DropdownItem>
+             {productChoosed.map((product,i)=>{
+               return(
+               <DropdownItem 
+                  key={product.codeProduct}
+                  value={product.codeProduct}
+                  onClick={(e)=>deletProductChoosed(e.target.value)}
+                  >{product.nameProduct}
+                
+               </DropdownItem>);
+
+             })}
+            <DropdownItem header>Combo</DropdownItem>
+              {productChoosed.map((combo,i)=>{
+               return(
+               <DropdownItem 
+                  key={combo.codeCombo}
+                  value={combo.codeCombo}
+                  onClick={(e)=>deletComboChoosed(e.target.value)}
+                  >{combo.nameCombo}
+                
+               </DropdownItem>);
+             })}
+            </DropdownMenu>
+          </ButtonDropdown>
            <h2>Combos</h2>
           {
             comboList.map((combo, i) => {
-              return <CardCombo key={i} combo1={combo} setSale={sale2} />;
+              return <CardCombo key={i} combo1={combo} setSale={sale} />;
             })
           }
           <br/>
@@ -123,7 +166,6 @@ export default function Products(props) {
               return <CardProduct key={i} product1={product} setSale={sale} />;
             })
           }
-         
         </div>}
       </Container>
     </div>
