@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import PerfectScrollbar from "perfect-scrollbar";
+import axios from "axios";
 import { connect } from "react-redux";
 import availableRoutes from "routes.js";
 import { setSidebarOpened } from "../redux/Template/actions.js";
 import { setNetworkStatus } from "../redux/Template/actions.js";
+import { adminPath } from "../views/url.js";
 
 // core components
 import AdminNavbar from "components/AdminNavbar.js";
@@ -43,6 +45,35 @@ function Admin(props) {
       props.setSidebarOpened(
         document.documentElement.className.indexOf("nav-open") !== -1
       );
+
+      // Function to determine the type of tenant
+      if (window.location.hostname.split(".").length > 1) {
+        //subdomain or schema_name
+        let subdomain = window.location.hostname.split(".")[0];
+        let payload = {
+          schema_name: subdomain,
+        };
+
+        axios
+          .post("http://" + adminPath + "/tenants/info/", payload)
+          .then((res) => {
+            switch (res.data[0].type_plan) {
+              case 1:
+                window.sessionStorage.setItem("type_plan", "Full");
+                break;
+              case 2:
+                window.sessionStorage.setItem("type_plan", "Medium");
+                break;
+              case 3:
+                window.sessionStorage.setItem("type_plan", "Basic");
+                break;
+              default:
+                window.sessionStorage.setItem("type_plan", null);
+                break;
+            }
+          })
+          .catch((err) => console.log(err));
+      }
 
       // callback at unmount (ComponentWillUnmount)
       return () => {

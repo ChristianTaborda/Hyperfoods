@@ -49,6 +49,8 @@ function GraphicReports() {
     gains: [0],
   });
 
+  const [typePlan, setTypePlan] = useState(null);
+
   // [X] Productos más vendidos           hyperfoods.team/api/reports/1/
   // [X] Horas del día con más ventas     hyperfoods.team/api/reports/2/
   // [X] Clientes con más compras         hyperfoods.team/api/reports/3/
@@ -57,6 +59,8 @@ function GraphicReports() {
   // [X] Ganancias mensuales              hyperfoods.team/api/reports/6/
 
   useEffect(() => {
+    setTypePlan(window.sessionStorage.getItem("type_plan"));
+
     setLoading(true);
 
     // Report 1
@@ -179,6 +183,7 @@ function GraphicReports() {
     return (
       <>
         <div className="content">
+          {console.log(typePlan)}
           <Row>
             <Col md="12">
               <Card className="card-chart">
@@ -197,95 +202,115 @@ function GraphicReports() {
             </Col>
           </Row>
 
-          <Row>
-            <Col md="12">
-              <Card className="card-chart">
-                <CardHeader>
-                  <CardTitle tag="h4">Top-selling hours of the day</CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <div className="chart-area">
-                    <Bar
-                      data={chart2(TopSellingHours).data}
-                      options={chart2().options}
-                    />
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+          {typePlan === "Medium" ? null : (
+            <Row>
+              {typePlan === "Basic" ? null : (
+                <Col md="12">
+                  <Card className="card-chart">
+                    <CardHeader>
+                      <CardTitle tag="h4">
+                        Top-selling hours of the day
+                      </CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                      <div className="chart-area">
+                        <Bar
+                          data={chart2(TopSellingHours).data}
+                          options={chart2().options}
+                        />
+                      </div>
+                    </CardBody>
+                  </Card>
+                </Col>
+              )}
+            </Row>
+          )}
 
-          <Row>
-            <Col md="12">
-              <Card className="card-chart">
-                <CardHeader>
-                  <CardTitle tag="h4">Customers with more purchases</CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <div className="chart-area">
-                    <Doughnut
-                      data={chart3(CustomerWithMorePurchases).data}
-                      options={chart3().options}
-                    />
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+          {typePlan === "Medium" ? null : (
+            <Row>
+              {typePlan === "Basic" ? null : (
+                <Col md="12">
+                  <Card className="card-chart">
+                    <CardHeader>
+                      <CardTitle tag="h4">
+                        Customers with more purchases
+                      </CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                      <div className="chart-area">
+                        <Doughnut
+                          data={chart3(CustomerWithMorePurchases).data}
+                          options={chart3().options}
+                        />
+                      </div>
+                    </CardBody>
+                  </Card>
+                </Col>
+              )}
+            </Row>
+          )}
 
-          <Row>
-            <Col md="12">
-              <Card className="card-chart">
-                <CardHeader>
-                  <CardTitle tag="h4">Addresses with most sales</CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <div className="chart-area">
-                    <Bar
-                      data={chart4(AddressesWithMostSales).data}
-                      options={chart4().options}
-                    />
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+          {typePlan === "Medium" ? null : (
+            <Row>
+              {typePlan === "Basic" ? null : (
+                <Col md="12">
+                  <Card className="card-chart">
+                    <CardHeader>
+                      <CardTitle tag="h4">Addresses with most sales</CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                      <div className="chart-area">
+                        <Bar
+                          data={chart4(AddressesWithMostSales).data}
+                          options={chart4().options}
+                        />
+                      </div>
+                    </CardBody>
+                  </Card>
+                </Col>
+              )}
+            </Row>
+          )}
 
-          <Row>
-            <Col md="12">
-              <Card className="card-chart">
-                <CardHeader>
-                  <CardTitle tag="h4">Top-selling workers</CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <div className="chart-area">
-                    <Bar
-                      data={chart5(topSellingWorkers).data}
-                      options={chart5().options}
-                    />
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+          {typePlan === "Basic" ? null : (
+            <Row>
+              <Col md="12">
+                <Card className="card-chart">
+                  <CardHeader>
+                    <CardTitle tag="h4">Top-selling workers</CardTitle>
+                  </CardHeader>
+                  <CardBody>
+                    <div className="chart-area">
+                      <Bar
+                        data={chart5(topSellingWorkers).data}
+                        options={chart5().options}
+                      />
+                    </div>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          )}
 
-          <Row>
-            <Col md="12">
-              <Card className="card-chart">
-                <CardHeader>
-                  <CardTitle tag="h4">Monthly Earnings</CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <div className="chart-area">
-                    <Bar
-                      data={chart6(monthlyEarnings).data}
-                      options={chart6().options}
-                    />
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+          {typePlan === "Basic" ? null : (
+            <Row>
+              <Col md="12">
+                <Card className="card-chart">
+                  <CardHeader>
+                    <CardTitle tag="h4">Monthly Earnings</CardTitle>
+                  </CardHeader>
+                  <CardBody>
+                    <div className="chart-area">
+                      <Bar
+                        data={chart6(monthlyEarnings).data}
+                        options={chart6().options}
+                      />
+                    </div>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          )}
         </div>
       </>
     );
