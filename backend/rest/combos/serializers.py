@@ -84,7 +84,7 @@ class UpdateComboSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
 
-        if 'imageCombo' is in validated_data:
+        if 'imageCombo' in validated_data:
             url = saveImageFirebase(self.context['request'].get_host(), validated_data['imageCombo'])
             validated_data['imageCombo'] = url
 
