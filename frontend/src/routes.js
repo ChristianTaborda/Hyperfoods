@@ -14,6 +14,7 @@ import CreateClient from "views/CreateClient.js";
 // import Typography from "views/Typography.js";
 // import UserProfile from "views/UserProfile.js";
 import CreateTenant from "views/CreateTenat.js"
+import ListTenant from "views/ListTenant.js"
 import CreateIngredient from "views/CreateIngredient.js";
 import CreateCategory from "views/CreateCategory.js";
 import Product from "views/ListProduct.js";
@@ -185,6 +186,13 @@ export default function availableRoutes() {
       name: "Create Tenant",
       icon: "tim-icons icon-tap-02",
       component: CreateTenant,
+      layout: "/admin",
+    },
+    {
+      path: "/list-tenant",
+      name: "List Tenant",
+      icon: "tim-icons icon-bullet-list-67",
+      component: ListTenant,
       layout: "/admin",
     },
   ];
