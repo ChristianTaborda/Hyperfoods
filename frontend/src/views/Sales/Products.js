@@ -16,7 +16,6 @@ export default function Products(props) {
 
    
   const [productChoosed, setproductChoosed] = useState(props.order);
-  const [comboChoosed, setcomboChoosed] = useState([]);
   const [loading, setLoading] = useState(false);
   const [productList, setProductList] = useState([
     {
@@ -74,14 +73,7 @@ export default function Products(props) {
     // console.log("productChoosed", productChoosed);
     props.setOrder(productChoosed);
   }
-  function sale2(combo) {
-    setCant(cant+1)
-    let tLista = comboChoosed;
-    tLista.push(combo);
-    setcomboChoosed(tLista);
-    console.log("productChoosed", comboChoosed);
-    //props.setOrder(productChoosed);
-  }
+ 
 
   useEffect(() => {
     setLoading(true);
@@ -105,12 +97,14 @@ export default function Products(props) {
 
   const deletProductChoosed=(value)=>{
     setCant(cant-1)
+   
     setproductChoosed(productChoosed.filter(product=>product.codeProduct===value))
+   
 
   }
   const deletComboChoosed=(value)=>{
     setCant(cant-1)    
-    setcomboChoosed(comboChoosed.filter(combo=>combo.codeCombo===value))
+    setproductChoosed(productChoosed.filter(combo=>combo.codeCombo===value))
 
   }
 
@@ -146,7 +140,7 @@ export default function Products(props) {
 
              })}
             <DropdownItem header>Combo</DropdownItem>
-              {comboChoosed.map((combo,i)=>{
+              {productChoosed.map((combo,i)=>{
                return(
                <DropdownItem 
                   key={combo.codeCombo}
@@ -161,7 +155,7 @@ export default function Products(props) {
            <h2>Combos</h2>
           {
             comboList.map((combo, i) => {
-              return <CardCombo key={i} combo1={combo} setSale={sale2} />;
+              return <CardCombo key={i} combo1={combo} setSale={sale} />;
             })
           }
           <br/>
