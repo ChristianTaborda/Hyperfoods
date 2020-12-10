@@ -34,9 +34,8 @@ function CreateTenant() {
     schema_name: "",
     name: "",
     paid_until: "",
-    
   };
-  const[typePlan,setTypePlan]=useState(1)
+  const [typePlan, setTypePlan] = useState(1);
   /*const onClick = (e) => {
         e.preventDefault();
 
@@ -54,8 +53,8 @@ function CreateTenant() {
         //history.push("/");
     
       };*/
-   //Function for notification settings
-   const notify = (place, type, message) => {
+  //Function for notification settings
+  const notify = (place, type, message) => {
     notificationAlert.current.notificationAlert({
       place: place,
       type: type, //["primary", "success", "danger", "warning", "info"]
@@ -66,8 +65,7 @@ function CreateTenant() {
           : "tim-icons icon-alert-circle-exc",
       autoDismiss: 7,
     });
-    };
-
+  };
 
   const onSubmit = (values, { resetForm }) => {
     const domain = values["schema_name"] + ".hyperfoods.team";
@@ -75,10 +73,9 @@ function CreateTenant() {
       is_primary: true,
     };
     values.on_trial = true;
-    values.type_plan=parseInt(typePlan)
+    values.type_plan = parseInt(typePlan);
     mensaje.domain = domain;
     mensaje.tenant = values;
-
 
     console.log(JSON.stringify(mensaje));
     setSend(true);
@@ -88,12 +85,10 @@ function CreateTenant() {
     axios
       .post("http://hyperfoods.team/tenants/create/", mensaje)
       .then((res) => {
-        notify("br", "success", "Tenant saved")
+        notify("br", "success", "Tenant saved");
       })
       .catch((err) => notify("br", "danger", "error in data charge"));
   };
-
-
 
   const formSchema = Yup.object().shape({
     schema_name: Yup.string()
@@ -115,7 +110,6 @@ function CreateTenant() {
     paid_until: Yup.string().trim().required("Required field"),
   });
 
- 
   return (
     <>
       <div className="content">
@@ -165,24 +159,21 @@ function CreateTenant() {
                     </FormGroup>
                   </Col>
                   <Col className="pl-md-1" md="4">
-                  <label> Type plan</label>
-                  <Input 
-                        type="select" 
-                        name="select" 
-                        id="exampleSelect" 
-                        onChange={(e)=>setTypePlan(e.target.value)}
-                        >
-                      
-                        <option  value={1} >Basic</option>
-                        <option  value={2} >Medium</option>
-                        <option  value={3} >Full</option>
-                       
-                      
-                        
-                      </Input>
-                    </Col>
-
-                  <Col className="pl-md-1" md="4">
+                    <label> Type plan</label>
+                    <Input
+                      type="select"
+                      name="select"
+                      id="exampleSelect"
+                      onChange={(e) => setTypePlan(e.target.value)}
+                    >
+                      <option value={1}>Basic</option>
+                      <option value={2}>Medium</option>
+                      <option value={3}>Full</option>
+                    </Input>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className="pr-md-1" md="4">
                     <FormGroup>
                       <label>Expiration</label>
                       <Field
@@ -205,15 +196,13 @@ function CreateTenant() {
                   Create
                 </Button>
               </CardFooter>
-             
-             
             </Card>
           </Form>
         </Formik>
         <div className="react-notification-alert-container">
-               <NotificationAlert ref={notificationAlert} />
-            </div>
-            <br />
+          <NotificationAlert ref={notificationAlert} />
+        </div>
+        <br />
       </div>
     </>
   );

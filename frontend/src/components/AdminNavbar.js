@@ -30,6 +30,7 @@ function AdminNavbar(props) {
   const routes = availableRoutes();
   const notificationAlert = useRef();
   let history = useHistory();
+  const [typePlan, setTypePlan] = useState(null);
 
   // Message from service-worker to client
   const channel = new BroadcastChannel("sw-messages");
@@ -53,6 +54,8 @@ function AdminNavbar(props) {
 
   useEffect(
     () => {
+      setTypePlan(window.sessionStorage.getItem("type_plan"));
+
       if (window.sessionStorage.getItem("workers") != null) {
         sessionStorage.removeItem("workers");
       }
@@ -262,15 +265,16 @@ function AdminNavbar(props) {
                   <p className="d-lg-none">Log out</p>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-navbar" right tag="ul">
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item" onClick={saveProfile}>
-                      <i className="tim-icons icon-palette" />
-                      Save Color Profile
-                    </DropdownItem>
-                  </NavLink>
-                  {/* <NavLink tag="li">
-                    <DropdownItem className="nav-item">Settings</DropdownItem>
-                  </NavLink> */}
+                  
+                  {typePlan === "Basic" ? null : (
+                    <NavLink tag="li">
+                      <DropdownItem className="nav-item" onClick={saveProfile}>
+                        <i className="tim-icons icon-palette" />
+                        Save Color Profile
+                      </DropdownItem>
+                    </NavLink>
+                  )}
+
                   <DropdownItem divider tag="li" />
                   <NavLink tag="li">
                     <DropdownItem className="nav-item" onClick={logout}>
