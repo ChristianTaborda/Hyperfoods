@@ -8,7 +8,7 @@ import { Line, Bar, Doughnut } from "react-chartjs-2";
 import { Card, CardHeader, CardBody, CardTitle, Row, Col } from "reactstrap";
 
 // Import chart configurations
-import { chart1, chart2, chart3, chart4, chart5 } from "./Charts.js";
+import { chart1, chart2, chart3, chart4, chart5, chart6 } from "./Charts.js";
 
 function GraphicReports() {
   const [loading, setLoading] = useState(false);
@@ -43,11 +43,19 @@ function GraphicReports() {
     sales: [0],
   });
 
+  // Report 6 variables
+  const [monthlyEarnings, setMonthlyEarnings] = useState({
+    labels: [""],
+    gains: [0],
+  });
+
   // [X] Productos más vendidos           hyperfoods.team/api/reports/1/
   // [X] Horas del día con más ventas     hyperfoods.team/api/reports/2/
   // [X] Clientes con más compras         hyperfoods.team/api/reports/3/
   // [X] Direcciones con más ventas       hyperfoods.team/api/reports/4/
   // [X] Trabajadores con más ventas      hyperfoods.team/api/reports/5/
+  // [X] Ganancias mensuales              hyperfoods.team/api/reports/6/
+
   useEffect(() => {
     setLoading(true);
 
@@ -124,6 +132,30 @@ function GraphicReports() {
         setLoading(false);
       })
       .catch((err) => console.log("report 5: ", err));
+
+    // Report 6
+    axios
+      .get("http://" + path + "/api/reports/6/")
+      .then((res) => {
+        let gains = res.data.report.map((item) => item.gain);
+        let labels = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+        setMonthlyEarnings({ labels, gains });
+        setLoading(false);
+      })
+      .catch((err) => console.log("report 6: ", err));
   }, []);
 
   if (loading)
@@ -230,6 +262,24 @@ function GraphicReports() {
                     <Bar
                       data={chart5(topSellingWorkers).data}
                       options={chart5().options}
+                    />
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col md="12">
+              <Card className="card-chart">
+                <CardHeader>
+                  <CardTitle tag="h4">Monthly Earnings</CardTitle>
+                </CardHeader>
+                <CardBody>
+                  <div className="chart-area">
+                    <Bar
+                      data={chart6(monthlyEarnings).data}
+                      options={chart6().options}
                     />
                   </div>
                 </CardBody>
