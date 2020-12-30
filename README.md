@@ -1,4 +1,3 @@
 # hyperfoods
 
-
-Aplicación multitenant para el manejo de franquicias de comida
+Multitenant app developed using React for Frontend, Django for Backend and Postgres for database to manage different food franchises.
